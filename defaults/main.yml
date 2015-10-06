@@ -1,2 +1,14 @@
 ---
-# defaults file for ansible-deployments
+
+# Where to get the code
+deployment_resolver                 : 'github'
+
+# Deployment user/group 
+deployment_user                     : "{{ ansible_ssh_user }}"
+deployment_group                    : "{{ ansible_ssh_user }}"
+
+# where to do the inital checkout/download file
+deployment_temp_dir                 : "/tmp/ansible-deployment"
+
+# Git Resolver variables
+deployment_git_repo                 : "git@github.com:hellofresh/ansible-deployment.git"

@@ -1,4 +1,4 @@
-ansible-deployments
+ansible-deployment
 =========
 
 Ansible role to deploy applications.

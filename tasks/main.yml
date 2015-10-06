@@ -1,2 +1,7 @@
 ---
-# tasks file for ansible-deployments
+
+# Deploy from git specific branch or hash or tag 
+# Directory shoud use git hash/tag
+# Inital deployment
+
+- include: resolver/main.yml
