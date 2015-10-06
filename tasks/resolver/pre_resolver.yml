@@ -1,0 +1,12 @@
+---
+
+- name: Ensure deployment temp directroy is clean and ready for use
+  file:
+    path="{{ deployment_temp_dir }}"
+    mode=0755
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group | default(omit) }}"
+    state="{{ item }}"
+  with_items:
+    - "absent"
+    - "directory"

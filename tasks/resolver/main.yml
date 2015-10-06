@@ -1,0 +1,8 @@
+---
+
+
+- include: pre_resolver.yml
+
+# check if we have code deployed unless you use force
+- include: github.yml
+  when: deployment_resolver == "github"

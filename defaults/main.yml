@@ -12,3 +12,4 @@ deployment_temp_dir                 : "/tmp/ansible-deployment"
 
 # Git Resolver variables
 deployment_git_repo                 : "git@github.com:hellofresh/ansible-deployment.git"
+deployment_git_user                 : "{{ ansible_ssh_user }}"
