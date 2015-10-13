@@ -1,0 +1,26 @@
+---
+# Where to get the code
+deployment_resolver                 : 'github'
+
+# Deployment user/group 
+deployment_user                     : "{{ ansible_ssh_user }}"
+deployment_group                    : "{{ ansible_ssh_user }}"
+deployment_user_home                : "/home/{{ deployment_user }}"
+# where to do the inital checkout/download file
+deployment_temp_dir                 : "/tmp/ansible-deployment"
+
+# Git Resolver variables
+deployment_git_repo                 : "git@github.com:hellofresh/ansible-deployment.git"
+deployment_git_user                 : "{{ ansible_ssh_user }}"
+
+# Deployment Information
+deployment_name                     : "testApp"
+#deployment_version                : "t"
+
+# Config option
+deployment_config_env_file          : "{{ deployment_user_home }}/{{ deployment_name }}_environment.sh"
+deployment_env_vars                 : "none"
+deployment_shell_init_file          : "{{ deployment_user_home}}/.bashrc"
+
+# Cron jobs 
+deployment_cron_jobs                : "none"

@@ -1,0 +1,9 @@
+---
+
+- name: GIT clone into temp download dir 
+  git: 
+    repo="{{ deployment_git_repo }}"
+    dest="{{ deployment_temp_dir }}"
+    version="{{ deployment_version | default(omit) }}"
+    accept_hostkey=yes
+  become_user: "{{ deployment_git_user }}"

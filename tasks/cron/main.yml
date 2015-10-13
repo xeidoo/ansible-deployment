@@ -1,0 +1,11 @@
+- name : Cron jobs
+  cron :
+    name="{{ item.name }}"
+    weekday={{ item.weekday | default('*') }}
+    minute={{ item.minute | default('*') }}
+    hour={{ item.hour | default('*') }}
+    user="{{ item.user }}"
+    job="{{ item.job }}"
+    cron_file="{{ item.cron_file }}"
+  with_items: 
+    - "{{ deployment_cron_jobs }}"

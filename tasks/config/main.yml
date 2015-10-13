@@ -1,0 +1,3 @@
+---
+ - include: environment_variable.yml
+   when: deployment_env_vars != 'none' 
