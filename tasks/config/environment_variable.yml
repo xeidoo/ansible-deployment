@@ -1,0 +1,26 @@
+---
+
+- name: environment_variable | write environment variables file
+  template: 
+    src=../../templates/environment.sh.j2
+    dest="{{ deployment_config_env_file }}"
+
+- name: php configuration for tapioca
+  template: 
+    src=../../templates/tapioca.conf.j2
+    dest=/etc/php5/fpm/pool.d/tapioca.conf
+
+- name: environment_variable | Source environment variables file
+  lineinfile: 
+      line="{{item}}"
+      insertbefore="BOF"
+      state="present"
+      create="yes"
+      mode="0644"
+      dest="{{ deployment_shell_init_file }}"
+  with_items: 
+    - "source {{ deployment_config_env_file }}"
+
+
+
+

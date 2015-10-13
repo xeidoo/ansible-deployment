@@ -1,5 +1,4 @@
 ---
-
 - name: Ensure deployment temp directroy is clean and ready for use
   file:
     path="{{ deployment_temp_dir }}"

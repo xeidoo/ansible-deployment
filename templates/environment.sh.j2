@@ -1,0 +1,4 @@
+#! /bin/bash 
+{% for environment_item in deployment_env_vars %}
+export {{ environment_item.key }}={{ environment_item.value }}
+{% endfor %}
