@@ -1,0 +1,12 @@
+parameters:
+{% for k,v in deployment_ini_vars[environment_name].iteritems() %}
+{% if v is iterable and v is not string %}
+    {{ k }}:
+{% for k2,v2 in v.iteritems() %}
+        {{ k2 }}: '{{ v2 }}'
+{% endfor %}
+
+{% else  %}
+    {{ k }}: '{{ v }}'
+{% endif %}
+{% endfor %}

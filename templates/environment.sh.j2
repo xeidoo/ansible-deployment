@@ -1,4 +1,4 @@
 #! /bin/bash 
-{% for environment_item in deployment_env_vars %}
-export {{ environment_item.key }}={{ environment_item.value }}
+{% for k,v in deployment_env_vars[environment_name].iteritems() %}
+export {{ k }}={{ v }}
 {% endfor %}
