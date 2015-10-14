@@ -7,3 +7,4 @@
 - include: config/main.yml
 - include: cron/main.yml
   when: deployment_cron_jobs != 'none' 
+

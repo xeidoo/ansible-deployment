@@ -1,9 +1,18 @@
-ansible-deployment
-=========
+# ansible-deployment
 
 Ansible role to deploy applications.
+    
+### Features
 
-Requirements
-------------
+* env vars: 
+```
 
-not yet.
+```
+
+* cron jobs:
+
+
+* ini files:
+We convert grou_vars variables to lines in a inifile
+
+

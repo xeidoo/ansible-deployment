@@ -1,0 +1,6 @@
+---
+
+- name: ini variables| write ini variables file
+  template: 
+    src=../../templates/inivars.ini.j2
+    dest="{{ deployment_config_ini_vars_dest }}"
