@@ -1,6 +1,14 @@
-# ansible-deployment
+# hellofresh/ansible-deployment
 
 Ansible role to deploy applications.
+
+# owner
+
+https://github.com/alfonsodev
+
+# todo
+
+- handover to @nsimaria
     
 ### Features
 
