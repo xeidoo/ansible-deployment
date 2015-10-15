@@ -24,3 +24,5 @@ deployment_shell_init_file          : "{{ deployment_user_home}}/.bashrc"
 
 # Cron jobs 
 deployment_cron_jobs                : "none"
+# ini files
+deployment_ini_vars                 : "none"
