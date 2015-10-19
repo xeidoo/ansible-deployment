@@ -1,0 +1,5 @@
+---
+
+- main: dependency | main | Include composer.yml
+  include: composer.yml
+  when: deployment_dependency == "composer"
