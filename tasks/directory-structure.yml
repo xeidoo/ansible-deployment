@@ -1,0 +1,42 @@
+---
+
+- name: Get current date
+  shell: date +"%Y-%m-%d_%H_%M"
+  changed_when: False
+  register: current_date
+
+- name: directory structure | Change file owner for all files
+  file:
+    path="{{ deployment_work_dir }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+    state="directory"
+    recurse="yes"
+
+- name: directory structure | Change file owner for all files
+  file: 
+    path="{{ deployment_work_dir }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+    state="directory"
+    recurse="yes"
+
+- name: directory structure | Create current symlink
+  file: 
+    src="{{ deployment_work_dir }}"
+    dest="{{ deployment_current_dir }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+    mode="0755"
+    state="link"
+  register: symlink_update
+  notify:
+   - restart app
+
+- name: directory structure | Create deployment date file
+  copy:
+    content=""
+    dest="{{ deployment_current_dir }}/{{ current_date.stdout }}.deployment.date"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+  when: symlink_update.changed

@@ -11,3 +11,4 @@
     cron_file="{{ item.cron_file }}"
   with_items: 
     - "{{ deployment_cron_jobs }}"
+  when: deployment_cron_jobs != 'none' 

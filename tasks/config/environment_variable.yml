@@ -15,7 +15,3 @@
       dest="{{ deployment_shell_init_file }}"
   with_items: 
     - "source {{ deployment_config_env_file }}"
-
-
-
-

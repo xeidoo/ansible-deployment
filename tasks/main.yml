@@ -3,10 +3,25 @@
 # Directory shoud use git hash/tag
 # Inital deployment
 
+- name: main | Check if first boot file exists
+  stat:
+    path="{{ deployment_guard_file }}"
+  register: deployment_guard
+
 - include: resolver/main.yml
+  when: not deployment_guard.stat.exists or deployment_force
 
 - include: config/main.yml
+  when: not deployment_guard.stat.exists or deployment_force
 
-- include: cron/main.yml
-  when: deployment_cron_jobs != 'none' 
+- include: cron.yml
+  when: not deployment_guard.stat.exists or deployment_force
 
+- include: directory-structure.yml
+  when: not deployment_guard.stat.exists or deployment_force
+
+- name: main | Touch file guard
+  copy:
+    content=""
+    dest="{{ deployment_guard_file }}"
+  when: not deployment_guard.stat.exists or deployment_force
