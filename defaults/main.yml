@@ -18,11 +18,12 @@ deployment_name                     : "testApp"
 #deployment_version                : "t"
 
 # Config option
+deployment_env_vars                 : "none" # Variables that define the config
 deployment_config_env_file          : "{{ deployment_user_home }}/{{ deployment_name }}_environment.sh"
-deployment_env_vars                 : "none"
-deployment_shell_init_file          : "{{ deployment_user_home}}/.bashrc"
+deployment_shell_init_file          : "{{ deployment_user_home}}/.bashrc" 
+
+deployment_ini_vars                 : "none" # Variables that define the config
+deployment_config_ini_file          : "{{ deployment_user_home }}/{{ deployment_name }}_config.ini"
 
 # Cron jobs 
 deployment_cron_jobs                : "none"
-# ini files
-deployment_ini_vars                 : "none"
