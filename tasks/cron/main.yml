@@ -1,4 +1,6 @@
-- name : Cron jobs
+---
+
+- name : cron | main | Cron jobs
   cron :
     name="{{ item.name }}"
     weekday={{ item.weekday | default('*') }}

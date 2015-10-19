@@ -4,7 +4,9 @@
 # Inital deployment
 
 - include: resolver/main.yml
+
 - include: config/main.yml
+
 - include: cron/main.yml
   when: deployment_cron_jobs != 'none' 
 

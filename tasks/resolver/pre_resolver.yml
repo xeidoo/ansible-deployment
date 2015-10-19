@@ -1,5 +1,7 @@
 ---
-- name: Ensure deployment temp directroy is clean and ready for use
+
+  # Think of using temp dir for idempotency
+- name: resolover | pre_resolver | Ensure deployment temp directroy is clean and ready for use
   file:
     path="{{ deployment_temp_dir }}"
     mode=0755

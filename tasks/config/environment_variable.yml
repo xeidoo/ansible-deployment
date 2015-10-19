@@ -1,11 +1,11 @@
 ---
 
-- name: environment_variable | write environment variables file
+- name: config | environment_variable | write environment variables file
   template: 
     src=../../templates/environment.sh.j2
     dest="{{ deployment_config_env_file }}"
 
-- name: environment_variable | Source environment variables file
+- name: config | environment_variable | Source environment variables file
   lineinfile: 
       line="{{item}}"
       insertbefore="BOF"

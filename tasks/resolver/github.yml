@@ -1,6 +1,6 @@
 ---
 
-- name: GIT clone into temp download dir 
+- name: resolover | github | GIT clone into temp download dir 
   git: 
     repo="{{ deployment_git_repo }}"
     dest="{{ deployment_temp_dir }}"
