@@ -1,7 +1,7 @@
 ---
+
  - include: environment_variable.yml
    when: deployment_env_vars != 'none' 
 
-# Ini var should be true
  - include: ini.yml
    when: deployment_ini_vars != 'none' 

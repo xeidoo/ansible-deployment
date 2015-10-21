@@ -1,9 +1,24 @@
 ---
 
-- name: GIT clone into temp download dir 
+- name: resolver | github | GIT clone into work Branch
   git: 
     repo="{{ deployment_git_repo }}"
     dest="{{ deployment_temp_dir }}"
+    version="{{ deployment_version | default(omit) }}"
+    accept_hostkey=yes
+  become_user: "{{ deployment_git_user }}"
+  register: git_resolver
+  when: deployment_version | length  != 40
+
+- name: resolver | github | GIT Set facts
+  set_fact:
+      deployment_version:  "{{ git_resolver.after }}"
+  when: deployment_version | length  != 40
+
+- name: resolver | github | GIT clone into work directory
+  git: 
+    repo="{{ deployment_git_repo }}"
+    dest="{{ deployment_work_dir }}"
     version="{{ deployment_version | default(omit) }}"
     accept_hostkey=yes
   become_user: "{{ deployment_git_user }}"

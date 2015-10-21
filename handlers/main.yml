@@ -1,2 +1,5 @@
 ---
-# handlers file for ansible-deployment
+
+ - name: restart app
+   debug: 
+     msg="Sorry no restart"
