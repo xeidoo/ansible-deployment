@@ -7,7 +7,7 @@ deployment_resolver                 : 'github'
 # Git Resolver variables
 deployment_git_repo                 : "git@github.com:hellofresh/ansible-deployment.git"
 deployment_git_user                 : "{{ ansible_ssh_user }}"
-# Version depands on resolver if git supports branch/tag/git 40 char hash
+# Version depands on resolver. If your using github as a resolver version could be branch/tag/git 40 char hash
 deployment_version                  : "master"
 
 ## Deployment user/group and directroy
