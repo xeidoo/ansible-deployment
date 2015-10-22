@@ -1,8 +1,5 @@
 ---
 
-- name: resolver | main | Include pre_resolver.yml
-  include: pre_resolver.yml
-
 - main: resolver | main | Include github.yml
   include: github.yml
   when: deployment_resolver == "github"
