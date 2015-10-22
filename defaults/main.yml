@@ -30,11 +30,12 @@ deployment_ini_vars                 : "none" # Variables that define the config
 deployment_config_ini_file          : "{{ deployment_base_dir }}/{{ deployment_name }}_config.ini"
 
 ## Dependency managment
-#deployment_dependency               : "composer"
-#deployment_dependency_composer_args : 
-#                        working_dir : "{{ deployment_work_dir }}"
-#                        command     : "install"
-#
+# deployment dependency ['comoser']
+deployment_dependency               : "none"
+deployment_dependency_composer_args : 
+                        working_dir : "{{ deployment_work_dir }}"
+                        command     : "install"
+
 
 ## Cron jobs 
 deployment_cron_jobs                : "none"

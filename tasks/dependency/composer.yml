@@ -1,6 +1,5 @@
 ---
 
-- name:  dependency | composer | Run composer
+- name: dependency | composer | Run composer
   composer:
-  args:
-    "{{ deployment_dependency_composer_args }}"
+  args: "{{ deployment_dependency_composer_args }}"
