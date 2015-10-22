@@ -60,6 +60,5 @@ deployment_guard_file               :  "/var/local/deployment_first_boot_file"
 ### Todo
 - Implement handler to restart/reload application
 - Implement Post deployment checks
-- handover to @nsimaria
 
 
