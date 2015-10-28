@@ -4,6 +4,9 @@
   template: 
     src=../../templates/environment.sh.j2
     dest="{{ deployment_config_env_file }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_user }}"
+    mode="0600"
 
 - name: config | environment_variable | Source environment variables file
   lineinfile: 
