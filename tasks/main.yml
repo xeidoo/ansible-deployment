@@ -14,14 +14,15 @@
 - include: dependency/main.yml
   when: not deployment_guard.stat.exists or deployment_force
 
+- include: directory-structure.yml
+  when: not deployment_guard.stat.exists or deployment_force
+
 - include: config/main.yml
   when: not deployment_guard.stat.exists or deployment_force
 
 - include: cron.yml
   when: not deployment_guard.stat.exists or deployment_force
 
-- include: directory-structure.yml
-  when: not deployment_guard.stat.exists or deployment_force
 
 - name: main | Touch file guard
   copy:
