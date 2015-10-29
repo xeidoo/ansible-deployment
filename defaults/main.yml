@@ -2,7 +2,7 @@
 ## Deployment Information
 # App name
 deployment_name                     : "testApp"
-# Where to get the code supported resolver ['github']
+# Where to get the code supported resolver ['none', github']
 deployment_resolver                 : 'github'
 # Git Resolver variables
 deployment_git_repo                 : "git@github.com:hellofresh/ansible-deployment.git"
@@ -22,6 +22,11 @@ deployment_base_dir                 : "{{ deployment_user_home }}/{{ deployment_
 deployment_work_dir                 : "{{ deployment_base_dir }}/{{ deployment_version }}"
 deployment_current_dir              : "{{ deployment_base_dir }}/current"
 deployment_repo_dir                 : "{{ deployment_base_dir }}/repo"
+## Extra directory that needs to be created (should be a list) i.e. ['/var/log/myapp','/opt/blaaa']
+deployment_extra_dirs               : 'none'
+## Extra files that needs to be created (should be a list) i.e. ['/var/log/myapp.log','/somewhere/file.txt']
+deployment_extra_files              : 'none'
+
 
 ## Config option
 #  Shell environment variable 

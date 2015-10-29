@@ -24,6 +24,9 @@
   when: not deployment_guard.stat.exists or deployment_force
 
 
+- include: current-version.yml
+  when: (not deployment_guard.stat.exists or deployment_force) and deployment_resolver != 'none'
+
 - name: main | Touch file guard
   copy:
     content=""

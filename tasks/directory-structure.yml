@@ -5,38 +5,34 @@
   changed_when: False
   register: current_date
 
-- name: directory structure | Change file owner for all files
+- name: directory structure | Ensure work dir is present and ensure right permissions
   file:
     path="{{ deployment_work_dir }}"
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
     state="directory"
-    recurse="yes"
 
-- name: directory structure | Change file owner for all files
+- name: directory structure | Ensure extra dirs are present and ensure right permissions
   file: 
-    path="{{ deployment_work_dir }}"
+    path="{{ item }}"
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
     state="directory"
-    recurse="yes"
+  when: deployment_extra_dirs != "none"
+  with_items: deployment_extra_dirs
 
-- name: directory structure | Create current symlink
+- name: directory structure | Check extra files stat
+  stat: 
+    path="{{ item }}"
+  register: deployment_extra_files_stat
+  when: deployment_extra_files != "none"
+  with_items: deployment_extra_files 
+
+- name: directory structure | Ensure extra files are present and ensure right permissions
   file: 
-    src="{{ deployment_work_dir }}"
-    dest="{{ deployment_current_dir }}"
+    dest="{{ item.item }}"
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
-    mode="0755"
-    state="link"
-  register: symlink_update
-  notify:
-   - restart app
-
-- name: directory structure | Create deployment date file
-  copy:
-    content=""
-    dest="{{ deployment_current_dir }}/{{ current_date.stdout }}.deployment.date"
-    owner="{{ deployment_user }}"
-    group="{{ deployment_group }}"
-  when: symlink_update.changed
+    state="touch"
+  when: deployment_extra_files != "none" 
+  with_items: "{{ deployment_extra_files_stat.results | selectattr('stat.exists', 'equalto', False) | list }}"
