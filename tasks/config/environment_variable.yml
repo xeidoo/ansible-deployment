@@ -8,7 +8,7 @@
     group="{{ deployment_user }}"
     mode="0600"
 
-- name: config | environment_variable | Source environment variables file
+- name: config | environment_variable | Source environment variables file in your profile
   lineinfile: 
       line="{{item}}"
       insertbefore="BOF"

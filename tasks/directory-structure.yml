@@ -28,6 +28,16 @@
   when: deployment_extra_files != "none"
   with_items: deployment_extra_files 
 
+- name: directory structure | Set extra files stat to []
+  set_fact:
+      deployment_extra_files_stat_exists: []
+  when: deployment_extra_files == "none"
+
+- name: directory structure | Set extra files stat to []
+  set_fact:
+      deployment_extra_files_stat_exists: "{{ deployment_extra_files_stat.results | selectattr('stat.exists', 'equalto', False) | list | default([]) }}"
+  when: deployment_extra_files != "none"
+
 - name: directory structure | Ensure extra files are present and ensure right permissions
   file: 
     dest="{{ item.item }}"
@@ -35,4 +45,4 @@
     group="{{ deployment_group }}"
     state="touch"
   when: deployment_extra_files != "none" 
-  with_items: "{{ deployment_extra_files_stat.results | selectattr('stat.exists', 'equalto', False) | list }}"
+  with_items: deployment_extra_files_stat_exists
