@@ -1,5 +1,5 @@
 ---
-# Deploy from git specific branch or hash or tag 
+# Deploy from git specific branch or hash or tag
 # Directory shoud use git hash/tag
 # Inital deployment
 
@@ -7,6 +7,9 @@
   stat:
     path="{{ deployment_guard_file }}"
   register: deployment_guard
+
+- include: ssh_fingerprints.yml
+  when: (not deployment_guard.stat.exists or deployment_force) and deployment_ssh_fingerprints_deploy 
 
 - include: resolver/main.yml
   when: not deployment_guard.stat.exists or deployment_force
