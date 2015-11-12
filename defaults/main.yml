@@ -7,7 +7,7 @@ deployment_resolver                 : 'github'
 # Git Resolver variables
 deployment_git_repo                 : "git@github.com:hellofresh/ansible-deployment.git"
 deployment_git_user                 : "{{ deployment_user }}"
-## when doing rollbacks do you want to force copy from GIT 
+## when doing rollbacks do you want to force copy from GIT
 deployment_git_repo_force_copy      : False
 
 # Version depands on resolver. If your using github as a resolver version could be branch/tag/git 40 char hash
@@ -18,7 +18,7 @@ deployment_user                     : "{{ ansible_ssh_user }}"
 deployment_group                    : "{{ deployment_user }}"
 deployment_user_home                : "/home/{{ deployment_user }}"
 deployment_base_dir                 : "{{ deployment_user_home }}/{{ deployment_name }}"
-# Directory structure 
+# Directory structure
 deployment_work_dir                 : "{{ deployment_base_dir }}/{{ deployment_version }}"
 deployment_current_dir              : "{{ deployment_base_dir }}/current"
 deployment_repo_dir                 : "{{ deployment_base_dir }}/repo"
@@ -29,25 +29,32 @@ deployment_extra_files              : 'none'
 
 
 ## Config option
-#  Shell environment variable 
+#  Shell environment variable
 deployment_env_vars                 : "none" # Variables that define the config
 deployment_config_env_file          : "{{ deployment_base_dir }}/{{ deployment_name }}_environment.sh"
-deployment_shell_init_file          : "{{ deployment_user_home }}/.bashrc" 
-#  INI variable 
+deployment_shell_init_file          : "{{ deployment_user_home }}/.bashrc"
+#  INI variable
 deployment_ini_vars                 : "none" # Variables that define the config
 deployment_config_ini_file          : "{{ deployment_base_dir }}/{{ deployment_name }}_config.ini"
 
 ## Dependency managment
 # deployment dependency ['comoser']
 deployment_dependency               : "none"
-deployment_dependency_composer_args : 
+deployment_composer_user            : "{{ deployment_user }}"
+deployment_dependency_composer_args :
                         working_dir : "{{ deployment_work_dir }}"
                         command     : "install"
 
-## Cron jobs 
+## Cron jobs
 deployment_cron_jobs                : "none"
 # TODO: Make an example of cron jobs
 
-## By default you deploy once and to override you must pass true to force deployment 
+## By default you deploy once and to override you must pass true to force deployment
 deployment_force                    :  false
 deployment_guard_file               :  "/var/local/deployment_first_boot_file"
+
+# Set known hosts for ssh
+deployment_ssh_fingerprints_deploy  : False
+deployment_ssh_fingerprints         :
+                        - "bitbucket.org,131.103.20.167 ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAubiN81eDcafrgMeLzaFPsw2kNvEcqTKl/VqLat/MaB33pZy0y3rJZtnqwR2qOOvbwKZYKiEO1O6VqNEBxKvJJelCq0dTXWT5pbO2gDXC6h6QDXCaHo6pOHGPUy+YBaGQRGuSusMEASYiWunYN0vCAI8QaXnWMXNMdFP3jHAJH0eDsoiGnLPBlBp4TNm6rYI74nMzgz3B9IikW4WVK+dc8KZJZWYjAuORU3jc1c/NPskD2ASinf8v3xnfXeukU0sJ5N6m5E8VLjObPEO+mN2t/FZTMZLiFqPWc/ALSqnMnnhwrNi2rbfg/rd/IpL8Le3pSBne8+seeFVBoGqzHM9yXw=="
+                        - "github.com,204.232.175.90 ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ=="

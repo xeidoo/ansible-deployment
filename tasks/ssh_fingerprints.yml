@@ -1,0 +1,13 @@
+---
+
+- name: Setup SSH hosts finger prints
+  lineinfile:
+    line="{{ item }}"
+    insertafter="EOF"
+    state="present"
+    create="yes"
+    owner="{{ deployment_user }}"
+    mode="0644"
+    dest="{{ deployment_user_home }}/.ssh/known_hosts"
+  with_items:
+      - "{{ deployment_ssh_fingerprints }}"
