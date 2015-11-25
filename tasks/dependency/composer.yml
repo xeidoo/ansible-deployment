@@ -4,3 +4,5 @@
   composer:
   args: "{{ deployment_dependency_composer_args }}"
   become_user: "{{ deployment_composer_user }}"
+  register: composer_output
+  ignore_errors: True
