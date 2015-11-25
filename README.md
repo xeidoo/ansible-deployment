@@ -33,7 +33,7 @@ deployment_config_env_file          : "{{ deployment_base_dir }}/{{ deployment_n
 deployment_shell_init_file          : "{{ deployment_user }}/.bashrc" 
 #  INI variable 
 deployment_ini_vars                 : "none" # Variables that define the config
-deployment_config_ini_file          : "{{ deployment_base_dir }}/{{ deployment_name }}_config.ini"
+deployment_config_ini_vars_dest     : "{{ deployment_base_dir }}/{{ deployment_name }}_config.ini"
 
 ## Dependency managment
 #deployment_dependency               : "composer"
