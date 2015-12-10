@@ -5,3 +5,6 @@
 
  - include: ini.yml
    when: deployment_ini_vars != 'none' 
+
+ - include: dotenv.yml
+   when: deployment_config_dotenv_vars != 'none' 
