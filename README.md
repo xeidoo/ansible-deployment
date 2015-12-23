@@ -56,6 +56,7 @@ deployment_guard_file               :  "/var/local/deployment_first_boot_file"
 ### Contributors
 * [Alfonso Fernandez](https://github.com/alfonsodev)
 * [Adham Helal](https://github.com/ahelal)
+* [Sergio Sola] (https://github.com/ssola)
 
 ### Todo
 - Implement handler to restart/reload application
