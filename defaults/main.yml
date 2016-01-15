@@ -14,7 +14,7 @@ deployment_git_repo_force_copy      : False
 deployment_version                  : "master"
 
 ## Deployment user/group and directroy
-deployment_user                     : "{{ ansible_ssh_user }}"
+deployment_user                     : "{{ ansible_user | default(ansible_ssh_user) }}"
 deployment_group                    : "{{ deployment_user }}"
 deployment_user_home                : "/home/{{ deployment_user }}"
 deployment_base_dir                 : "{{ deployment_user_home }}/{{ deployment_name }}"
