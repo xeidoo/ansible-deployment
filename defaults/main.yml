@@ -47,6 +47,9 @@ deployment_dependency_composer_args :
                         working_dir : "{{ deployment_work_dir }}"
                         command     : "install"
 
+## YAML vars config 
+deployment_config_yaml_vars         : "none"
+
 ## Cron jobs
 deployment_cron_jobs                : "none"
 # TODO: Make an example of cron jobs
