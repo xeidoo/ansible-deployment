@@ -18,14 +18,13 @@
   when: not deployment_guard.stat.exists or deployment_force
 
 - include: directory-structure.yml
-  when: not deployment_guard.stat.exists or deployment_force
+  when: deployment_directory_structure and not deployment_guard.stat.exists or deployment_force
 
 - include: config/main.yml
   when: not deployment_guard.stat.exists or deployment_force
 
 - include: cron.yml
   when: not deployment_guard.stat.exists or deployment_force
-
 
 - include: current-version.yml
   when: (not deployment_guard.stat.exists or deployment_force) and deployment_resolver != 'none'

@@ -1,6 +1,6 @@
 ---
 
-- name: config | yaml  | write yaml variables file
+- name: config | yaml | write yaml variables file
   template:
     src=../../templates/yamlvars.j2
     dest="{{ deployment_config_yaml_vars_dest }}"
