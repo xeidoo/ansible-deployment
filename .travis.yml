@@ -17,7 +17,7 @@ install:
 script:
     - ansible --version
     - export TRAVIS=True
-    - bundle exec kitchen test travis
+    - bundle exec kitchen test
 
 after_success:
     - echo "Success"
