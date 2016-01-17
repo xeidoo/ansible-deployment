@@ -2,8 +2,8 @@
 ## Deployment Information
 # App name
 deployment_name                     : "testApp"
-# Where to get the code supported resolver ['none', github']
-deployment_resolver                 : 'github'
+# Where to get the code supported resolver ['none', github', 's3']
+deployment_resolver                 : 'none'
 # Git Resolver variables
 deployment_git_repo                 : "git@github.com:hellofresh/ansible-deployment.git"
 deployment_git_user                 : "{{ deployment_user }}"
@@ -17,6 +17,7 @@ deployment_version                  : "master"
 deployment_user                     : "{{ lookup('env','USER') }}"
 deployment_group                    : "{{ deployment_user }}"
 deployment_user_home                : "/home/{{ deployment_user }}"
+deployment_directory_structure      : True
 deployment_base_dir                 : "{{ deployment_user_home }}/{{ deployment_name }}"
 # Directory structure
 deployment_work_dir                 : "{{ deployment_base_dir }}/{{ deployment_version }}"

@@ -1,6 +1,6 @@
 ---
 
-- name: Get current date
+- name: directory structure | Get current date
   shell: date +"%Y-%m-%d_%H_%M"
   changed_when: False
   register: current_date

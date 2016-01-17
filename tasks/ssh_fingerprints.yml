@@ -1,6 +1,7 @@
 ---
+# Setup ssh 
 
-- name: Setup SSH hosts finger prints
+- name: ssh_fingerprints | Setup SSH hosts finger prints
   lineinfile:
     line="{{ item }}"
     insertafter="EOF"

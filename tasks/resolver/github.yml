@@ -13,7 +13,7 @@
   set_fact:
       deployment_version:  "{{ git_resolver.after }}"
 
-- name: main | Check if work directory exists
+- name: resolver | Check if work directory exists
   stat:
     path="{{ deployment_work_dir }}"
   register: deployment_work_dir_stat

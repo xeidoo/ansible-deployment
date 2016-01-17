@@ -1,0 +1,13 @@
+---
+- name         : SSH known host
+  hosts        : "all"
+  gather_facts : no
+  become       : True
+  connection   : "{{ kitchen_connection | default('local') }}"
+  vars         :
+                 deployment_directory_structure      : False
+                 deployment_ssh_fingerprints_deploy  : True
+                 deployment_force                    : True
+                 deployment_user                     : "{{ lookup('env','USER') }}"
+  roles        :
+                 - "ansible-deployment"
