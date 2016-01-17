@@ -1,4 +1,5 @@
 # hellofresh/ansible-deployment
+[![Build Status](https://travis-ci.org/hellofresh/ansible-deployment.svg?branch=master)](https://travis-ci.org/hellofresh/ansible-deployment)
 
 Ansible role to deploy applications.
 
