@@ -3,7 +3,7 @@
 - name: resolver | github | GIT clone into repo directory
   git: 
     repo="{{ deployment_git_repo }}"
-    dest="{{ deployment_repo_dir }}"
+    dest="{{ deployment_git_repo_dir }}"
     version="{{ deployment_version | default(omit) }}"
     accept_hostkey=yes
   become_user: "{{ deployment_git_user }}"
@@ -19,6 +19,6 @@
   register: deployment_work_dir_stat
 
 - name: resolver | github | Copy repo to work directory
-  shell: rsync -rlp --exclude '.git' {{ deployment_repo_dir }}/ {{ deployment_work_dir }}
+  shell: rsync -rlp --exclude '.git' {{ deployment_git_repo_dir }}/ {{ deployment_work_dir }}
   when: git_resolver | changed or deployment_git_repo_force_copy or not deployment_work_dir_stat.stat.exists
   become_user: "{{ deployment_git_user }}"

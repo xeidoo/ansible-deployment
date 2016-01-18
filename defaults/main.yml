@@ -1,17 +1,30 @@
 ---
 ## Deployment Information
+
 # App name
 deployment_name                     : "testApp"
-# Where to get the code supported resolver ['none', github', 's3']
-deployment_resolver                 : 'none'
-# Git Resolver variables
-deployment_git_repo                 : "git@github.com:hellofresh/ansible-deployment.git"
-deployment_git_user                 : "{{ deployment_user }}"
-## when doing rollbacks do you want to force copy from GIT
-deployment_git_repo_force_copy      : False
 
 # Version depands on resolver. If your using github as a resolver version could be branch/tag/git 40 char hash
 deployment_version                  : "master"
+
+# Where to get the code supported resolver ['none', github', 's3']
+deployment_resolver                 : 'none'
+
+## GIT Resolver
+deployment_git_repo                 : "git@github.com:hellofresh/ansible-deployment.git"
+deployment_git_user                 : "{{ deployment_user }}"
+deployment_git_repo_dir             : "{{ deployment_base_dir }}/repo"
+## when doing rollbacks do you want to force copy from GIT
+deployment_git_repo_force_copy      : False
+
+## S3 Resolver
+deployment_s3_bucket                : "a_bucket"
+deployment_s3_object_name           : "testApp-{{ deployment_version }}.tgz"
+deployment_s3_object_path           : "" # Optional path
+deployment_s3_art_dir               : "{{ deployment_base_dir }}/artifacts"
+deployment_s3_aws_key_id            : "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
+deployment_s3_aws_secret_key        : "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
+
 
 ## Deployment user/group and directroy
 deployment_user                     : "{{ lookup('env','USER') }}"
@@ -22,7 +35,7 @@ deployment_base_dir                 : "{{ deployment_user_home }}/{{ deployment_
 # Directory structure
 deployment_work_dir                 : "{{ deployment_base_dir }}/{{ deployment_version }}"
 deployment_current_dir              : "{{ deployment_base_dir }}/current"
-deployment_repo_dir                 : "{{ deployment_base_dir }}/repo"
+
 ## Extra directory that needs to be created (should be a list) i.e. ['/var/log/myapp','/opt/blaaa']
 deployment_extra_dirs               : 'none'
 ## Extra files that needs to be created (should be a list) i.e. ['/var/log/myapp.log','/somewhere/file.txt']

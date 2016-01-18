@@ -1,0 +1,68 @@
+---
+
+- name: resolver | s3 | Install boto 
+  pip:
+   name="{{ item }}"
+  with_items: 
+     - boto
+     - boto3
+
+# if latest get latest
+
+# - name: resolver | s3 | list all objects
+#   s3:
+#     x="list"
+#   register: s3_object_list
+#   when: "{{ deployment_version | upper }} == 'LATEST'"
+
+# - name: resolver | s3 | Set version data
+#   set_fact:
+#       deployment_version:  "{{ someversion }}"
+#   when: "{{ deployment_version | upper }} == 'LATEST'"
+
+- name: resolver | s3 | Ensure S3 directory and working dir exists
+  file: 
+    path="{{ item }}"
+    state=directory
+    mode=0750
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+  with_items: 
+    - "{{ deployment_s3_art_dir }}"
+    - "{{ deployment_work_dir }}"
+
+- name: resolver | s3 | Get S3 
+  s3:
+    bucket="{{ deployment_s3_bucket }}"
+    object="{{ deployment_s3_object_path }}/{{ deployment_s3_object_name }}"
+    dest="{{ deployment_s3_art_dir }}/{{ deployment_s3_object_name }}"
+    aws_access_key="{{ deployment_s3_aws_key_id | default(omit) }}"
+    aws_secret_key="{{ deployment_s3_aws_secret_key | default(omit) }}"
+    overwrite=False
+    mode=get
+  no_log: True 
+  register: s3_art
+
+- name: resolver | s3 | Ensure artifact perm is correct
+  file: 
+    path="{{ deployment_s3_art_dir }}/{{ deployment_s3_object_name }}"
+    mode="0650"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+
+- name: resolver | s3 | Ensure artifact perm is correct
+  unarchive: 
+    src="{{ deployment_s3_art_dir }}/{{ deployment_s3_object_name }}"
+    dest="{{ deployment_work_dir }}"
+    copy="no"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+    creates="{{ deployment_work_dir }}/.s3_unarchive"
+
+- name: resolver | s3 | Unarchive guard file
+  copy: 
+    content=""
+    dest="{{ deployment_work_dir }}/.s3_unarchive"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+
