@@ -30,9 +30,9 @@ deployment_s3_aws_secret_key        : "{{ lookup('env','AWS_SECRET_ACCESS_KEY') 
 deployment_user                     : "{{ lookup('env','USER') }}"
 deployment_group                    : "{{ deployment_user }}"
 deployment_user_home                : "/home/{{ deployment_user }}"
+# Create directory structure 
 deployment_directory_structure      : True
 deployment_base_dir                 : "{{ deployment_user_home }}/{{ deployment_name }}"
-# Directory structure
 deployment_work_dir                 : "{{ deployment_base_dir }}/{{ deployment_version }}"
 deployment_current_dir              : "{{ deployment_base_dir }}/current"
 

@@ -7,18 +7,35 @@
      - boto
      - boto3
 
-# if latest get latest
+- name: resolver | s3 | Try to get version file from S3
+  s3:
+    bucket="{{ deployment_s3_bucket }}"
+    object="{{ deployment_s3_object_path }}/{{ deployment_version | upper }}"
+    dest="{{ deployment_s3_art_dir }}/{{ deployment_version }}_file.txt"
+    aws_access_key="{{ deployment_s3_aws_key_id | default(omit) }}"
+    aws_secret_key="{{ deployment_s3_aws_secret_key | default(omit) }}"
+    overwrite=True
+    mode=get
+  ignore_errors: True
+  changed_when: False
+  no_log: True 
 
-# - name: resolver | s3 | list all objects
-#   s3:
-#     x="list"
-#   register: s3_object_list
-#   when: "{{ deployment_version | upper }} == 'LATEST'"
+- name: resolver | s3 | Check version file
+  stat: 
+    path="{{ deployment_s3_art_dir }}/{{ deployment_version }}_file.txt"
+  register: version_file_st
 
-# - name: resolver | s3 | Set version data
-#   set_fact:
-#       deployment_version:  "{{ someversion }}"
-#   when: "{{ deployment_version | upper }} == 'LATEST'"
+- name: resolver | s3 | Get content of version file
+  shell: 
+    cat "{{ deployment_s3_art_dir }}/{{ deployment_version }}_file.txt"
+  changed_when: False
+  register: version_file_data
+  when: version_file_st.stat.exists 
+
+- name: resolver | s3 | Set version based on verions file
+  set_fact:
+      deployment_version:  "{{ version_file_data.stdout }}"
+  when: version_file_st.stat.exists 
 
 - name: resolver | s3 | Ensure S3 directory and working dir exists
   file: 
