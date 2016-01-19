@@ -7,6 +7,16 @@
      - boto
      - boto3
 
+- name: resolver | s3 | Ensure S3 artifact directory exists
+  file: 
+    path="{{ item }}"
+    state=directory
+    mode=0750
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+  with_items: 
+    - "{{ deployment_s3_art_dir }}"
+
 - name: resolver | s3 | Try to get version file from S3
   s3:
     bucket="{{ deployment_s3_bucket }}"
@@ -37,17 +47,6 @@
       deployment_version:  "{{ version_file_data.stdout }}"
   when: version_file_st.stat.exists 
 
-- name: resolver | s3 | Ensure S3 directory and working dir exists
-  file: 
-    path="{{ item }}"
-    state=directory
-    mode=0750
-    owner="{{ deployment_user }}"
-    group="{{ deployment_group }}"
-  with_items: 
-    - "{{ deployment_s3_art_dir }}"
-    - "{{ deployment_work_dir }}"
-
 - name: resolver | s3 | Get S3 
   s3:
     bucket="{{ deployment_s3_bucket }}"
@@ -58,6 +57,7 @@
     overwrite=False
     mode=get
   no_log: True 
+  become_user: "{{ deployment_user }}"
   register: s3_art
 
 - name: resolver | s3 | Ensure artifact perm is correct
@@ -67,7 +67,17 @@
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
 
-- name: resolver | s3 | Ensure artifact perm is correct
+- name: resolver | s3 | Ensure working directory exists
+  file: 
+    path="{{ item }}"
+    state=directory
+    mode=0750
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+  with_items: 
+    - "{{ deployment_work_dir }}"
+
+- name: resolver | s3 | Unarchive artifact (if no guard)
   unarchive: 
     src="{{ deployment_s3_art_dir }}/{{ deployment_s3_object_name }}"
     dest="{{ deployment_work_dir }}"
@@ -76,7 +86,7 @@
     group="{{ deployment_group }}"
     creates="{{ deployment_work_dir }}/.s3_unarchive"
 
-- name: resolver | s3 | Unarchive guard file
+- name: resolver | s3 | Put unarchive guard file
   copy: 
     content=""
     dest="{{ deployment_work_dir }}/.s3_unarchive"
