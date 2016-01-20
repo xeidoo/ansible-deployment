@@ -2,5 +2,5 @@
 
 - name: config | dotenv | write dotenv variables file
   template: 
-    src="{{ path_for_template }}templates/dotenv.j2"
+    src="{{ path_for_template }}dotenv.j2"
     dest="{{ deployment_config_dotenv_vars_dest }}"
