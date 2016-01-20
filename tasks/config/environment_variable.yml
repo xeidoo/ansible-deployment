@@ -2,7 +2,7 @@
 
 - name: config | environment_variable | write environment variables file
   template: 
-    src="{{path_for_template}}environment.sh.j2"
+    src="{{ path_for_template }}environment.sh.j2"
     dest="{{ deployment_config_env_file }}"
     owner="{{ deployment_user }}"
     group="{{ deployment_user }}"
