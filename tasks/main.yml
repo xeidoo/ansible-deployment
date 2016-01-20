@@ -1,7 +1,10 @@
 ---
-# Deploy from git specific branch or hash or tag
-# Directory shoud use git hash/tag
-# Inital deployment
+
+  # Maintain old path behaviour for v1 
+- name: Set path for V1
+  set_fact:
+    path_for_template: "../../templates/"
+  when: ansible_version.major == 1
 
 - name: main | Check if first boot file exists
   stat:
