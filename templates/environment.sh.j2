@@ -1,4 +1,5 @@
-#!/bin/bash 
+# {{ ansible_managed }}
+
 {% for k,v in deployment_env_vars[environment_name].iteritems() %}
-export {{ k }}={{ v }}
+{{ 'export' if deployment_env_vars_export else '' }} {{ k }}={{ v }}
 {% endfor %}

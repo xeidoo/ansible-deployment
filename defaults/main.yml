@@ -45,6 +45,7 @@ deployment_extra_files              : 'none'
 ## Config option
 #  Shell environment variable
 deployment_env_vars                 : "none" # Variables that define the config
+deployment_env_vars_export          : True
 deployment_config_env_file          : "{{ deployment_base_dir }}/{{ deployment_name }}_environment.sh"
 deployment_shell_init_file          : "{{ deployment_user_home }}/.bashrc"
 #  INI variable
