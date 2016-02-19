@@ -5,12 +5,21 @@
   changed_when: False
   register: current_date
 
+- name: directory structure | Ensure home dir is present and ensure right permissions
+  file:
+    path="{{ deployment_user_home }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+    mode="{{ deployment_dir_perm }}"
+    state="directory"
+
 - name: directory structure | Ensure work dir is present and ensure right permissions
   file:
     path="{{ deployment_work_dir }}"
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
-    mode="0750"
+    mode="{{ deployment_dir_perm }}"
+    recurse=True
     state="directory"
 
 - name: directory structure | Ensure extra dirs are present and ensure right permissions
@@ -18,6 +27,7 @@
     path="{{ item }}"
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
+    mode="{{ deployment_dir_perm }}"
     state="directory"
   when: deployment_extra_dirs != "none"
   with_items: deployment_extra_dirs
@@ -44,6 +54,7 @@
     dest="{{ item.item }}"
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
+    mode="{{ deployment_dir_perm }}"
     state="touch"
   when: deployment_extra_files != "none" 
   with_items: deployment_extra_files_stat_exists

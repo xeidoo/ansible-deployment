@@ -42,7 +42,9 @@ deployment_extra_dirs               : 'none'
 deployment_extra_files              : 'none'
 
 
+deployment_dir_perm                 : "0755"
 ## Config option
+deployment_config_file_perm         : "0600"
 #  Shell environment variable
 deployment_env_vars                 : "none" # Variables that define the config
 deployment_env_vars_export          : True

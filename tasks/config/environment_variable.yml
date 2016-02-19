@@ -6,7 +6,7 @@
     dest="{{ deployment_config_env_file }}"
     owner="{{ deployment_user }}"
     group="{{ deployment_user }}"
-    mode="0600"
+    mode="{{ deployment_config_file_perm }}"
 
 - name: config | environment_variable | Source environment variables file in your profile
   lineinfile: 
