@@ -1,7 +1,7 @@
 ---
 
  - include: shell_environment.yml
-   when: deployment_env_vars != 'none'
+   when: deployment_config_env_vars != 'none'
 
  - include: ini.yml
    when: deployment_ini_vars != 'none'
