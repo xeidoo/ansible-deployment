@@ -10,7 +10,7 @@
     name="{{ deployment_user }}"
     group="{{ deployment_group }}"
     home="{{ deployment_user_home }}"
-    shell="{{ deployment_shell }}"
+    shell="{{ deployment_user_shell }}"
   when: deployment_user_manage
 
 # TODO manage private and public key

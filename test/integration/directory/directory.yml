@@ -5,7 +5,7 @@
   become       : True
   connection   : "{{ kitchen_connection | default('local') }}"
   vars         :
-                 deployment_directory_structure      : True
+                 deployment_dir                      : True
                  deployment_user_manage              : True
                  deployment_ssh_fingerprints_deploy  : False
                  deployment_force                    : True
@@ -13,13 +13,13 @@
                  deployment_user                     : "deploy"
                  deployment_group                    : "master"
                  deployment_user_home                : "/opt/manage"
-                 deployment_shell                    : "/bin/sh"
+                 deployment_user_shell               : "/bin/sh"
 
                  deployment_name                     : "theapp"
                  deployment_version                  : "master"
-                 deployment_base_dir                 : "{{ deployment_user_home }}/{{ deployment_name }}"
-                 deployment_work_dir                 : "{{ deployment_base_dir }}/{{ deployment_version }}"
-                 deployment_current_dir              : "{{ deployment_base_dir }}/current"
+                 deployment_dir_base                 : "{{ deployment_user_home }}/{{ deployment_name }}"
+                 deployment_dir_work                 : "{{ deployment_dir_base }}/{{ deployment_version }}"
+                 deployment_dir_current              : "{{ deployment_dir_base }}/current"
                  deployment_extra_dirs               : [ '/var/logs/{{ deployment_name }}' ]
                  deployment_extra_files              : [ '/theapp.txt' ]
   roles        :

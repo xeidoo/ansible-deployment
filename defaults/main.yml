@@ -13,7 +13,7 @@ deployment_resolver                 : 'none'
 ## GIT Resolver
 deployment_git_repo                 : "git@github.com:hellofresh/ansible-deployment.git"
 deployment_git_user                 : "{{ deployment_user }}"
-deployment_git_repo_dir             : "{{ deployment_base_dir }}/repo"
+deployment_git_repo_dir             : "{{ deployment_dir_base }}/repo"
 ## when doing rollbacks do you want to force copy from GIT
 deployment_git_repo_force_copy      : False
 
@@ -21,27 +21,24 @@ deployment_git_repo_force_copy      : False
 deployment_s3_bucket                : "a_bucket"
 deployment_s3_object_name           : "testApp-{{ deployment_version }}.tgz"
 deployment_s3_object_path           : "" # Optional path
-deployment_s3_art_dir               : "{{ deployment_base_dir }}/artifacts"
+deployment_s3_art_dir               : "{{ deployment_dir_base }}/artifacts"
 deployment_s3_aws_key_id            : "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
 deployment_s3_aws_secret_key        : "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
-
 
 ## Deployment user/group and directroy
 deployment_user                     : "{{ lookup('env','USER') }}"
 deployment_group                    : "{{ deployment_user }}"
-deployment_shell                    : "/bin/bash"
+deployment_user_shell               : "/bin/bash"
 deployment_user_home                : "/home/{{ deployment_user }}"
 # Create directory structure 
-deployment_directory_structure      : True
-deployment_base_dir                 : "{{ deployment_user_home }}/{{ deployment_name }}"
-deployment_work_dir                 : "{{ deployment_base_dir }}/{{ deployment_version }}"
-deployment_current_dir              : "{{ deployment_base_dir }}/current"
-
+deployment_dir_structure            : True
+deployment_dir_base                 : "{{ deployment_user_home }}/{{ deployment_name }}"
+deployment_dir_work                 : "{{ deployment_dir_base }}/{{ deployment_version }}"
+deployment_dir_current              : "{{ deployment_dir_base }}/current"
 ## Extra directory that needs to be created (should be a list) i.e. ['/var/log/myapp','/opt/blaaa']
 deployment_extra_dirs               : 'none'
 ## Extra files that needs to be created (should be a list) i.e. ['/var/log/myapp.log','/somewhere/file.txt']
 deployment_extra_files              : 'none'
-
 # Default perm
 deployment_dir_perm                 : "0755"
 deployment_file_perm                : "0644"
@@ -51,20 +48,20 @@ deployment_config_file_perm         : "0600"
 #  Shell environment variable
 deployment_env_vars                 : "none" # Variables that define the config
 deployment_env_vars_export          : True
-deployment_config_env_file          : "{{ deployment_base_dir }}/{{ deployment_name }}_environment.sh"
-deployment_shell_init_file          : "{{ deployment_user_home }}/.bashrc"
+deployment_config_env_file          : "{{ deployment_dir_base }}/{{ deployment_name }}_environment.sh"
+deployment_user_shell_init_file          : "{{ deployment_user_home }}/.bashrc"
 #  INI variable
 deployment_ini_vars                 : "none" # Variables that define the config
-deployment_config_ini_vars_dest     : "{{ deployment_base_dir }}/{{ deployment_name }}_config.ini"
+deployment_config_ini_vars_dest     : "{{ deployment_dir_base }}/{{ deployment_name }}_config.ini"
 # DotEnv variable
 deployment_config_dotenv_vars       : "none"
-deployment_config_dotenv_vars_dest  : "{{ deployment_work_dir }}/.env.php"
+deployment_config_dotenv_vars_dest  : "{{ deployment_dir_work }}/.env.php"
 ## Dependency managment
 # deployment dependency ['comoser']
 deployment_dependency               : "none"
 deployment_composer_user            : "{{ deployment_user }}"
 deployment_dependency_composer_args :
-                        working_dir : "{{ deployment_work_dir }}"
+                        working_dir : "{{ deployment_dir_work }}"
                         command     : "install"
 
 ## YAML vars config 

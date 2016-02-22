@@ -15,10 +15,10 @@
 
 - name: resolver | Check if work directory exists
   stat:
-    path="{{ deployment_work_dir }}"
-  register: deployment_work_dir_stat
+    path="{{ deployment_dir_work }}"
+  register: deployment_dir_work_stat
 
 - name: resolver | github | Copy repo to work directory
-  shell: rsync -rlp --exclude '.git' {{ deployment_git_repo_dir }}/ {{ deployment_work_dir }}
-  when: git_resolver | changed or deployment_git_repo_force_copy or not deployment_work_dir_stat.stat.exists
+  shell: rsync -rlp --exclude '.git' {{ deployment_git_repo_dir }}/ {{ deployment_dir_work }}
+  when: git_resolver | changed or deployment_git_repo_force_copy or not deployment_dir_work_stat.stat.exists
   become_user: "{{ deployment_git_user }}"

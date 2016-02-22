@@ -21,25 +21,25 @@ deployment_version                  : "master"
 deployment_user                     : "{{ ansible_ssh_user }}"
 deployment_group                    : "{{ ansible_ssh_user }}"
 deployment_user_home                : "/home/{{ deployment_user }}"
-deployment_base_dir                 : "{{ deployment_user_home }}/{{ deployment_name }}"
+deployment_dir_base                 : "{{ deployment_user_home }}/{{ deployment_name }}"
 # Directory structure 
-deployment_work_dir                 : "{{ deployment_base_dir }}/{{ deployment_version }}"
-deployment_current_dir              : "{{ deployment_base_dir }}/current"
+deployment_dir_work                 : "{{ deployment_dir_base }}/{{ deployment_version }}"
+deployment_dir_current              : "{{ deployment_dir_base }}/current"
 deployment_temp_dir                 : "/tmp/ansible-deployment/{{ deployment_version }}" 
 
 ## Config option
 #  Shell environment variable 
 deployment_env_vars                 : "none" # Variables that define the config
-deployment_config_env_file          : "{{ deployment_base_dir }}/{{ deployment_name }}_environment.sh"
-deployment_shell_init_file          : "{{ deployment_user }}/.bashrc" 
+deployment_config_env_file          : "{{ deployment_dir_base }}/{{ deployment_name }}_environment.sh"
+deployment_user_shell_init_file          : "{{ deployment_user }}/.bashrc" 
 #  INI variable 
 deployment_ini_vars                 : "none" # Variables that define the config
-deployment_config_ini_vars_dest     : "{{ deployment_base_dir }}/{{ deployment_name }}_config.ini"
+deployment_config_ini_vars_dest     : "{{ deployment_dir_base }}/{{ deployment_name }}_config.ini"
 
 ## Dependency managment
 #deployment_dependency               : "composer"
 #deployment_dependency_composer_args : 
-#                        working_dir : "{{ deployment_work_dir }}"
+#                        working_dir : "{{ deployment_dir_work }}"
 #                        command     : "install"
 #
 

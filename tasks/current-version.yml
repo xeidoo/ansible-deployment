@@ -2,8 +2,8 @@
 
 - name: current version | Create current symlink
   file: 
-    src="{{ deployment_work_dir }}"
-    dest="{{ deployment_current_dir }}"
+    src="{{ deployment_dir_work }}"
+    dest="{{ deployment_dir_current }}"
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
     mode="0755"
@@ -15,7 +15,7 @@
 - name: current version | Create deployment date file
   copy:
     content=""
-    dest="{{ deployment_current_dir }}/{{ current_date.stdout }}.deployment.date"
+    dest="{{ deployment_dir_current }}/{{ current_date.stdout }}.deployment.date"
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
   when: symlink_update.changed
