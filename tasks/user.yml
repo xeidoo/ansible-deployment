@@ -1,0 +1,29 @@
+---
+
+- name: user | Setup group
+  group:
+    name="{{ deployment_group }}"
+  when: deployment_user_manage
+
+- name: user | Setup user
+  user:
+    name="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+    home="{{ deployment_user_home }}"
+    shell="{{ deployment_shell }}"
+  when: deployment_user_manage
+
+# TODO manage private and public key
+
+- name: user | Setup SSH hosts finger prints
+  lineinfile:
+    line="{{ item }}"
+    insertafter="EOF"
+    state="present"
+    create="yes"
+    owner="{{ deployment_user }}"
+    mode="0644"
+    dest="{{ deployment_user_home }}/.ssh/known_hosts"
+  with_items:
+      - "{{ deployment_ssh_fingerprints }}"
+  when: deployment_ssh_fingerprints
