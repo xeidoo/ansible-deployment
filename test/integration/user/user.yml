@@ -1,13 +1,19 @@
 ---
-- name         : SSH known host
+- name         : User
   hosts        : "all"
   gather_facts : no
   become       : True
   connection   : "{{ kitchen_connection | default('local') }}"
   vars         :
                  deployment_directory_structure      : False
+                 deployment_user_manage              : True
                  deployment_ssh_fingerprints_deploy  : True
                  deployment_force                    : True
-                 deployment_user                     : "{{ lookup('env','USER') }}"
+
+                 deployment_user                     : "deploy"
+                 deployment_group                    : "master"
+                 deployment_user_home                : "/opt/manage"
+                 deployment_shell                    : "/bin/sh"
+
   roles        :
                  - "ansible-deployment"

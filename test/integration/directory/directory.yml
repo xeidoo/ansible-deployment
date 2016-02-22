@@ -1,0 +1,25 @@
+---
+- name         : Directory
+  hosts        : "all"
+  gather_facts : no
+  become       : True
+  connection   : "{{ kitchen_connection | default('local') }}"
+  vars         :
+                 deployment_directory_structure      : True
+                 deployment_user_manage              : True
+                 deployment_ssh_fingerprints_deploy  : True
+                 deployment_force                    : True
+
+                 deployment_user                     : "deploy"
+                 deployment_group                    : "master"
+                 deployment_user_home                : "/opt/manage"
+                 deployment_shell                    : "/bin/sh"
+
+                 deployment_name                     : "theapp"
+                 deployment_version                  : "master"
+                 deployment_base_dir                 : "{{ deployment_user_home }}/{{ deployment_name }}"
+                 deployment_work_dir                 : "{{ deployment_base_dir }}/{{ deployment_version }}"
+                 deployment_current_dir              : "{{ deployment_base_dir }}/current"
+
+  roles        :
+                 - "ansible-deployment"

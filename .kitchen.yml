@@ -16,15 +16,19 @@ provisioner:
     extra_vars            : { 'kitchen_connection': '<%= if ENV["TRAVIS"] then "local" else "smart" end %>', 'kitchen_hosts': '<%= if ENV["TRAVIS"] then "localhost" else "all" end %>' }
 
 platforms:
- - name                   : "ubuntu-v1"
+ - name                   : "v1"
    provisioner            :
      ansible_playbook_bin : "$(ansible-version path v1)ansible-playbook"
 
- - name                   : "ubuntu-v2"
+ - name                   : "v2"
    provisioner            :
      ansible_playbook_bin : "$(ansible-version path v2)ansible-playbook"
 
 suites:
-  - name                  : ssh_known_host
+  - name                  : user
     provisioner           :
-        playbook          : "test/application/ssh_known_host.yml"
+        playbook          : "test/integration/user/user.yml"
+
+  - name                  : directory
+    provisioner           :
+        playbook          : "test/integration/directory/directory.yml"

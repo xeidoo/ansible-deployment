@@ -2,6 +2,12 @@
 language: python
 python: "2.7"
 
+env:
+  - KITCHEN_TEST="user-v1"
+  - KITCHEN_TEST="user-v2"
+  - KITCHEN_TEST="directory-v1"
+  - KITCHEN_TEST="directory-v2"
+
 before_install:
   # Make sure everything's up to date.
   - sudo apt-get update -qq
@@ -12,12 +18,14 @@ before_install:
 
 install:
   - bash /tmp/travis-ansible-setup.sh
+  - ansible-galaxy install -r test/test_requirements.yml -p test/roles
   - bundle install
 
 script:
     - ansible --version
     - export TRAVIS=True
-    - bundle exec kitchen test
+    - bundle exec kitchen test $KITCHEN_TEST
 
 after_success:
     - echo "Success"
+
