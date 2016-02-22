@@ -42,8 +42,10 @@ deployment_extra_dirs               : 'none'
 ## Extra files that needs to be created (should be a list) i.e. ['/var/log/myapp.log','/somewhere/file.txt']
 deployment_extra_files              : 'none'
 
-
+# Default perm
 deployment_dir_perm                 : "0755"
+deployment_file_perm                : "0644"
+
 ## Config option
 deployment_config_file_perm         : "0600"
 #  Shell environment variable

@@ -54,7 +54,7 @@
     dest="{{ item.item }}"
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
-    mode="{{ deployment_dir_perm }}"
+    mode="{{ deployment_file_perm }}"
     state="touch"
   when: deployment_extra_files != "none" 
   with_items: deployment_extra_files_stat_exists
