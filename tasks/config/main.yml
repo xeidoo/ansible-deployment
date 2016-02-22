@@ -1,6 +1,6 @@
 ---
 
- - include: environment_variable.yml
+ - include: shell_environment.yml
    when: deployment_env_vars != 'none'
 
  - include: ini.yml
