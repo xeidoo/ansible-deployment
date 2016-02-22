@@ -25,5 +25,5 @@
     mode="0644"
     dest="{{ deployment_user_home }}/.ssh/known_hosts"
   with_items:
-      - "{{ deployment_ssh_fingerprints }}"
-  when: deployment_ssh_fingerprints
+      - "{{ deployment_user_fingerprints }}"
+  when: deployment_user_manage_fingerprints
