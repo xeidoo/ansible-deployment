@@ -7,7 +7,7 @@
   vars         :
                  deployment_directory_structure      : True
                  deployment_user_manage              : True
-                 deployment_ssh_fingerprints_deploy  : True
+                 deployment_ssh_fingerprints_deploy  : False
                  deployment_force                    : True
 
                  deployment_user                     : "deploy"
@@ -20,6 +20,7 @@
                  deployment_base_dir                 : "{{ deployment_user_home }}/{{ deployment_name }}"
                  deployment_work_dir                 : "{{ deployment_base_dir }}/{{ deployment_version }}"
                  deployment_current_dir              : "{{ deployment_base_dir }}/current"
-
+                 deployment_extra_dirs               : [ '/var/logs/{{ deployment_name }}' ]
+                 deployment_extra_files              : [ '/theapp.txt' ]
   roles        :
                  - "ansible-deployment"

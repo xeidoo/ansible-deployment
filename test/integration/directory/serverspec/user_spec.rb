@@ -15,15 +15,5 @@ describe user('deploy') do
 end
 
 describe file("/opt/manage/.ssh/known_hosts") do
-    it { should contain 'bitbucket.org' }
-    it { should contain 'github.com' }
-end
-
-
-describe file('/opt/manage/theapp') do
-    it { should exist }
-    it { should be_directory }
-    it { should be_mode 0755 }
-    it { should be_owned_by 'deploy' }
-    it { should be_grouped_into 'master' }
+    it { should_not exist }
 end
