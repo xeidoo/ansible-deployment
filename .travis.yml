@@ -18,7 +18,6 @@ before_install:
 
 install:
   - bash /tmp/travis-ansible-setup.sh
-  - ansible-galaxy install -r test/test_requirements.yml -p test/roles
   - bundle install
 
 script:
