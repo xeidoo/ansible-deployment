@@ -11,8 +11,8 @@
     path="{{ deployment_guard_file }}"
   register: deployment_guard
 
-- include: ssh_fingerprints.yml
-  when: (not deployment_guard.stat.exists or deployment_force) and deployment_ssh_fingerprints_deploy 
+- include: user.yml
+  when: (not deployment_guard.stat.exists or deployment_force)
 
 - include: directory-structure.yml
   when: deployment_directory_structure and not deployment_guard.stat.exists or deployment_force
