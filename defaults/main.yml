@@ -3,7 +3,6 @@
 
 # App name
 deployment_name                     : "testApp"
-
 # Version depands on resolver. If your using github as a resolver version could be branch/tag/git 40 char hash
 deployment_version                  : "master"
 
@@ -51,18 +50,20 @@ deployment_file_perm                : "0644"
 
 ## Config option
 deployment_config_file_perm         : "0600"
-#  Shell environment variable
-deployment_config_env_vars          : "none" # Variables that define the config
-deployment_config_env_vars_export   : True
-
-deployment_config_env_file          : "{{ deployment_dir_base }}/{{ deployment_name }}_environment.sh"
-deployment_user_shell_init_file     : "{{ deployment_user_home }}/.bashrc"
-#  INI variable
-deployment_ini_vars                 : "none" # Variables that define the config
+# Shell environment variable
+deployment_config_shell_vars        : "none" # Variables that define the config
+deployment_config_shell_vars_export : True
+deployment_config_shell_file        : "{{ deployment_dir_base }}/{{ deployment_name }}_environment.sh"
+deployment_config_shell_profile     : "{{ deployment_user_home }}/.bashrc"
+# INI variable
+deployment_config_ini_vars          : "none" # Variables that define the config
 deployment_config_ini_vars_dest     : "{{ deployment_dir_base }}/{{ deployment_name }}_config.ini"
 # DotEnv variable
 deployment_config_dotenv_vars       : "none"
 deployment_config_dotenv_vars_dest  : "{{ deployment_dir_work }}/.env.php"
+## YAML vars config 
+deployment_config_yaml_vars         : "none"
+
 ## Dependency managment
 # deployment dependency ['comoser']
 deployment_dependency               : "none"
@@ -71,9 +72,6 @@ deployment_dependency_composer_args :
                         working_dir : "{{ deployment_dir_work }}"
                         command     : "install"
 
-## YAML vars config 
-deployment_config_yaml_vars         : "none"
-
 ## Cron jobs
 deployment_cron_jobs                : "none"
 # TODO: Make an example of cron jobs
@@ -81,6 +79,3 @@ deployment_cron_jobs                : "none"
 ## By default you deploy once and to override you must pass true to force deployment
 deployment_force                    :  false
 deployment_guard_file               :  "/var/local/deployment_first_boot_file"
-
-### Compatibility issue with paths in v1 and v2 
-path_for_template                   : ""

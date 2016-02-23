@@ -1,5 +1,5 @@
 # {{ ansible_managed }}
 
-{% for k,v in deployment_config_env_vars[environment_name].iteritems() %}
-{{ 'export' if deployment_config_env_vars_export else '' }} {{ k }}={{ v }}
+{% for k,v in deployment_config_shell_vars[environment_name].iteritems() %}
+{{ 'export' if deployment_config_shell_vars_export else '' }} {{ k }}={{ v }}
 {% endfor %}

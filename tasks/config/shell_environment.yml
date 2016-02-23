@@ -3,7 +3,7 @@
 - name: config | environment_variable | write environment variables file
   template: 
     src="{{ path_for_template }}shell_environment.sh.j2"
-    dest="{{ deployment_config_env_file }}"
+    dest="{{ deployment_config_shell_file }}"
     owner="{{ deployment_user }}"
     group="{{ deployment_user }}"
     mode="{{ deployment_config_file_perm }}"
@@ -15,6 +15,6 @@
       state="present"
       create="yes"
       mode="0644"
-      dest="{{ deployment_user_shell_init_file }}"
+      dest="{{ deployment_config_shell_profile }}"
   with_items: 
-    - "source {{ deployment_config_env_file }}"
+    - "source {{ deployment_config_shell_file }}"
