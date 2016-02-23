@@ -7,7 +7,6 @@
   vars         :
                  deployment_dir                      : True
                  deployment_user_manage              : True
-                 deployment_ssh_fingerprints_deploy  : False
                  deployment_force                    : True
 
                  deployment_user                     : "deploy"
