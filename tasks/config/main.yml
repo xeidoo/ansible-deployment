@@ -1,10 +1,10 @@
 ---
 
- - include: environment_variable.yml
-   when: deployment_env_vars != 'none'
+ - include: shell_environment.yml
+   when: deployment_config_shell_vars != 'none'
 
  - include: ini.yml
-   when: deployment_ini_vars != 'none'
+   when: deployment_config_ini_vars != 'none'
 
  - include: dotenv.yml
    when: deployment_config_dotenv_vars != 'none'

@@ -15,7 +15,7 @@
   when: (not deployment_guard.stat.exists or deployment_force)
 
 - include: directory-structure.yml
-  when: deployment_directory_structure and not deployment_guard.stat.exists or deployment_force
+  when: deployment_dir_structure and not deployment_guard.stat.exists or deployment_force
 
 - include: resolver/main.yml
   when: not deployment_guard.stat.exists or deployment_force

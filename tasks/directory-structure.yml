@@ -15,11 +15,10 @@
 
 - name: directory structure | Ensure work dir is present and ensure right permissions
   file:
-    path="{{ deployment_work_dir }}"
+    path="{{ deployment_dir_work }}"
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
     mode="{{ deployment_dir_perm }}"
-    recurse=True
     state="directory"
 
 - name: directory structure | Ensure extra dirs are present and ensure right permissions

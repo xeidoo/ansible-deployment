@@ -1,8 +1,8 @@
 ---
 
-- main: resolver | main | Include github.yml
-  include: github.yml
-  when: deployment_resolver == "github"
+- main: resolver | main | Include git.yml
+  include: git.yml
+  when: deployment_resolver == "git"
 
 - main: resolver | main | Include s3.yml
   include: s3.yml

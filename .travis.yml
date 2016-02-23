@@ -7,6 +7,8 @@ env:
   - KITCHEN_TEST="user-v2"
   - KITCHEN_TEST="directory-v1"
   - KITCHEN_TEST="directory-v2"
+  - KITCHEN_TEST="resolver-git-v1"
+  - KITCHEN_TEST="resolver-git-v2"
 
 before_install:
   # Make sure everything's up to date.
@@ -18,7 +20,6 @@ before_install:
 
 install:
   - bash /tmp/travis-ansible-setup.sh
-  - ansible-galaxy install -r test/test_requirements.yml -p test/roles
   - bundle install
 
 script:
@@ -28,4 +29,3 @@ script:
 
 after_success:
     - echo "Success"
-

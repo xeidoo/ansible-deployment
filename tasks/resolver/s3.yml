@@ -75,22 +75,22 @@
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
   with_items: 
-    - "{{ deployment_work_dir }}"
+    - "{{ deployment_dir_work }}"
 
 - name: resolver | s3 | Unarchive artifact (if no guard)
   unarchive: 
     src="{{ deployment_s3_art_dir }}/{{ deployment_s3_object_name }}"
-    dest="{{ deployment_work_dir }}"
+    dest="{{ deployment_dir_work }}"
     copy="no"
     mode="{{ deployment_dir_perm }}"
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
-    creates="{{ deployment_work_dir }}/.s3_unarchive"
+    creates="{{ deployment_dir_work }}/.s3_unarchive"
 
 - name: resolver | s3 | Put unarchive guard file
   copy: 
     content=""
-    dest="{{ deployment_work_dir }}/.s3_unarchive"
+    dest="{{ deployment_dir_work }}/.s3_unarchive"
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
 

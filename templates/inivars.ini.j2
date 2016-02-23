@@ -1,5 +1,5 @@
 parameters:
-{% for k,v in deployment_ini_vars[environment_name].iteritems() %}
+{% for k,v in deployment_config_ini_vars[environment_name].iteritems() %}
 {% if v is iterable and v is not string %}
     {{ k }}:
 {% for k2,v2 in v.iteritems() %}

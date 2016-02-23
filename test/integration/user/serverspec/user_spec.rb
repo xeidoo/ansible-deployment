@@ -15,6 +15,7 @@ describe user('deploy') do
 end
 
 describe file("/opt/manage/.ssh/known_hosts") do
+    it { should exist }
     it { should contain 'bitbucket.org' }
     it { should contain 'github.com' }
 end
