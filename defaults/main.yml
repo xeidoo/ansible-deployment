@@ -4,7 +4,7 @@ deployment_name                     : "testApp"
 # Version depands on resolver. If your using github as a resolver version could be branch/tag/git 40 char hash
 deployment_version                  : "master"
 
-# Where to get the code supported resolver ['none', github', 's3']
+# Where to get the code supported resolver ['none', git', 's3']
 deployment_resolver                 : 'none'
 
 ## GIT Resolver

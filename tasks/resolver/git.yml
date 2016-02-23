@@ -1,6 +1,6 @@
 ---
 
-- name: resolver | github | GIT clone into repo directory
+- name: resolver | git | GIT clone into repo directory
   git: 
     repo="{{ deployment_git_repo }}"
     dest="{{ deployment_git_repo_dir }}"
@@ -9,7 +9,7 @@
   become_user: "{{ deployment_git_user }}"
   register: git_resolver
 
-- name: resolver | github | GIT Set facts
+- name: resolver | git | GIT Set facts
   set_fact:
     deployment_version:  "{{ git_resolver.after }}"
 
@@ -18,7 +18,7 @@
     path="{{ deployment_dir_work }}"
   register: deployment_dir_work_stat
 
-- name: resolver | github | Copy repo to work directory
+- name: resolver | git | Copy repo to work directory
   shell: rsync -rlp --exclude '.git' {{ deployment_git_repo_dir }}/ {{ deployment_dir_work }}
   when: git_resolver | changed or deployment_git_repo_force_copy or not deployment_dir_work_stat.stat.exists
   become_user: "{{ deployment_git_user }}"

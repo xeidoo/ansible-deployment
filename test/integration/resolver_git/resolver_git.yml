@@ -17,12 +17,19 @@
                  deployment_user_shell               : "/bin/sh"
 
                  deployment_resolver                 : 'git'
-                 deployment_git_repo_dir             : 'https://github.com/hellofresh/ansible-deployment.git'
+                 deployment_git_repo                 : 'https://github.com/hellofresh/ansible-deployment'
 
                  deployment_dir_base                 : "{{ deployment_user_home }}/{{ deployment_name }}"
                  deployment_dir_work                 : "{{ deployment_dir_base }}/src/{{ deployment_version }}"
                  deployment_dir_current              : "{{ deployment_dir_base }}/current"
                  deployment_extra_dirs               : [ '/var/logs/{{ deployment_name }}' ]
                  deployment_extra_files              : [ '/theapp.txt' ]
+  pre_tasks    :
+                - name: Install git 
+                  apt:
+                    name=git
+                    update_cache=yes
+                    cache_valid_time=3600
+
   roles        :
                  - "ansible-deployment"
