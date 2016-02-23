@@ -19,7 +19,6 @@
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
     mode="{{ deployment_dir_perm }}"
-    recurse=True
     state="directory"
 
 - name: directory structure | Ensure extra dirs are present and ensure right permissions

@@ -11,7 +11,7 @@
 
 - name: resolver | github | GIT Set facts
   set_fact:
-      deployment_version:  "{{ git_resolver.after }}"
+    deployment_version:  "{{ git_resolver.after }}"
 
 - name: resolver | Check if work directory exists
   stat:
