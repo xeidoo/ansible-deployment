@@ -7,6 +7,8 @@ env:
   - KITCHEN_TEST="user-v2"
   - KITCHEN_TEST="directory-v1"
   - KITCHEN_TEST="directory-v2"
+  - KITCHEN_TEST="resolver_git-v1"
+  - KITCHEN_TEST="resolver_git-v2"
 
 before_install:
   # Make sure everything's up to date.
@@ -27,4 +29,3 @@ script:
 
 after_success:
     - echo "Success"
-

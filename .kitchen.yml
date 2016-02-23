@@ -11,6 +11,7 @@ provisioner:
     verbose               : "vvvv"
     ansible_config        : "test/ansible.cfg"
     idempotency_test      : True
+    diff                  : True
     sudo                  : <%= if ENV['TRAVIS'] then 'True' else 'False' end  %>
     raw_arguments         : <%= if ENV['TRAVIS'] then '-c local' else '' end %>
     extra_vars            : { 'kitchen_connection': '<%= if ENV["TRAVIS"] then "local" else "smart" end %>', 'kitchen_hosts': '<%= if ENV["TRAVIS"] then "localhost" else "all" end %>' }
@@ -32,3 +33,7 @@ suites:
   - name                  : directory
     provisioner           :
         playbook          : "test/integration/directory/directory.yml"
+
+  - name                  : resolver_git
+    provisioner           :
+        playbook          : "test/integration/resolver_git/resolver_git.yml"
