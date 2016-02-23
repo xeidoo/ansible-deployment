@@ -1,6 +1,4 @@
 ---
-## Deployment Information
-
 # App name
 deployment_name                     : "testApp"
 # Version depands on resolver. If your using github as a resolver version could be branch/tag/git 40 char hash
@@ -65,16 +63,15 @@ deployment_config_dotenv_vars_dest  : "{{ deployment_dir_work }}/.env.php"
 deployment_config_yaml_vars         : "none"
 
 ## Dependency managment
-# deployment dependency ['comoser']
+# Supported dependency ['none', 'comoser']
 deployment_dependency               : "none"
 deployment_composer_user            : "{{ deployment_user }}"
 deployment_dependency_composer_args :
                         working_dir : "{{ deployment_dir_work }}"
                         command     : "install"
 
-## Cron jobs
+## Cron jobs TODO: Make an example of cron jobs
 deployment_cron_jobs                : "none"
-# TODO: Make an example of cron jobs
 
 ## By default you deploy once and to override you must pass true to force deployment
 deployment_force                    :  false
