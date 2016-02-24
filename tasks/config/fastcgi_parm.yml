@@ -1,6 +1,6 @@
 ---
 
-- name: config | fastcgi_parm | write fastcgi parm variables file
+- name: config | fastcgi_parm | write fastcgi parm single variable file
   template: 
     src="{{ path_for_template }}fastcgi_parm.j2"
     dest="{{ deployment_config_fastcgi_parm_vars_dest }}"
@@ -8,3 +8,15 @@
     group="{{ deployment_group }}"
     mode="{{ deployment_config_file_perm }}"
     #TODO: shoould trigger webserver reload
+  when: "deployment_config_fastcgi_parm_vars is mapping"
+
+- name: config | fastcgi_parm | write fastcgi parm multi variable files
+  template: 
+    src="{{ path_for_template }}fastcgi_parm.j2"
+    dest="{{ item.dest }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+    mode="{{ deployment_config_file_perm }}"
+    #TODO: shoould trigger webserver reload
+  with_items: deployment_config_fastcgi_parm_vars
+  when: "deployment_config_fastcgi_parm_vars is not mapping"
