@@ -93,8 +93,9 @@ deployment_post                     : False
 #                         - name      : nginx
 #                           state     : reload
 #                         - name      : php5-fpm
-# deployment_post_url_check            :
-#                         - url        : "http://127.0.0.1:8080/health"
+# deployment_post_url_check                :
+#                         - url            : "http://127.0.0.1:8080/health"
+#                           validate_certs : "yes"
 ## List of hosts to wait for port to open (defaults host: locahost, delay: 2, timeout 10)
 #deployment_post_wait_for              :
                        # - host        : "localhost"
