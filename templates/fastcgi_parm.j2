@@ -1,0 +1,5 @@
+# {{ ansible_managed }}
+
+{% for key, value in deployment_config_fastcgi_parm_vars.iteritems()  %}
+fastcgi_param {{ key }} {{ value }};
+{% endfor %}
