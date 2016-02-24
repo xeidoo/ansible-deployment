@@ -4,6 +4,8 @@
   group:
     name="{{ deployment_group }}"
   when: deployment_user_manage
+  notify:
+     - restart app
 
 - name: user | Setup user
   user:
@@ -12,6 +14,8 @@
     home="{{ deployment_user_home }}"
     shell="{{ deployment_user_shell }}"
   when: deployment_user_manage
+  notify:
+     - restart app
 
 # TODO manage private and public key
 

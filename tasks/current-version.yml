@@ -10,7 +10,7 @@
     state="link"
   register: symlink_update
   notify:
-   - restart app
+     - restart app
 
 - name: current version | Create deployment date file
   copy:

@@ -7,3 +7,5 @@
     owner="{{ deployment_user }}"
     group="{{ deployment_user }}"
     mode="{{ deployment_config_file_perm }}"
+  notify:
+     - restart app

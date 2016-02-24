@@ -22,3 +22,5 @@
   shell: rsync -rlp --exclude '.git' {{ deployment_git_repo_dir }}/ {{ deployment_dir_work }}
   when: git_resolver | changed or deployment_git_repo_force_copy or not deployment_dir_work_stat.stat.exists
   become_user: "{{ deployment_git_user }}"
+  notify:
+     - restart app

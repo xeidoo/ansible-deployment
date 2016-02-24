@@ -6,3 +6,5 @@
   become_user: "{{ deployment_composer_user }}"
   register: composer_output
   ignore_errors: True
+  notify:
+     - restart app

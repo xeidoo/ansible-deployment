@@ -12,6 +12,8 @@
     group="{{ deployment_group }}"
     mode="{{ deployment_dir_perm }}"
     state="directory"
+  notify:
+     - restart app
 
 - name: directory structure | Ensure work dir is present and ensure right permissions
   file:
@@ -20,6 +22,8 @@
     group="{{ deployment_group }}"
     mode="{{ deployment_dir_perm }}"
     state="directory"
+  notify:
+     - restart app
 
 - name: directory structure | Ensure extra dirs are present and ensure right permissions
   file: 
@@ -30,13 +34,15 @@
     state="directory"
   when: deployment_extra_dirs != "none"
   with_items: deployment_extra_dirs
+  notify:
+     - restart app
 
 - name: directory structure | Check extra files stat
   stat: 
     path="{{ item }}"
   register: deployment_extra_files_stat
   when: deployment_extra_files != "none"
-  with_items: deployment_extra_files 
+  with_items: deployment_extra_files
 
 - name: directory structure | Set extra files stat to []
   set_fact:
@@ -57,3 +63,5 @@
     state="touch"
   when: deployment_extra_files != "none" 
   with_items: deployment_extra_files_stat_exists
+  notify:
+     - restart app
