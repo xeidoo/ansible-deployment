@@ -1,9 +1,13 @@
 ---
 
-- main: resolver | main | Include git.yml
+- name: resolver | Display resolver
+  debug:
+    msg="Will use '{{ deployment_resolver}}' as a resolver."
+
+- name: resolver | main | Include git.yml
   include: git.yml
   when: deployment_resolver == "git"
 
-- main: resolver | main | Include s3.yml
+- name: resolver | main | Include s3.yml
   include: s3.yml
   when: deployment_resolver == "s3"
