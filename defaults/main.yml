@@ -64,6 +64,16 @@ deployment_config_yaml_vars         : "none"
 ## FastCGI parm
 deployment_config_fastcgi_parm_vars : "none"
 deployment_config_fastcgi_parm_vars_dest: "{{ deployment_dir_work }}/app_fastcgi_parm"
+## You can also use a list for fastcgi-parms
+# deployment_config_fastcgi_parm_vars      :
+#                   - vars:
+#                      myvar1              : "False"
+#                      myvar2              : "False"
+#                     dest                 : "/tmp/parmsfile_1.txt"
+#                   - vars:
+#                      myvar1              : "True"
+#                      myvar2              : "True"
+#                     dest                 : "/tmp/parmsfile_2.txt"
 
 ## Dependency managment
 # Supported dependency ['none', 'comoser']
