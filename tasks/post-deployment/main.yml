@@ -31,11 +31,10 @@
   with_items: deployment_post_url_check
   when: deployment_post_url_check is defined
 
-
-# - name: fail on incorrect payload
+#- name: post deployment | Fail on incorrect payload
 #   fail:
 #     msg="{{ deployment_artifact_name }} is not happy, {{deployment_http_check_url}} does not return expected content [{{deployment_http_check_expected_content}}]"
 #   register: payload
 #   when: deployment_http_check_expected_content is defined and deployment_http_check_expected_content not in webpage.content
-#   tags: ["verify-working"]
+
 

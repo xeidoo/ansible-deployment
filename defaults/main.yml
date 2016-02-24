@@ -95,16 +95,12 @@ deployment_post                     : False
 #                         - name      : php5-fpm
 # deployment_post_url_check            :
 #                         - url        : "http://127.0.0.1:8080/health"
-
 ## List of hosts to wait for port to open (defaults host: locahost, delay: 2, timeout 10)
 #deployment_post_wait_for              :
                        # - host        : "localhost"
                        #   port        : 8080
                        #   delay_sec   : 5
                        #   timeout_sec : 60
-
-
-
 
 ## Cron jobs TODO: Make an example of cron jobs
 deployment_cron_jobs                : "none"
