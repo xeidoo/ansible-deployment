@@ -5,13 +5,12 @@ Ansible role to deploy applications.
 
 ### Role Variables
 ```yaml
----
 # App name
 deployment_name                     : "testApp"
 # Version depands on resolver. If your using github as a resolver version could be branch/tag/git 40 char hash
 deployment_version                  : "master"
 
-# Where to get the code supported resolver ['none', github', 's3']
+# Where to get the code supported resolver ['none', git', 's3']
 deployment_resolver                 : 'none'
 
 ## GIT Resolver
@@ -68,6 +67,19 @@ deployment_config_dotenv_vars       : "none"
 deployment_config_dotenv_vars_dest  : "{{ deployment_dir_work }}/.env.php"
 ## YAML vars config 
 deployment_config_yaml_vars         : "none"
+## FastCGI parm
+deployment_config_fastcgi_parm_vars : "none"
+deployment_config_fastcgi_parm_vars_dest: "{{ deployment_dir_work }}/app_fastcgi_parm"
+## You can also use a list for fastcgi-parms
+# deployment_config_fastcgi_parm_vars      :
+#                   - vars:
+#                      myvar1              : "False"
+#                      myvar2              : "False"
+#                     dest                 : "/tmp/parmsfile_1.txt"
+#                   - vars:
+#                      myvar1              : "True"
+#                      myvar2              : "True"
+#                     dest                 : "/tmp/parmsfile_2.txt"
 
 ## Dependency managment
 # Supported dependency ['none', 'comoser']
@@ -83,8 +95,10 @@ deployment_cron_jobs                : "none"
 ## By default you deploy once and to override you must pass true to force deployment
 deployment_force                    :  false
 deployment_guard_file               :  "/var/local/deployment_first_boot_file"
-
 ````
+
+## Caveats
+If your running ansible V1 providing a list to **deployment_config_fastcgi_parm_vars** will break 
 
 ### Contributors
 * [Alfonso Fernandez](https://github.com/alfonsodev)
