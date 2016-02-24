@@ -1,0 +1,28 @@
+---
+- name         : fastcgi
+  hosts        : "all"
+  gather_facts : no
+  become       : True
+  connection   : "{{ kitchen_connection | default('local') }}"
+  vars         :
+                 deployment_name                     : "deployment"
+                 deployment_version                  : "0.1.7"
+                 deployment_dir                      : True
+                 deployment_user_manage              : True
+                 deployment_force                    : True
+
+                 deployment_user                     : "deploy"
+                 deployment_group                    : "master"
+                 deployment_user_home                : "/opt/manage"
+                 deployment_user_shell               : "/bin/sh"
+
+                 deployment_dir_base                 : "{{ deployment_user_home }}/{{ deployment_name }}"
+                 deployment_dir_work                 : "{{ deployment_dir_base }}/src/{{ deployment_version }}"
+                 deployment_dir_current              : "{{ deployment_dir_base }}/current"
+
+                 deployment_config_fastcgi_parm_vars      : 
+                                      myvar1              : "True"
+                                      myvar2              : "False"
+                 deployment_config_fastcgi_parm_vars_dest : "/tmp/parmsfile.txt"
+  roles        :
+                 - "ansible-deployment"

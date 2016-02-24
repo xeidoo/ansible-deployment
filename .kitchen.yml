@@ -36,4 +36,8 @@ suites:
 
   - name                  : resolver_git
     provisioner           :
-        playbook          : "test/integration/resolver_git/resolver_git.yml"
+        playbook          : "test/integration/resolver_git/resolver_git.yml"        
+
+  - name                  : fastcgi_parm
+    provisioner           :
+        playbook          : "test/integration/fastcgi_parm/fastcgi_parm.yml"

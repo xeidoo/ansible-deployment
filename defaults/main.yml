@@ -61,6 +61,9 @@ deployment_config_dotenv_vars       : "none"
 deployment_config_dotenv_vars_dest  : "{{ deployment_dir_work }}/.env.php"
 ## YAML vars config 
 deployment_config_yaml_vars         : "none"
+## FastCGI parm
+deployment_config_fastcgi_parm_vars : "none"
+deployment_config_fastcgi_parm_vars_dest: "{{ deployment_dir_work }}/app_fastcgi_parm"
 
 ## Dependency managment
 # Supported dependency ['none', 'comoser']

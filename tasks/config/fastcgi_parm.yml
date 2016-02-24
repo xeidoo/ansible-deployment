@@ -1,0 +1,10 @@
+---
+
+- name: config | fastcgi_parm | write fastcgi parm variables file
+  template: 
+    src="{{ path_for_template }}fastcgi_parm.j2"
+    dest="{{ deployment_config_fastcgi_parm_vars_dest }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+    mode="{{ deployment_config_file_perm }}"
+    #TODO: shoould trigger webserver reload

@@ -1,13 +1,21 @@
 ---
 
- - include: shell_environment.yml
+ - name: config | include shell environment
+   include: shell_environment.yml
    when: deployment_config_shell_vars != 'none'
 
- - include: ini.yml
+ - name: config | include ini
+   include: ini.yml
    when: deployment_config_ini_vars != 'none'
 
- - include: dotenv.yml
+ - name: config | include dotenv
+   include: dotenv.yml
    when: deployment_config_dotenv_vars != 'none'
 
- - include: yaml.yml
+ - name: config | include yaml
+   include: yaml.yml
    when: deployment_config_yaml_vars != 'none' 
+
+ - name: config | include fastcgi_parm
+   include: fastcgi_parm.yml
+   when: deployment_config_fastcgi_parm_vars != 'none' 
