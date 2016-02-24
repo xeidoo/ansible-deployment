@@ -47,3 +47,13 @@ describe file('/opt/manage/deployment/current') do
   it { should be_symlink }
   it { should be_linked_to '/opt/manage/deployment/src/fdbbc5556e177a831dc0e1fb1dd36bf0e8a9bec2' }
 end
+
+describe "post deployment check check" do
+    describe file('/tmp/deployment_post_check_config_1') do
+        it { should exist }
+    end
+
+    describe file('/tmp/deployment_post_check_config_2') do
+        it { should exist }
+    end
+end
