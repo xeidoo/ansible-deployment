@@ -37,3 +37,10 @@
     content=""
     dest="{{ deployment_guard_file }}"
   when: not deployment_guard.stat.exists or deployment_force
+
+- name: main | Flush handler
+  meta: flush_handlers
+
+- name: main | Include post deployment
+  include: post-deployment/main.yml
+  when: run_post_deployment is defined and run_post_deployment

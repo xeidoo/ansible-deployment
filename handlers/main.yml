@@ -1,5 +1,12 @@
 ---
 
- - name: restart app
-   debug: 
-     msg="Sorry no restart"
+- name: restart app
+  debug:
+    msg="Notifier restart app"
+  changed_when: "{{ deployment_post }}"
+  notify:
+    - set post deployment to true
+
+- name: set post deployment to true
+  set_fact:
+    run_post_deployment: True

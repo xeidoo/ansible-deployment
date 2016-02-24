@@ -1,0 +1,41 @@
+---
+
+- name: post deployment | check app config
+  command: "{{ item }}"
+  with_items: deployment_post_check_config
+  when: deployment_post_check_config is defined
+
+- name: post deployment | restart app initd
+  service:
+    name="{{ item.name }}"
+    state="{{ item.state | default('restarted') }}"
+    enabled="{{ item.enabled | default(omit)}}"
+  with_items: deployment_post_services
+  when: deployment_post_services is defined
+
+- name: post deployment | wait for port to become ready
+  wait_for:
+    port="{{ item.port }}"
+    host="{{ item.host | default(inventory_hostname) }}"
+    delay="{{ item.delay_sec | default(2) }}"
+    timeout="{{ item.timeout_sec | default(10) }}"
+  with_items: deployment_post_wait_for
+  when: deployment_post_wait_for is defined
+
+- name: post deployment | HTTP request
+  uri:
+    url="{{ item.url }}"
+    return_content="yes"
+    HEADER_Accept="text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+  register: page
+  with_items: deployment_post_url_check
+  when: deployment_post_url_check is defined
+
+
+# - name: fail on incorrect payload
+#   fail:
+#     msg="{{ deployment_artifact_name }} is not happy, {{deployment_http_check_url}} does not return expected content [{{deployment_http_check_expected_content}}]"
+#   register: payload
+#   when: deployment_http_check_expected_content is defined and deployment_http_check_expected_content not in webpage.content
+#   tags: ["verify-working"]
+

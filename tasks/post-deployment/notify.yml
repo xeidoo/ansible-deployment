@@ -1,0 +1,19 @@
+---
+
+# - name: notify | notification slack
+#   slack:
+#     msg="Deployment of '{{ deployment_supervisor_name }}' verions '{{ deployment_artifact_version_hash }}' on '{{ inventory_hostname }}' [ {{ deployment_status }} ]"
+#     domain="{{ deployment_notification_slack_token }}"
+#     token="{{ deployment_notification_slack_domain }}"
+#     validate_certs="no"
+#   connection: local
+#   delegate_to: localhost
+#   sudo: false
+
+#http://docs.ansible.com/ansible/newrelic_deployment_module.html
+# - name: notify | notification newrelic 
+#   newrelic_deployment: 
+#     token=AAAAAA
+#     app_name=myapp
+#     user='ansible deployment'
+#     revision=1.0
