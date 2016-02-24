@@ -7,6 +7,8 @@
     owner="{{ deployment_user }}"
     group="{{ deployment_user }}"
     mode="{{ deployment_config_file_perm }}"
+  notify:
+     - restart app
 
 - name: config | environment_variable | Source environment variables file in your profile
   lineinfile: 
@@ -18,3 +20,5 @@
       dest="{{ deployment_config_shell_profile }}"
   with_items: 
     - "source {{ deployment_config_shell_file }}"
+  notify:
+     - restart app

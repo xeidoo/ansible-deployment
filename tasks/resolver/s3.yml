@@ -47,7 +47,7 @@
       deployment_version:  "{{ version_file_data.stdout }}"
   when: version_file_st.stat.exists 
 
-- name: resolver | s3 | Get S3 
+- name: resolver | s3 | Get S3 artifact object
   s3:
     bucket="{{ deployment_s3_bucket }}"
     object="{{ deployment_s3_object_path }}/{{ deployment_s3_object_name }}"
@@ -86,6 +86,8 @@
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
     creates="{{ deployment_dir_work }}/.s3_unarchive"
+  notify:
+     - restart app
 
 - name: resolver | s3 | Put unarchive guard file
   copy: 
@@ -93,4 +95,3 @@
     dest="{{ deployment_dir_work }}/.s3_unarchive"
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
-

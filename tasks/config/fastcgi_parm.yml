@@ -9,6 +9,8 @@
     mode="{{ deployment_config_file_perm }}"
     #TODO: shoould trigger webserver reload
   when: "deployment_config_fastcgi_parm_vars is mapping"
+  notify:
+     - restart app
 
 - name: config | fastcgi_parm | write fastcgi parm multi variable files
   template: 
@@ -20,3 +22,5 @@
     #TODO: shoould trigger webserver reload
   with_items: deployment_config_fastcgi_parm_vars
   when: "deployment_config_fastcgi_parm_vars is not mapping"
+  notify:
+     - restart app
