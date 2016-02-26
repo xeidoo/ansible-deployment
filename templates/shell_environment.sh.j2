@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+
+{% if deployment_config_shell_vars is mapping %}
+{% for k,v in deployment_config_shell_vars.iteritems() %}
+{{ 'export ' if deployment_config_shell_vars_export else '' }}{{ k }}={{ v }}
+{% endfor %}
+{% elif deployment_config_shell_vars is not mapping %}
+{% for k,v in item.vars.iteritems() %}
+{{ 'export ' if deployment_config_shell_vars_export else '' }}{{ k }}={{ v }}
+{% endfor %}
+{% endif %}
