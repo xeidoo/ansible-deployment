@@ -11,6 +11,8 @@ env:
   - KITCHEN_TEST="resolver-git-v2"
   #- KITCHEN_TEST="fastcgi-parm-v1"
   - KITCHEN_TEST="fastcgi-parm-v2"
+  #- KITCHEN_TEST="shell-vars-v1"
+  - KITCHEN_TEST="shell-vars-v2"
 
 before_install:
   # Make sure everything's up to date.
