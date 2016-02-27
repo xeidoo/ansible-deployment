@@ -24,6 +24,9 @@
                                       myvar1              : "True"
                                       myvar2              : "False"
                  deployment_config_fastcgi_parm_vars_dest : "/tmp/parmsfile.txt"
+                 deployment_post                     : True
+                 deployment_post_check_config        : 
+                          - "touch /tmp/deployment_post_check_config_1"
   roles        :
                  - "ansible-deployment"
 
