@@ -1,5 +1,5 @@
 ---
-- name         : User
+- name         : User no key
   hosts        : "all"
   gather_facts : no
   become       : True
@@ -15,5 +15,54 @@
                  deployment_user_home                : "/opt/manage"
                  deployment_user_shell               : "/bin/sh"
 
+  roles        :
+                 - "ansible-deployment"
+
+- name         : User with keys
+  hosts        : "all"
+  gather_facts : no
+  become       : True
+  connection   : "{{ kitchen_connection | default('local') }}"
+  vars         :
+                 deployment_dir                      : False
+                 deployment_user_manage              : True
+                 deployment_user_manage_fingerprints : False
+                 deployment_force                    : True
+
+                 deployment_user                     : "deploy2"
+                 deployment_group                    : "master2"
+                 deployment_user_home                : "/opt/manage2"
+                 deployment_user_shell               : "/bin/bash"
+                 deployment_user_pub_key             :
+                        - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDjEchxV5St8HnM0gemK8QMP5Oy2hRLlHuAdtuETYuCli7WcSCs0kaJOMHkqYfI1cYkpWKPQ4hS66uOf08gH5HVDy2PZ5pRirRjbGJ6UPYpRzL8tns2BrU9LHpioX5lESaQBdD+Cbhu2Wnnk4CNpDrYrlcCDOWPPaN8VYwCX1HZl5aqdaHwWgw6SmDgH9Jd2jOKz6LSHlgtKQ/mA4OOwJxdmNC4pm9+Tu9K5I08mW4vHwiSLG48G9h8d05ZSV5OsK8HnpGKJ4d0fS4qkD57xCMw+9pho/MHurtL0fvDRurm3R6FyoIiHFOPs6dY4rZfYd7ulmHq4dHjN0yzuTtHUvrZ"
+                        - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCwYtOmNysiOHY79umWc+vbxUZu2j/AFqyRvJuMtQDUcUPeWLkCQsRIdgAM1P5yuN3tvktM4Tnuw9yHmKZoKFyKvyDlG5OxA5aOGlKLR91VDr7kHFpzb9UCeAg+Jlzn/xYBLnXvheDEFZPeTyvsd33QSjQhsj1x8JVdUzzpT95nJ+w38HP5J/mAkED4RXPBU1SaOGVyDTkZXg92wTUBAFZDhLelRCrDDAxwc/eHztsT99p+IhC5honWzjndeYd6fdosdXT6CVZDnlQWw8NTdzmCBEuptvYb8Zr+WMBsjJ3nZB7DKnNKb50GXvnLM5/0hv2AltGAy2SPJPRd/6+cCSVV"
+                 deployment_user_priv_key            : |
+                                                        -----BEGIN RSA PRIVATE KEY-----
+                                                        MIIEogIBAAKCAQEA4xHIcVeUrfB5zNIHpivEDD+TstoUS5R7gHbbhE2LgpYu1nEg
+                                                        rNJGiTjB5KmHyNXGJKVij0OIUuurjn9PIB+R1Q8tj2eaUYq0Y2xielD2KUcy/LZ7
+                                                        Nga1PSx6YqF+ZREmkAXQ/gm4btlp55OAjaQ62K5XAgzljz2jfFWMAl9R2ZeWqnWh
+                                                        8FoMOkpg4B/SXdozis+i0h5YLSkP5gODjsCcXZjQuKZvfk7vSuSNPJluLx8Ikixu
+                                                        PBvYfHdOWUleTrCvB56RiieHdH0uKpA+e8QjMPvaYaPzB7q7S9H7w0bq5t0ehcqC
+                                                        IhxTj7OnWOK2X2He7pZh6uHR4zdMs7k7R1L62QIDAQABAoIBADolPZy4fpwj7iyi
+                                                        w86remJgjWPJMFVCSnXU+dVhPg5MguXqxiE7H1DYNd5mAx1MkJalux1Qf8IsExxE
+                                                        QXDKZL+YSWRldUDYMeUbxgPoY4CieM35tIdbJGHr19MV45Xh1Gwg8Sl8N7w69EGW
+                                                        pd6fZWpDCoi94LLTZ9/Y0CdzXTRIf4vBCEWf6+oyK4INcpXf5gZDi348pk2j66Ck
+                                                        2agEdcfYdyxhpx2a9hW0Wno6R7497nTn0g3J0+8P1RdvHKVRoo4i07qTEu+oL8Ew
+                                                        N3dFfmiB2PftkDZrv9DklPOSn2DKtYG+E9BWTf2MeGj+58lafQxVyo4bkKf1OlNw
+                                                        doftRdkCgYEA9pP+1OJFlelu1lSWtq0UlVUNCqnzHmmyU3D/lxbI0cjenbLAwjWO
+                                                        NlGhTOlu994h0HHpRLqD5sP3qjWJ/qhvRxOVsZABvNwmn4nnPsWOrsXMir0+PKps
+                                                        Z+TFsZYJdRYeCp7Pj0zfqIVVMppMF+VajIZzjw7+bYRKCkn9KFwXsqcCgYEA6770
+                                                        riO1MKG8PlxqUKI+CcBWiR6ObqlYRNqKpXYTGZBUjwZfajyrjdq/RF+ptxQozkco
+                                                        LXp0zV79Np+7hz5OtblQgwaVP27UM6EOpPx0w/xfZq4Hro3wDLvyucadXZmtMeqG
+                                                        kF/eFepT3r2PvhxFR4CnAUuEthyCv6RMt4nxFn8CgYBJqDHyc9knjACxA7m1vgQt
+                                                        C6gGrHfUeOxtIo8nGgZJLIDbiL8uBIOD1GSjrgOZBYECXFS7VB/8ukNsU+vx52y+
+                                                        RapszUDHotfixnYOeUNDEBEmzJsf0iTp8BviDZirojy9HW2RN/yDwbiOkiry5G9l
+                                                        FPDGJkt4eZEIe8uk18W4dwKBgDE2Zrunhp6FVNer0SHODKdaeHYdY9xkC6IsAP9z
+                                                        e589ivlkeiyiR6nQPVdXpQUr9yzAm/mKc7Gfn7p0c+BSuHmlGtKPYD6iszen6ne0
+                                                        n+d92qiDseTVioQOBCiV9qngd9BQxhCDgsgOZ7260rP8ENZRXAugKS8fGohJEx7J
+                                                        dAOfAoGAa1mhvd/ShUFOBNRypJf8NHTEY6it39DbS53RSCytiEuQtf43bWN2sQPZ
+                                                        e9CnXHSgOCcULQQ/o54n+2Jz8pvQzsnQtjcIsQekVyP5brgiICLCnxm9qtUiQj8l
+                                                        ce3ksfqVDrfqF/7fuuaSXtFEnVe1bCPqOVb/kPaUr+C3520HmZ0=
+                                                        -----END RSA PRIVATE KEY-----
   roles        :
                  - "ansible-deployment"
