@@ -28,6 +28,8 @@ deployment_user                     : "{{ lookup('env','USER') }}"
 deployment_group                    : "{{ deployment_user }}"
 deployment_user_shell               : "/bin/bash"
 deployment_user_home                : "/home/{{ deployment_user }}"
+deployment_user_pub_key             : ""
+deployment_user_priv_key            : ""
 # Set known hosts for ssh
 deployment_user_manage_fingerprints : False
 deployment_user_fingerprints        :
