@@ -33,6 +33,7 @@
      owner="{{ deployment_user }}"
      group="{{ deployment_group }}"
   with_items: deployment_user_priv_key
+  no_log: True
   when: deployment_user_priv_key is defined and deployment_user_priv_key | length > 1
 
 - name: user | Setup SSH hosts finger prints

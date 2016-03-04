@@ -85,6 +85,8 @@ deployment_dependency_composer_args :
                         working_dir : "{{ deployment_dir_work }}"
                         command     : "install"
 
+deployment_pip_user                 : "{{ deployment_user }}"
+
 ## Post deployment managment
 deployment_post                     : False
 ## List of comands to verify config is okay 
