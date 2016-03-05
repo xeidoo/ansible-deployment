@@ -82,10 +82,13 @@ deployment_config_fastcgi_parm_vars_dest: "{{ deployment_dir_work }}/app_fastcgi
 deployment_dependency               : "none"
 deployment_composer_user            : "{{ deployment_user }}"
 deployment_dependency_composer_args :
-                        working_dir : "{{ deployment_dir_work }}"
-                        command     : "install"
+                    working_dir     : "{{ deployment_dir_work }}"
+                    command         : "install"
 
 deployment_pip_user                 : "{{ deployment_user }}"
+deployment_dependency_pip_args      :
+                    chdir           : "{{ deployment_dir_work }}"
+                    requirements    : "requirements.txt"
 
 ## Post deployment managment
 deployment_post                     : False
