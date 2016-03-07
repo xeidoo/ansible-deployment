@@ -1,0 +1,8 @@
+---
+
+- name: dependency | pip | Run pip
+  pip:
+  args: "{{ deployment_dependency_pip_args }}"
+  become_user: "{{ deployment_pip_user }}"
+  notify:
+     - restart app

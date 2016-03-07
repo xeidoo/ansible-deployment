@@ -1,5 +1,9 @@
 ---
 
-- main: dependency | main | Include composer.yml
+- name: dependency | main | Include composer.yml
   include: composer.yml
   when: deployment_dependency == "composer"
+
+- name: dependency | main | Include pip.yml
+  include: pip.yml
+  when: deployment_dependency == "pip"
