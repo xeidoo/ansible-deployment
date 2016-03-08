@@ -1,6 +1,16 @@
 ---
 
-- name: resolver | git | GIT clone into repo directory
+- name: resolver | git | Ensure working directory exists
+  file: 
+    path="{{ item }}"
+    state=directory
+    mode="{{ deployment_dir_perm }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+  with_items: 
+    - "{{ deployment_dir_work }}"
+
+- name: resolver | git | clone into repo directory
   git: 
     repo="{{ deployment_git_repo }}"
     dest="{{ deployment_git_repo_dir }}"
@@ -9,11 +19,11 @@
   become_user: "{{ deployment_git_user }}"
   register: git_resolver
 
-- name: resolver | git | GIT Set facts
+- name: resolver | git | Set facts for deployment version
   set_fact:
     deployment_version:  "{{ git_resolver.after }}"
 
-- name: resolver | Check if work directory exists
+- name: resolver | git | Check if work directory exists
   stat:
     path="{{ deployment_dir_work }}"
   register: deployment_dir_work_stat
