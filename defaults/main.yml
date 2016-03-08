@@ -40,6 +40,7 @@ deployment_dir_structure            : True
 deployment_dir_base                 : "{{ deployment_user_home }}/{{ deployment_name }}"
 deployment_dir_work                 : "{{ deployment_dir_base }}/{{ deployment_version }}"
 deployment_dir_current              : "{{ deployment_dir_base }}/current"
+deployment_dir_version_file         : "{{ deployment_dir_base }}/{{ deployment_version_file_orginal }}"
 ## Extra directory that needs to be created (should be a list) i.e. ['/var/log/myapp','/opt/blaaa']
 deployment_extra_dirs               : 'none'
 ## Extra files that needs to be created (should be a list) i.e. ['/var/log/myapp.log','/somewhere/file.txt']
@@ -96,7 +97,7 @@ deployment_post                     : False
 #deployment_post_check_config       :
 #                          - "nginx -c /etc/nginx/nginx.conf -t" 
 ## List of service to relead or restart
-# deployment_post_services            : 
+# deployment_post_services            :   
 #                         - name      : nginx
 #                           state     : reload
 #                         - name      : php5-fpm
@@ -116,3 +117,6 @@ deployment_cron_jobs                : "none"
 ## By default you deploy once and to override you must pass true to force deployment
 deployment_force                    :  false
 deployment_guard_file               :  "/var/local/deployment_first_boot_file"
+
+# Enable if your using old version of ansible to hide AWS cred.
+deployment_s3_no_log                : False

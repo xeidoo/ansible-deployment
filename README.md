@@ -34,6 +34,8 @@ deployment_user                     : "{{ lookup('env','USER') }}"
 deployment_group                    : "{{ deployment_user }}"
 deployment_user_shell               : "/bin/bash"
 deployment_user_home                : "/home/{{ deployment_user }}"
+deployment_user_pub_key             : ""
+deployment_user_priv_key            : ""
 # Set known hosts for ssh
 deployment_user_manage_fingerprints : False
 deployment_user_fingerprints        :
@@ -44,6 +46,7 @@ deployment_dir_structure            : True
 deployment_dir_base                 : "{{ deployment_user_home }}/{{ deployment_name }}"
 deployment_dir_work                 : "{{ deployment_dir_base }}/{{ deployment_version }}"
 deployment_dir_current              : "{{ deployment_dir_base }}/current"
+deployment_dir_version_file         : "{{ deployment_dir_base }}/{{ deployment_version_file_orginal }}"
 ## Extra directory that needs to be created (should be a list) i.e. ['/var/log/myapp','/opt/blaaa']
 deployment_extra_dirs               : 'none'
 ## Extra files that needs to be created (should be a list) i.e. ['/var/log/myapp.log','/somewhere/file.txt']
@@ -86,8 +89,33 @@ deployment_config_fastcgi_parm_vars_dest: "{{ deployment_dir_work }}/app_fastcgi
 deployment_dependency               : "none"
 deployment_composer_user            : "{{ deployment_user }}"
 deployment_dependency_composer_args :
-                        working_dir : "{{ deployment_dir_work }}"
-                        command     : "install"
+                    working_dir     : "{{ deployment_dir_work }}"
+                    command         : "install"
+
+deployment_pip_user                 : "{{ deployment_user }}"
+deployment_dependency_pip_args      :
+                    chdir           : "{{ deployment_dir_work }}"
+                    requirements    : "requirements.txt"
+
+## Post deployment managment
+deployment_post                     : False
+## List of comands to verify config is okay 
+#deployment_post_check_config       :
+#                          - "nginx -c /etc/nginx/nginx.conf -t" 
+## List of service to relead or restart
+# deployment_post_services            :   
+#                         - name      : nginx
+#                           state     : reload
+#                         - name      : php5-fpm
+# deployment_post_url_check                :
+#                         - url            : "http://127.0.0.1:8080/health"
+#                           validate_certs : "yes"
+## List of hosts to wait for port to open (defaults host: locahost, delay: 2, timeout 10)
+#deployment_post_wait_for              :
+                       # - host        : "localhost"
+                       #   port        : 8080
+                       #   delay_sec   : 5
+                       #   timeout_sec : 60
 
 ## Cron jobs TODO: Make an example of cron jobs
 deployment_cron_jobs                : "none"
@@ -95,7 +123,16 @@ deployment_cron_jobs                : "none"
 ## By default you deploy once and to override you must pass true to force deployment
 deployment_force                    :  false
 deployment_guard_file               :  "/var/local/deployment_first_boot_file"
+
+# Enable if your using old version of ansible to hide AWS cred.
+deployment_s3_no_log                : False
 ````
+
+## TODO
+* Make kitchen tests work with docker for speed
+* Add tests for s3 resolver
+* Add tests for dependency 
+* Add tests for config 
 
 ## Caveats
 If your running ansible V1 providing a list to **deployment_config_fastcgi_parm_vars** will break 

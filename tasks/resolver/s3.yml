@@ -28,7 +28,8 @@
     mode=get
   ignore_errors: True
   changed_when: False
-  no_log: True 
+  register: s3_version_file
+  no_log: "{{ deployment_s3_no_log }}"
 
 - name: resolver | s3 | Check version file
   stat: 
@@ -40,32 +41,28 @@
     cat "{{ deployment_s3_art_dir }}/{{ deployment_version }}_file.txt"
   changed_when: False
   register: version_file_data
-  when: version_file_st.stat.exists 
+  when: version_file_st.stat.exists and not s3_version_file | failed
+
+- name: resolver | s3 | Resolve version file
+  set_fact:
+      deployment_version_file_orginal: "{{ deployment_version }}"
+  when: version_file_st.stat.exists and not s3_version_file | failed
+
+- name: resolver | s3 | Create link from version file to current (hack)
+  file: 
+    src="{{ deployment_dir_current }}"
+    dest="{{ deployment_dir_version_file }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+    force=True
+    mode="0755"
+    state="link"
+  when: version_file_st.stat.exists and not s3_version_file | failed
 
 - name: resolver | s3 | Set version based on verions file
   set_fact:
-      deployment_version:  "{{ version_file_data.stdout }}"
-  when: version_file_st.stat.exists 
-
-- name: resolver | s3 | Get S3 artifact object
-  s3:
-    bucket="{{ deployment_s3_bucket }}"
-    object="{{ deployment_s3_object_path }}/{{ deployment_s3_object_name }}"
-    dest="{{ deployment_s3_art_dir }}/{{ deployment_s3_object_name }}"
-    aws_access_key="{{ deployment_s3_aws_key_id | default(omit) }}"
-    aws_secret_key="{{ deployment_s3_aws_secret_key | default(omit) }}"
-    overwrite=False
-    mode=get
-  no_log: True 
-  become_user: "{{ deployment_user }}"
-  register: s3_art
-
-- name: resolver | s3 | Ensure artifact perm is correct
-  file: 
-    path="{{ deployment_s3_art_dir }}/{{ deployment_s3_object_name }}"
-    mode="0650"
-    owner="{{ deployment_user }}"
-    group="{{ deployment_group }}"
+      deployment_version             : "{{ version_file_data.stdout }}"
+  when: version_file_st.stat.exists and not s3_version_file | failed
 
 - name: resolver | s3 | Ensure working directory exists
   file: 
@@ -76,6 +73,26 @@
     group="{{ deployment_group }}"
   with_items: 
     - "{{ deployment_dir_work }}"
+
+- name: resolver | s3 | Get S3 artifact object
+  s3:
+    bucket="{{ deployment_s3_bucket }}"
+    object="{{ deployment_s3_object_path }}/{{ deployment_s3_object_name }}"
+    dest="{{ deployment_s3_art_dir }}/{{ deployment_s3_object_name }}"
+    aws_access_key="{{ deployment_s3_aws_key_id | default(omit) }}"
+    aws_secret_key="{{ deployment_s3_aws_secret_key | default(omit) }}"
+    overwrite=False
+    mode=get
+  no_log: "{{ deployment_s3_no_log }}" 
+  become_user: "{{ deployment_user }}"
+  register: s3_art
+
+- name: resolver | s3 | Ensure artifact perm is correct
+  file: 
+    path="{{ deployment_s3_art_dir }}/{{ deployment_s3_object_name }}"
+    mode="0650"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
 
 - name: resolver | s3 | Unarchive artifact (if no guard)
   unarchive: 
