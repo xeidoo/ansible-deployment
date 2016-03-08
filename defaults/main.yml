@@ -97,7 +97,7 @@ deployment_post                     : False
 #deployment_post_check_config       :
 #                          - "nginx -c /etc/nginx/nginx.conf -t" 
 ## List of service to relead or restart
-# deployment_post_services            : 
+# deployment_post_services            :   
 #                         - name      : nginx
 #                           state     : reload
 #                         - name      : php5-fpm
@@ -117,3 +117,6 @@ deployment_cron_jobs                : "none"
 ## By default you deploy once and to override you must pass true to force deployment
 deployment_force                    :  false
 deployment_guard_file               :  "/var/local/deployment_first_boot_file"
+
+# Enable if your using old version of ansible to hide AWS cred.
+deployment_s3_no_log                : False
