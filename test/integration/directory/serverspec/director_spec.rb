@@ -12,13 +12,13 @@ describe file('/opt/manage/theapp') do
     it { should be_grouped_into 'master' }
 end
 
-describe file('/opt/manage/theapp/master') do
-    it { should exist }
-    it { should be_directory }
-    it { should be_mode 755 }
-    it { should be_owned_by 'deploy' }
-    it { should be_grouped_into 'master' }
-end
+# describe file('/opt/manage/theapp/master') do
+#     it { should exist }
+#     it { should be_directory }
+#     it { should be_mode 755 }
+#     it { should be_owned_by 'deploy' }
+#     it { should be_grouped_into 'master' }
+# end
 
 describe file('/var/logs/theapp') do
     it { should exist }
