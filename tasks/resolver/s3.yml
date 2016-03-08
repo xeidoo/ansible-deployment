@@ -42,9 +42,24 @@
   register: version_file_data
   when: version_file_st.stat.exists 
 
+- name: resolver | s3 | Resolve version file
+  set_fact:
+      deployment_version_file_orginal: "{{ deployment_version | string }}"
+  when: version_file_st.stat.exists 
+
+- name: current version | Create link from version file symlink
+  file: 
+    src="{{ deployment_dir_current }}"
+    dest="{{ deployment_dir_version_file }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+    mode="0755"
+    state="link"
+  when: version_file_st.stat.exists
+
 - name: resolver | s3 | Set version based on verions file
   set_fact:
-      deployment_version:  "{{ version_file_data.stdout }}"
+      deployment_version             : "{{ version_file_data.stdout }}"
   when: version_file_st.stat.exists 
 
 - name: resolver | s3 | Get S3 artifact object
@@ -67,15 +82,15 @@
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
 
-- name: resolver | s3 | Ensure working directory exists
-  file: 
-    path="{{ item }}"
-    state=directory
-    mode="{{ deployment_dir_perm }}"
-    owner="{{ deployment_user }}"
-    group="{{ deployment_group }}"
-  with_items: 
-    - "{{ deployment_dir_work }}"
+# - name: resolver | s3 | Ensure working directory exists
+#   file: 
+#     path="{{ item }}"
+#     state=directory
+#     mode="{{ deployment_dir_perm }}"
+#     owner="{{ deployment_user }}"
+#     group="{{ deployment_group }}"
+#   with_items: 
+#     - "{{ deployment_dir_work }}"
 
 - name: resolver | s3 | Unarchive artifact (if no guard)
   unarchive: 
