@@ -109,6 +109,8 @@
 
 - name: resolver | s3 | Unarchive artifact custom (if no guard)
   command: "{{ deployment_s3_unarchive }}"
+  args:
+      creates: "{{ deployment_dir_work }}/.s3_unarchive"
   when: deployment_s3_unarchive != "ansible"
   notify:
      - restart app
