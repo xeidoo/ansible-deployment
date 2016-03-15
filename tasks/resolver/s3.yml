@@ -94,7 +94,7 @@
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
 
-- name: resolver | s3 | Unarchive artifact (if no guard)
+- name: resolver | s3 | Unarchive artifact ansible (if no guard)
   unarchive: 
     src="{{ deployment_s3_art_dir }}/{{ deployment_s3_object_name }}"
     dest="{{ deployment_dir_work }}"
@@ -103,6 +103,13 @@
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
     creates="{{ deployment_dir_work }}/.s3_unarchive"
+  when: deployment_s3_unarchive == "ansible"
+  notify:
+     - restart app
+
+- name: resolver | s3 | Unarchive artifact custom (if no guard)
+  command: "{{ deployment_s3_unarchive }}"
+  when: deployment_s3_unarchive != "ansible"
   notify:
      - restart app
 
