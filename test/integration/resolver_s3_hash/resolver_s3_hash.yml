@@ -19,6 +19,8 @@
                  deployment_resolver                 : 's3'
                  deployment_s3_url                   : "fakes3://127.0.0.1:4567"
                  deployment_s3_bucket                : "a_bucket"
+                 deployment_s3_aws_key_id            : "abc"
+                 deployment_s3_aws_secret_key        : "123"
 #                 deployment_s3_object_path           : "{{ deployment_name }}"
                  deployment_s3_art_dir               : "{{ deployment_dir_base }}/artifacts"
                  deployment_dir_base                 : "{{ deployment_user_home }}/{{ deployment_name }}"
