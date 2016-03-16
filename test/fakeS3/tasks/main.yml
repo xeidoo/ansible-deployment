@@ -1,0 +1,37 @@
+---
+
+- name: Install ruby 
+  apt:
+    name=ruby
+    update_cache=yes
+    cache_valid_time=3600
+
+- name: Install pip
+  apt:
+    name=python-pip
+
+- name: Install fakes3 
+  gem:
+    name=fakes3
+    user_install=no
+
+- name: Make fakes3 dir
+  file: 
+    path="{{ s3_dir }}"
+    state=directory
+    mode=0755
+
+- name: copy s3 buckets
+  copy:
+    src="a_bucket"
+    dest="{{ s3_dir }}"
+
+- name: check if fakes3 is running
+  command: pgrep fakes3
+  changed_when: false
+  failed_when: false
+  register: fakes3_running
+
+- name: Run fakses3 if not running
+  shell: "nohup fakes3 -r {{ s3_dir }} -p 4567 2> /var/log/fakes3.log&"
+  when: fakes3_running.rc != 0

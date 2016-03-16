@@ -1,10 +1,31 @@
 # hellofresh/ansible-deployment
 [![Build Status](https://travis-ci.org/hellofresh/ansible-deployment.svg?branch=master)](https://travis-ci.org/hellofresh/ansible-deployment)
 
-Ansible role to deploy applications.
+Ansible role to deploy different type of applications from different sources with different configs. Everything is different
+
+### Components
+
+**Deployment user**
+**Directory structure of your application by default**
+```
+/home/{{ deployment_user }}/{{ deployment_name }}/{{ deployment_version }}
+/home/{{ deployment_user }}/{{ deployment_name }}/current -> /home/{{ deployment_user }}/{{ deployment_name }}/{{ deployment_version }}
+```
+**Reslovers**
+Resolvers are where your artificats are stored i.e. git,s3, ... can be extended if needed
+
+**Dependency**
+If you need to do dependency managment after deployment. Hopefully you should only deploy artifacts, but legacy is legacy :(
+
+**Config**
+Deploying your app config in different formats. i.e. yaml,json, environments, ...
+
+### Examples
+You can head to test directory and see some usecases.
 
 ### Role Variables
 ```yaml
+---
 # App name
 deployment_name                     : "testApp"
 # Version depands on resolver. If your using github as a resolver version could be branch/tag/git 40 char hash
@@ -27,6 +48,7 @@ deployment_s3_object_path           : "" # Optional path
 deployment_s3_art_dir               : "{{ deployment_dir_base }}/artifacts"
 deployment_s3_aws_key_id            : "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
 deployment_s3_aws_secret_key        : "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
+deployment_s3_unarchive             : "ansible" 
 
 ## Deployment user/group and directroy
 deployment_user_manage              : False
@@ -129,8 +151,6 @@ deployment_s3_no_log                : False
 ````
 
 ## TODO
-* Make kitchen tests work with docker for speed
-* Add tests for s3 resolver
 * Add tests for dependency 
 * Add tests for config 
 

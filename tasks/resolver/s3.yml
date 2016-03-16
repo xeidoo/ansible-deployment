@@ -11,7 +11,7 @@
   file: 
     path="{{ item }}"
     state=directory
-    mode=0750
+    mode="{{ deployment_dir_perm }}"
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
   with_items: 
@@ -19,8 +19,9 @@
 
 - name: resolver | s3 | Try to get version file from S3
   s3:
+    s3_url="{{ deployment_s3_url | default(omit) }}"
     bucket="{{ deployment_s3_bucket }}"
-    object="{{ deployment_s3_object_path }}/{{ deployment_version | upper }}"
+    object="{{ deployment_s3_object_path }}{{ deployment_version | upper }}"
     dest="{{ deployment_s3_art_dir }}/{{ deployment_version }}_file.txt"
     aws_access_key="{{ deployment_s3_aws_key_id | default(omit) }}"
     aws_secret_key="{{ deployment_s3_aws_secret_key | default(omit) }}"
@@ -55,7 +56,7 @@
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
     force=True
-    mode="0755"
+    mode="{{ deployment_dir_perm }}"
     state="link"
   when: version_file_st.stat.exists and not s3_version_file | failed
 
@@ -76,8 +77,9 @@
 
 - name: resolver | s3 | Get S3 artifact object
   s3:
+    s3_url="{{ deployment_s3_url | default(omit) }}"
     bucket="{{ deployment_s3_bucket }}"
-    object="{{ deployment_s3_object_path }}/{{ deployment_s3_object_name }}"
+    object="{{ deployment_s3_object_path }}{{ deployment_s3_object_name }}"
     dest="{{ deployment_s3_art_dir }}/{{ deployment_s3_object_name }}"
     aws_access_key="{{ deployment_s3_aws_key_id | default(omit) }}"
     aws_secret_key="{{ deployment_s3_aws_secret_key | default(omit) }}"
@@ -109,7 +111,11 @@
 
 - name: resolver | s3 | Unarchive artifact custom (if no guard)
   command: "{{ deployment_s3_unarchive }}"
+  args:
+      creates: "{{ deployment_dir_work }}/.s3_unarchive"
   when: deployment_s3_unarchive != "ansible"
+  become_user: "{{ deployment_user }}"
+  register: custom_unarchive
   notify:
      - restart app
 
