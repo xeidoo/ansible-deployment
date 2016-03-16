@@ -3,8 +3,12 @@
 
 Ansible role to deploy applications.
 
+### Examples
+You can head to test directory and see some use cases
+
 ### Role Variables
 ```yaml
+---
 # App name
 deployment_name                     : "testApp"
 # Version depands on resolver. If your using github as a resolver version could be branch/tag/git 40 char hash
@@ -27,6 +31,7 @@ deployment_s3_object_path           : "" # Optional path
 deployment_s3_art_dir               : "{{ deployment_dir_base }}/artifacts"
 deployment_s3_aws_key_id            : "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
 deployment_s3_aws_secret_key        : "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
+deployment_s3_unarchive             : "ansible" 
 
 ## Deployment user/group and directroy
 deployment_user_manage              : False
@@ -129,8 +134,6 @@ deployment_s3_no_log                : False
 ````
 
 ## TODO
-* Make kitchen tests work with docker for speed
-* Add tests for s3 resolver
 * Add tests for dependency 
 * Add tests for config 
 
