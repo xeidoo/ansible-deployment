@@ -19,8 +19,9 @@
 
 - name: resolver | s3 | Try to get version file from S3
   s3:
+    s3_url="{{ deployment_s3_url | default(omit) }}"
     bucket="{{ deployment_s3_bucket }}"
-    object="{{ deployment_s3_object_path }}/{{ deployment_version | upper }}"
+    object="{{ deployment_s3_object_path }}{{ deployment_version | upper }}"
     dest="{{ deployment_s3_art_dir }}/{{ deployment_version }}_file.txt"
     aws_access_key="{{ deployment_s3_aws_key_id | default(omit) }}"
     aws_secret_key="{{ deployment_s3_aws_secret_key | default(omit) }}"
@@ -76,8 +77,9 @@
 
 - name: resolver | s3 | Get S3 artifact object
   s3:
+    s3_url="{{ deployment_s3_url | default(omit) }}"
     bucket="{{ deployment_s3_bucket }}"
-    object="{{ deployment_s3_object_path }}/{{ deployment_s3_object_name }}"
+    object="{{ deployment_s3_object_path }}{{ deployment_s3_object_name }}"
     dest="{{ deployment_s3_art_dir }}/{{ deployment_s3_object_name }}"
     aws_access_key="{{ deployment_s3_aws_key_id | default(omit) }}"
     aws_secret_key="{{ deployment_s3_aws_secret_key | default(omit) }}"
@@ -112,8 +114,16 @@
   args:
       creates: "{{ deployment_dir_work }}/.s3_unarchive"
   when: deployment_s3_unarchive != "ansible"
+  register: custom_unarchive
   notify:
      - restart app
+
+- name: resolver | s3 | Unarchive artifact custom (perm change)
+  command: "chown -R {{ deployment_user }}:{{ deployment_group }} {{ deployment_dir_work }}"
+  when: custom_unarchive | changed and deployment_s3_unarchive != "ansible"
+  notify:
+     - restart app
+
 
 - name: resolver | s3 | Put unarchive guard file
   copy: 
