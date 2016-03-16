@@ -8,7 +8,7 @@ git_hash = "37e85de3e74a94d96ac9c91dbe8a8fb13196b293"
 describe file('/opt/manage/test/artifacts') do
     it { should exist }
     it { should be_directory }
-    it { should be_mode 750 }
+    it { should be_mode 755 }
     it { should be_owned_by 'deploy' }
     it { should be_grouped_into 'master' }
 end
