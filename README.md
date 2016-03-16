@@ -1,10 +1,27 @@
 # hellofresh/ansible-deployment
 [![Build Status](https://travis-ci.org/hellofresh/ansible-deployment.svg?branch=master)](https://travis-ci.org/hellofresh/ansible-deployment)
 
-Ansible role to deploy applications.
+Ansible role to deploy different type of applications from different sources with different configs. Everything is different
+
+### Components
+
+**Deployment user**
+**Directory structure of your application by default**
+```
+/home/{{ deployment_user }}/{{ deployment_name }}/{{ deployment_version }}
+/home/{{ deployment_user }}/{{ deployment_name }}/current -> /home/{{ deployment_user }}/{{ deployment_name }}/{{ deployment_version }}
+```
+**Reslovers**
+Resolvers are where your artificats are stored i.e. git,s3, ... can be extended if needed
+
+**Dependency**
+If you need to do dependency managment after deployment. Hopefully you should only deploy artifacts, but legacy is legacy :(
+
+**Config**
+Deploying your app config in different formats. i.e. yaml,json, environments, ...
 
 ### Examples
-You can head to test directory and see some use cases
+You can head to test directory and see some usecases.
 
 ### Role Variables
 ```yaml
