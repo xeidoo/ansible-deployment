@@ -114,13 +114,8 @@
   args:
       creates: "{{ deployment_dir_work }}/.s3_unarchive"
   when: deployment_s3_unarchive != "ansible"
+  become_user: "{{ deployment_user }}"
   register: custom_unarchive
-  notify:
-     - restart app
-
-- name: resolver | s3 | Unarchive artifact custom (perm change)
-  command: "chown -R {{ deployment_user }}:{{ deployment_group }} {{ deployment_dir_work }}"
-  when: custom_unarchive | changed and deployment_s3_unarchive != "ansible"
   notify:
      - restart app
 
