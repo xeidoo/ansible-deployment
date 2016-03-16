@@ -1,0 +1,36 @@
+---
+## Test S3 file pointer thingys
+## Test custom unarahive
+
+- name         : Resolver S3 DEV
+  hosts        : "all"
+  gather_facts : no
+  become       : True
+  connection   : "{{ kitchen_connection | default('local') }}"
+  vars         :
+                 deployment_name                     : "test"
+                 deployment_version                  : "latest-dev"
+                 deployment_dir                      : True
+                 deployment_user_manage              : True
+                 deployment_force                    : True
+
+                 deployment_user                     : "deploy"
+                 deployment_group                    : "master"
+                 deployment_user_home                : "/opt/manage"
+                 deployment_user_shell               : "/bin/sh"
+
+                 deployment_resolver                 : 's3'
+                 deployment_s3_url                   : "fakes3://127.0.0.1:4567"
+                 deployment_s3_bucket                : "a_bucket"
+#                 deployment_s3_object_path           : "{{ deployment_name }}"
+                 deployment_s3_art_dir               : "{{ deployment_dir_base }}/artifacts"
+                 deployment_s3_unarchive             : "/bin/tar -C '{{ deployment_dir_work }}' --extract -zf {{ deployment_s3_art_dir }}/{{ deployment_s3_object_name }}"
+
+                 deployment_dir_base                 : "{{ deployment_user_home }}/{{ deployment_name }}"
+                 deployment_dir_work                 : "{{ deployment_dir_base }}/src/{{ deployment_version }}"
+                 deployment_s3_object_name           : "{{ deployment_name }}-{{ deployment_version }}.tar.gz"
+                 deployment_dir_current              : "{{ deployment_dir_base }}/current"
+
+  roles        :
+                 - "fakeS3"
+                 - "ansible-deployment"

@@ -45,7 +45,15 @@ suites:
 
   - name                  : resolver_git
     provisioner           :
-        playbook          : "test/integration/resolver_git/resolver_git.yml"        
+        playbook          : "test/integration/resolver_git/resolver_git.yml"
+
+  - name                  : resolver_s3_hash
+    provisioner           :
+        playbook          : "test/integration/resolver_s3_hash/resolver_s3_hash.yml"
+
+  - name                  : resolver_s3_file
+    provisioner           :
+        playbook          : "test/integration/resolver_s3_file/resolver_s3_file.yml"
 
   - name                  : fastcgi_parm
     provisioner           :
