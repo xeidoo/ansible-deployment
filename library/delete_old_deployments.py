@@ -36,13 +36,11 @@ def main():
     changed = False
     files_to_delete = 0
     module = AnsibleModule(
-        # not checking because of daisy chain to file module
         argument_spec = dict(
             path      = dict(required=True, type='path'), 
             keep_last = dict(required=True, type='int'),
         ),
     )
-    # deployment_dir = "/Users/ahelal/Desktop/a"
     deployment_dir    = module.params['path']
     keep_last         = module.params['keep_last']
 
@@ -50,22 +48,21 @@ def main():
     list_deployment = []
     command = "find . -maxdepth 1 -type d -exec printf '{}\n' \; | awk 'length==42' | sed 's|./||'"
     hash_dirs = exec_command(module, command, deployment_dir)
-
     hash_dirs = hash_dirs.split("\n")
-    ## Removew empty lists
+    ## Remove empty lists
     hash_dirs = filter(None, hash_dirs) 
     for hash_dir in hash_dirs:
-        # get earliest date of deployment 
+        # Fet earliest date of deployment 
         glob_path = os.path.join(deployment_dir, hash_dir,  "*.deployment.date")
         deployment_dates = glob.glob(glob_path)
-        # Sort in case we have mutli deployment and we will take the oldest 
+        # Sort in case we have mutli deployment. We will take the oldest 1
         deployment_dates.sort()
         list_deployment.append({ "date": os.path.basename(deployment_dates[0]), "hash_dir": hash_dir })
 
-    # check if we execded our limit
+    # check if we execded our keep limit
     deployments2deleted = len(list_deployment) - keep_last
     if  deployments2deleted > 0:
-        # We need to sort our list of dic with date in order to remoe the oldest
+        # Sort our list of dic with date
         list_deployment = sorted(list_deployment, key=lambda k: k['date'])
         # Get only items that will be deleted
         list_deployment = list_deployment[0:deployments2deleted]:
