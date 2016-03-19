@@ -162,8 +162,10 @@ If your running ansible V1 providing a list to **deployment_config_fastcgi_parm_
 * [Adham Helal](https://github.com/ahelal)
 * [Sergio Sola](https://github.com/ssola)
 
+### License
+MIT
+
 ### Todo
-- Implement handler to restart/reload application
-- Implement Post deployment checks
+- Tests for configs
 
 
