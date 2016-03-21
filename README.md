@@ -5,20 +5,17 @@ Ansible role to deploy different type of applications from different sources wit
 
 ### Components
 
-**Deployment user**
-**Directory structure of your application by default**
+**Deployment user** Manage deployment  users
+**Directory** structure of your application by default
 ```
 /home/{{ deployment_user }}/{{ deployment_name }}/{{ deployment_version }}
 /home/{{ deployment_user }}/{{ deployment_name }}/current -> /home/{{ deployment_user }}/{{ deployment_name }}/{{ deployment_version }}
 ```
-**Reslovers**
-Resolvers are where your artificats are stored i.e. git,s3, ... can be extended if needed
+**Reslovers** Resolvers are where your artificats are stored i.e. git,s3, ... can be extended if needed
 
-**Dependency**
-If you need to do dependency managment after deployment. Hopefully you should only deploy artifacts, but legacy is legacy :(
+**Dependency** If you need to do dependency managment after deployment. i.e. composer, pip, ... hopefully you dont and only deploy binary artifacts, but legacy is legacy :(
 
-**Config**
-Deploying your app config in different formats. i.e. yaml,json, environments, ...
+**Config** Deploying your app config in different formats. i.e. yaml,json, environments, ...
 
 ### Examples
 You can head to test directory and see some usecases.
