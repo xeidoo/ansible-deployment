@@ -11,7 +11,8 @@ Ansible role to deploy different type of applications from different sources wit
 /home/{{ deployment_user }}/{{ deployment_name }}/{{ deployment_version }}
 /home/{{ deployment_user }}/{{ deployment_name }}/current -> /home/{{ deployment_user }}/{{ deployment_name }}/{{ deployment_version }}
 ```
-**Reslovers** Resolvers are where your artificats are stored i.e. git,s3, ... can be extended if needed
+
+**Resolvers** Resolvers are where your artificats are stored i.e. git,s3, ... can be extended if needed
 
 **Dependency** If you need to do dependency managment after deployment. i.e. composer, pip, ... hopefully you dont and only deploy binary artifacts, but legacy is legacy :(
 
