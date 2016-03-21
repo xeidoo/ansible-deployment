@@ -55,7 +55,7 @@ suites:
     provisioner           :
         playbook          : "test/integration/resolver_s3_file/resolver_s3_file.yml"
 
-  - name                  : delete_old_deployment.yml
+  - name                  : delete_old_deployment
     provisioner           :
         playbook          : "test/integration/delete_old_deployment/delete_old_deployment.yml"
 
