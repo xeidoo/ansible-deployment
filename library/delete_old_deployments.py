@@ -57,7 +57,12 @@ def main():
         deployment_dates = glob.glob(glob_path)
         # Sort in case we have mutli deployment. We will take the oldest 1
         deployment_dates.sort()
-        list_deployment.append({ "date": os.path.basename(deployment_dates[0]), "hash_dir": hash_dir })
+        try:
+            list_deployment.append({ "date": os.path.basename(deployment_dates[0]), "hash_dir": hash_dir })
+        except IndexError:
+            # Broken hash dir has no deployment_dates
+            module.fail_json(msg="Broken hash dir '%s' because no deployments date file(s)" % hash_dir)
+
 
     # check if we execded our keep limit
     deployments2deleted = len(list_deployment) - keep_last
