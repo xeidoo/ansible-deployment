@@ -1,0 +1,36 @@
+---
+
+- name: Pre task create deployment group at this point role is not started yet
+  group:
+    name="{{ deployment_group }}"
+
+- name: Pre task create deployment user at this point role is not started yet
+  user:
+    name="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+    home="{{ deployment_user_home }}"
+    shell="{{ deployment_user_shell }}"
+
+- name: Pre task  Create dir 
+  file: 
+    path="{{ deployment_dir_base }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+    state=directory
+    mode=0755
+
+- name: pretask Check if we need deployment
+  stat: 
+    path="/tmp/deploy.txt"
+  register: st
+
+- name: Pre task  Copy assets
+  copy: 
+    src="assets/"
+    dest="{{ deployment_dir_base }}/"
+  register: copy_dir
+  when: not st.stat.exists
+
+- name: pre task guard
+  command: touch /tmp/deploy.txt
+  when: copy_dir | changed
