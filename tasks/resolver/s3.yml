@@ -119,6 +119,16 @@
   notify:
      - restart app
 
+- name: resolver | s3 | Link artifact in work dir
+  file:
+    src="{{ deployment_s3_art_dir }}/{{ deployment_s3_object_name }}"
+    dest="{{ deployment_dir_work }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+    state=link
+  become_user: "{{ deployment_user }}"
+  when: deployment_s3_link_artifact is defined and deployment_s3_link_artifact
+
 - name: resolver | s3 | Put unarchive guard file
   copy: 
     content=""
