@@ -9,7 +9,7 @@ short_description: Rotate deployment directories
 description:
      - The M(delete_old_deployments) module maintain a fixed number of directories in deployment path.
 options:
-  path:
+  deployment_path:
     description:
       - Path of deployment dir 
     required: true
@@ -37,7 +37,7 @@ def main():
     files_to_delete = 0
     module = AnsibleModule(
         argument_spec = dict(
-            path      = dict(required=True, type='path'), 
+            path      = dict(required=True, type='str'), 
             keep_last = dict(required=True, type='int'),
         ),
     )
