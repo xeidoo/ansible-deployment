@@ -1,0 +1,64 @@
+---
+
+- name         : Delete old deployments 
+  hosts        : "all"
+  gather_facts : no
+  become       : True
+  connection   : "{{ kitchen_connection | default('local') }}"
+  vars         :
+                 deployment_name                     : "test"
+                 deployment_version                  : "latest-dev"
+                 deployment_dir                      : True
+                 deployment_user_manage              : True
+                 deployment_force                    : True
+
+                 deployment_user                     : "deploy"
+                 deployment_group                    : "master"
+                 deployment_user_home                : "/opt/manage"
+                 deployment_user_shell               : "/bin/sh"
+
+                 deployment_delete_old               : true
+                 deployment_keep_last                : 3
+
+                 deployment_dir_base                 : "{{ deployment_user_home }}/{{ deployment_name }}"
+                 deployment_dir_work                 : "{{ deployment_dir_base }}/src/{{ deployment_version }}"
+                 deployment_s3_object_name           : "{{ deployment_name }}-{{ deployment_version }}.tar.gz"
+                 deployment_dir_current              : "{{ deployment_dir_base }}/current"
+  pre_tasks    :
+      - name: Pre task create deployment group at this point role is not started yet
+        group:
+          name="{{ deployment_group }}"
+
+      - name: Pre task create deployment user at this point role is not started yet
+        user:
+          name="{{ deployment_user }}"
+          group="{{ deployment_group }}"
+          home="{{ deployment_user_home }}"
+          shell="{{ deployment_user_shell }}"
+
+      - name: Pre task  Create dir 
+        file: 
+          path="{{ deployment_dir_base }}"
+          owner="{{ deployment_user }}"
+          group="{{ deployment_group }}"
+          state=directory
+          mode=0755
+
+      - name: pretask Check if we need deployment
+        stat: 
+          path="/tmp/deploy.txt"
+        register: st
+
+      - name: Pre task  Create dir 
+        copy: 
+          src="example_deployment/"
+          dest="{{ deployment_dir_base }}/"
+        register: copy_dir
+        when: not st.stat.exists
+
+      - name: pre task guard
+        command: touch /tmp/deploy.txt
+        when: copy_dir | changed
+
+  roles        :
+                 - "ansible-deployment"
