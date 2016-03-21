@@ -65,8 +65,8 @@ def main():
         # Sort our list of dic with date
         list_deployment = sorted(list_deployment, key=lambda k: k['date'])
         # Get only items that will be deleted
-        list_deployment = list_deployment[0:deployments2deleted]:
-        for dir_2_delete in list_deployment[0:deployments2deleted]:
+        list_deployment = list_deployment[0:deployments2deleted]
+        for dir_2_delete in list_deployment:
             changed = True 
             # Remove any symlinks first inside the dir
             remove_link_cmd = "find %s -type l -delete" % os.path.join(deployment_dir,dir_2_delete.get("hash_dir"))

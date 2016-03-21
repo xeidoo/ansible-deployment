@@ -4,6 +4,10 @@
   debug:
     msg="Will use '{{ deployment_resolver}}' as a resolver."
 
+- name: resolver | main | Include delete_old_deployments.yml
+  include: delete_old_deployments.yml
+  when: deployment_delete_old
+
 - name: resolver | main | Include git.yml
   include: git.yml
   when: deployment_resolver == "git"
