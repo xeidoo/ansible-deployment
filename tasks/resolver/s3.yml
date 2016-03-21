@@ -122,7 +122,7 @@
 - name: resolver | s3 | Link artifact in work dir
   file:
     src="{{ deployment_s3_art_dir }}/{{ deployment_s3_object_name }}"
-    dest="{{ deployment_dir_work }}"
+    dest="{{ deployment_dir_work }}/{{ deployment_s3_object_name }}"
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
     state=link
