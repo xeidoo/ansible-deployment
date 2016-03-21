@@ -1,0 +1,6 @@
+---
+
+- name: resolver | delete old deployments | Check and delete old deployments 
+  delete_old_deployments: 
+    path="{{ deployment_dir_base }}"
+    keep_last="{{ deployment_keep_last }}"

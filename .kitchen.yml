@@ -55,6 +55,10 @@ suites:
     provisioner           :
         playbook          : "test/integration/resolver_s3_file/resolver_s3_file.yml"
 
+  - name                  : delete_old_deployment.yml
+    provisioner           :
+        playbook          : "test/integration/delete_old_deployment/delete_old_deployment.yml"
+
   - name                  : fastcgi_parm
     provisioner           :
         playbook          : "test/integration/fastcgi_parm/fastcgi_parm.yml"
