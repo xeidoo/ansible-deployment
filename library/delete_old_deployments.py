@@ -35,6 +35,7 @@ def exec_command(module, command, cwd=None):
 def main():
     changed = False
     files_to_delete = 0
+    warning = []
     module = AnsibleModule(
         argument_spec = dict(
             path      = dict(required=True, type='str'), 
@@ -61,8 +62,7 @@ def main():
             list_deployment.append({ "date": os.path.basename(deployment_dates[0]), "hash_dir": hash_dir })
         except IndexError:
             # Broken hash dir has no deployment_dates
-            module.fail_json(msg="Broken hash dir '%s' because no deployments date file(s)" % hash_dir)
-
+            warning.append("Broken hash dir '%s' because no deployments date file(s)" % hash_dir)
 
     # check if we execded our keep limit
     deployments2deleted = len(list_deployment) - keep_last
@@ -80,7 +80,7 @@ def main():
             remove_dir_cmd = "rm -rf %s" % os.path.join(deployment_dir,dir_2_delete.get("hash_dir"))
             exec_command(module, remove_dir_cmd, deployment_dir)
 
-    module.exit_json(msg="", changed=changed, deployments2deleted=deployments2deleted, list_deployment=list_deployment)
+    module.exit_json(msg="", changed=changed, deployments2deleted=deployments2deleted, list_deployment=list_deployment, warning=warning)
 
 import glob
 import os.path
