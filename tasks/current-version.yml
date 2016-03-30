@@ -1,7 +1,32 @@
 ---
 
+- name: current version | Ensure shared dirs are present and ensure right permissions
+  file:
+    path="{{ deployment_shared_dir }}/{{ item }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+    mode="{{ deployment_dir_perm }}"
+    state="directory"
+  when: deployment_shared_dirs != "none"
+  with_items: deployment_shared_dirs
+  notify:
+     - restart app
+
+- name: current version | Ensure shared dirs are present and ensure right permissions
+  file:
+    src="{{ deployment_shared_dir }}/{{ item }}"
+    dest="{{ deployment_dir_work }}/{{ item }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+    mode="0755"
+    state="link"
+  when: deployment_shared_dirs != "none"
+  with_items: deployment_shared_dirs
+  notify:
+     - restart app
+
 - name: current version | Create current symlink
-  file: 
+  file:
     src="{{ deployment_dir_work }}"
     dest="{{ deployment_dir_current }}"
     owner="{{ deployment_user }}"
