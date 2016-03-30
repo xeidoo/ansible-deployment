@@ -44,6 +44,7 @@ deployment_dir_current              : "{{ deployment_dir_base }}/current"
 deployment_dir_version_file         : "{{ deployment_dir_base }}/{{ deployment_version_file_orginal }}"
 ## Enable share dirs contains the linked_dirs which are symlinked into each release. This data persists across deployments and releases.
 deployment_shared_dir               : "{{ deployment_dir_base }}/shared"
+deployment_shared_dirs              : 'none'
 ## Extra directory that needs to be created (should be a list) i.e. ['/var/log/myapp','/opt/blaaa']
 deployment_extra_dirs               : 'none'
 ## Extra files that needs to be created (should be a list) i.e. ['/var/log/myapp.log','/somewhere/file.txt']
