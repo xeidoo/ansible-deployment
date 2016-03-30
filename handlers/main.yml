@@ -10,7 +10,9 @@
     msg="Notifier restart app"
   changed_when: "{{ deployment_post }}"
   notify:
-    - check app config 
+    - check app config
+    - set failed
+    - execute post deployment scripts
     - set failed
     - restart app initd
     - set failed
@@ -24,13 +26,19 @@
   register: notify1
   when: deployment_post_check_config is defined
 
+- name: execute post deployment scripts
+  shell: "{{ item }}"
+  with_items: deployment_post_scripts
+  register: notify2
+  when: deployment_post_scripts is defined
+
 - name: restart app initd
   service:
     name="{{ item.name }}"
     state="{{ item.state | default('restarted') }}"
     enabled="{{ item.enabled | default(omit)}}"
   with_items: deployment_post_services
-  register: notify2
+  register: notify3
   when: deployment_post_services is defined and not notify_task_failed
 
 - name: wait for port to become ready
@@ -57,5 +65,3 @@
 #     msg="{{ deployment_artifact_name }} is not happy, {{deployment_http_check_url}} does not return expected content [{{deployment_http_check_expected_content}}]"
 #   register: payload
 #   when: deployment_http_check_expected_content is defined and deployment_http_check_expected_content not in webpage.content
-
-
