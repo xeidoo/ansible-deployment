@@ -66,3 +66,7 @@ suites:
   - name                  : shell_vars
     provisioner           :
         playbook          : "test/integration/shell_vars/shell_vars.yml"
+
+  - name                  : dotenv
+    provisioner           :
+        playbook          : "test/integration/dotenv/dotenv.yml"
