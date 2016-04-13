@@ -1,9 +1,5 @@
-<?php
+# {{ ansible_managed }}
 
-// {{ ansible_managed }}
-
-return array(
 {% for key, value in deployment_config_dotenv_vars.iteritems()  %}
-    '{{ key }}' => '{{ value }}',
+{{ key }}="{{ value }}"
 {% endfor %}
-);
