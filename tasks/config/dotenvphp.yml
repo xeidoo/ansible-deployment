@@ -1,0 +1,11 @@
+---
+
+- name: config | dotenvphp | write dotenvphp variables file
+  template: 
+    src="{{ path_for_template }}dotenvphp.j2"
+    dest="{{ deployment_config_dotenvphp_vars_dest }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_user }}"
+    mode="{{ deployment_config_file_perm }}"
+  notify:
+     - restart app

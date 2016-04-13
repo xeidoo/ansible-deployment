@@ -63,14 +63,17 @@ deployment_config_shell_profile     : "{{ deployment_user_home }}/.bashrc"
 # INI variable
 deployment_config_ini_vars          : "none" # Variables that define the config
 deployment_config_ini_vars_dest     : "{{ deployment_dir_base }}/{{ deployment_name }}_config.ini"
-# DotEnv variable
-deployment_config_dotenv_vars       : "none"
-deployment_config_dotenv_vars_dest  : "{{ deployment_dir_work }}/.env.php"
+# DotEnvPHP variable
+deployment_config_dotenvphp_vars          : "none"
+deployment_config_dotenvphp_vars_dest     : "{{ deployment_dir_work }}/.env.php"
+# DotEnv
+deployment_config_dotenv_vars             : "none"
+deployment_config_dotenv_vars_dest        : "{{ deployment_dir_work }}/.env"
 ## YAML vars config
-deployment_config_yaml_vars         : "none"
+deployment_config_yaml_vars               : "none"
 ## FastCGI parm
-deployment_config_fastcgi_parm_vars : "none"
-deployment_config_fastcgi_parm_vars_dest: "{{ deployment_dir_work }}/app_fastcgi_parm"
+deployment_config_fastcgi_parm_vars       : "none"
+deployment_config_fastcgi_parm_vars_dest  : "{{ deployment_dir_work }}/app_fastcgi_parm"
 ## You can also use a list for fastcgi-parms
 # deployment_config_fastcgi_parm_vars      :
 #                   - vars:

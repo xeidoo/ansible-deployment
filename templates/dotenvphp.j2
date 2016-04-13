@@ -1,0 +1,9 @@
+<?php
+
+// {{ ansible_managed }}
+
+return array(
+{% for key, value in deployment_config_dotenvphp_vars.iteritems()  %}
+    '{{ key }}' => '{{ value }}',
+{% endfor %}
+);

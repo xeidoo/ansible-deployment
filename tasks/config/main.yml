@@ -8,6 +8,10 @@
    include: ini.yml
    when: deployment_config_ini_vars != 'none'
 
+ - name: config | include dotenvphp
+   include: dotenvphp.yml
+   when: deployment_config_dotenvphp_vars != 'none'
+
  - name: config | include dotenv
    include: dotenv.yml
    when: deployment_config_dotenv_vars != 'none'

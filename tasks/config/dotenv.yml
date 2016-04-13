@@ -5,7 +5,7 @@
     src="{{ path_for_template }}dotenv.j2"
     dest="{{ deployment_config_dotenv_vars_dest }}"
     owner="{{ deployment_user }}"
-    group="{{ deployment_user }}"
+    group="{{ deployment_group }}"
     mode="{{ deployment_config_file_perm }}"
   notify:
      - restart app
