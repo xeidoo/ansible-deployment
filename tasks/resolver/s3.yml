@@ -92,7 +92,7 @@
 - name: resolver | s3 | Ensure artifact perm is correct
   file: 
     path="{{ deployment_s3_art_dir }}/{{ deployment_s3_object_name }}"
-    mode="0650"
+    mode="0640"
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
 
