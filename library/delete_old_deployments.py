@@ -38,7 +38,7 @@ def main():
     warning = []
     module = AnsibleModule(
         argument_spec = dict(
-            path      = dict(required=True, type='str'), 
+            path      = dict(required=True, type='str'),
             keep_last = dict(required=True, type='int'),
         ),
     )
@@ -47,6 +47,7 @@ def main():
 
     # keep deployment info
     list_deployment = []
+    broken_deployment_dir = []
     command = "find . -maxdepth 1 -type d -exec printf '{}\n' \; | awk 'length==42' | sed 's|./||'"
     hash_dirs = exec_command(module, command, deployment_dir)
     hash_dirs = hash_dirs.split("\n")
@@ -62,7 +63,8 @@ def main():
             list_deployment.append({ "date": os.path.basename(deployment_dates[0]), "hash_dir": hash_dir })
         except IndexError:
             # Broken hash dir has no deployment_dates
-            warning.append("Broken hash dir '%s' because no deployments date file(s)" % hash_dir)
+            warning.append("Broken hash dir '%s' because no deployments date file(s)." % hash_dir)
+            broken_deployment_dir.append({"hash_dir": hash_dir })
 
     # check if we execded our keep limit
     deployments2deleted = len(list_deployment) - keep_last
@@ -74,13 +76,24 @@ def main():
         for dir_2_delete in list_deployment:
             changed = True 
             # Remove any symlinks first inside the dir
-            remove_link_cmd = "find %s -type l -delete" % os.path.join(deployment_dir,dir_2_delete.get("hash_dir"))
+            remove_link_cmd = "find %s -maxdepth 1 -type l -exec readlink -f {} \; | xargs rm -f" % os.path.join(deployment_dir,dir_2_delete.get("hash_dir"))
             exec_command(module, remove_link_cmd, deployment_dir)
             # Remove the dir
             remove_dir_cmd = "rm -rf %s" % os.path.join(deployment_dir,dir_2_delete.get("hash_dir"))
             exec_command(module, remove_dir_cmd, deployment_dir)
 
-    module.exit_json(msg="", changed=changed, deployments2deleted=deployments2deleted, list_deployment=list_deployment, warning=warning)
+    # Check dirs that are not part of directory
+    if len(broken_deployment_dir) > 0:
+        for dir_2_delete in broken_deployment_dir:
+            changed = True
+            # Remove any symlinks first inside the dir
+            remove_link_cmd = "find %s -maxdepth 1 -type l -exec readlink -f {} \; | xargs rm -f" % os.path.join(deployment_dir,dir_2_delete.get("hash_dir"))
+            exec_command(module, remove_link_cmd, deployment_dir)
+            # Remove the dir
+            remove_dir_cmd = "rm -rf %s" % os.path.join(deployment_dir,dir_2_delete.get("hash_dir"))
+            exec_command(module, remove_dir_cmd, deployment_dir)
+
+    module.exit_json(msg="", changed=changed, deployments2deleted=deployments2deleted, list_deployment=list_deployment, broken_deployment_dir=broken_deployment_dir, warning=warning)
 
 import glob
 import os.path
