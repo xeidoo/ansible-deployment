@@ -2,49 +2,49 @@
 
 - name: user | Setup group
   group:
-    name="{{ deployment_group }}"
+    name: "{{ deployment_group }}"
   when: deployment_user_manage
   notify:
      - restart app
 
 - name: user | Setup user
   user:
-    name="{{ deployment_user }}"
-    group="{{ deployment_group }}"
-    home="{{ deployment_user_home }}"
-    shell="{{ deployment_user_shell }}"
+    name: "{{ deployment_user }}"
+    group: "{{ deployment_group }}"
+    home: "{{ deployment_user_home }}"
+    shell: "{{ deployment_user_shell }}"
   when: deployment_user_manage
   notify:
      - restart app
 
-- name: users | Manage public key for deployment user
+- name: user | Manage public key for deployment user
   authorized_key:
-     user="{{ deployment_user }}"
-     manage_dir="yes"
-     key="{{ item }}"
+     user: "{{ deployment_user }}"
+     manage_dir: "yes"
+     key: "{{ item }}"
   with_items: "{{ deployment_user_pub_key }}"
   when: deployment_user_pub_key is defined and deployment_user_pub_key | length > 1
 
-- name: users | Manage private key for deployment user
+- name: user | Manage private key for deployment user
   copy:
-     content="{{ deployment_user_priv_key }}"
-     dest="{{ deployment_user_home }}/.ssh/id_rsa"
-     mode=0600
-     owner="{{ deployment_user }}"
-     group="{{ deployment_group }}"
-  with_items: deployment_user_priv_key
+     content: "{{ deployment_user_priv_key }}"
+     dest: "{{ deployment_user_home }}/.ssh/id_rsa"
+     mode: 0600
+     owner: "{{ deployment_user }}"
+     group: "{{ deployment_group }}"
+  with_items: "{{ deployment_user_priv_key }}"
   no_log: True
   when: deployment_user_priv_key is defined and deployment_user_priv_key | length > 1
 
 - name: user | Setup SSH hosts finger prints
   lineinfile:
-    line="{{ item }}"
-    insertafter="EOF"
-    state="present"
-    create="yes"
-    owner="{{ deployment_user }}"
-    mode="0644"
-    dest="{{ deployment_user_home }}/.ssh/known_hosts"
+    line: "{{ item }}"
+    insertafter: "EOF"
+    state: "present"
+    create: "yes"
+    owner: "{{ deployment_user }}"
+    mode: 0644
+    dest: "{{ deployment_user_home }}/.ssh/known_hosts"
   with_items:
       - "{{ deployment_user_fingerprints }}"
   when: deployment_user_manage_fingerprints

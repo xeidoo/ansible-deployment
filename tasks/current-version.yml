@@ -8,11 +8,11 @@
     mode="{{ deployment_dir_perm }}"
     state="directory"
   when: deployment_shared_dirs != "none"
-  with_items: deployment_shared_dirs
+  with_items: "{{ deployment_shared_dirs }}"
   notify:
      - restart app
 
-- name: current version | Ensure shared dirs are present and ensure right permissions
+- name: current version | Ensure symlinks for shared dirs are present
   file:
     src="{{ deployment_shared_dir }}/{{ item }}"
     dest="{{ deployment_dir_work }}/{{ item }}"
@@ -21,7 +21,7 @@
     mode="0755"
     state="link"
   when: deployment_shared_dirs != "none"
-  with_items: deployment_shared_dirs
+  with_items: "{{ deployment_shared_dirs }}"
   notify:
      - restart app
 

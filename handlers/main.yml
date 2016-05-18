@@ -22,7 +22,7 @@
 
 - name: check app config
   command: "{{ item }}"
-  with_items: deployment_post_check_config
+  with_items: "{{ deployment_post_check_config }}"
   register: notify1
   when: deployment_post_check_config is defined
 
@@ -47,7 +47,7 @@
     host="{{ item.host | default(inventory_hostname) }}"
     delay="{{ item.delay_sec | default(2) }}"
     timeout="{{ item.timeout_sec | default(10) }}"
-  with_items: deployment_post_wait_for
+  with_items: "{{ deployment_post_wait_for }}"
   when: deployment_post_wait_for is defined and not notify_task_failed
 
 - name: HTTP request
@@ -57,7 +57,7 @@
     validate_certs="{{ item.validate_certs | default('no')}}"
     HEADER_Accept="text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
   register: page
-  with_items: deployment_post_url_check
+  with_items: "{{ deployment_post_url_check }}"
   when: deployment_post_url_check is defined and not notify_task_failed
 
 #- name: post deployment | Fail on incorrect payload
