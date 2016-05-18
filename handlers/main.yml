@@ -37,7 +37,7 @@
     name="{{ item.name }}"
     state="{{ item.state | default('restarted') }}"
     enabled="{{ item.enabled | default(omit)}}"
-  with_items: "{{ deployment_post_services }}"
+  with_items: "{{ deployment_post_services | default([]) }}"
   register: notify3
   when: deployment_post_services is defined and not notify_task_failed
 
