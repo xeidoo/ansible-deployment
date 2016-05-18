@@ -7,31 +7,31 @@
 
 - name: directory structure | Ensure home dir is present and ensure right permissions
   file:
-    path: "{{ deployment_user_home }}"
-    owner: "{{ deployment_user }}"
-    group: "{{ deployment_group }}"
-    mode: "{{ deployment_dir_perm }}"
-    state: "directory"
+    path="{{ deployment_user_home }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+    mode="{{ deployment_dir_perm }}"
+    state="directory"
   notify:
      - restart app
 
 - name: directory structure | Ensure base dir is present and ensure right permissions
   file:
-    path: "{{ deployment_dir_base }}"
-    owner: "{{ deployment_user }}"
-    group: "{{ deployment_group }}"
-    mode: "{{ deployment_dir_perm }}"
-    state: "directory"
+    path="{{ deployment_dir_base }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+    mode="{{ deployment_dir_perm }}"
+    state="directory"
   notify:
      - restart app
 
 - name: directory structure | Ensure extra dirs are present and ensure right permissions
   file: 
-    path: "{{ item }}"
-    owner: "{{ deployment_user }}"
-    group: "{{ deployment_group }}"
-    mode: "{{ deployment_dir_perm }}"
-    state: "directory"
+    path="{{ item }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+    mode="{{ deployment_dir_perm }}"
+    state="directory"
   when: deployment_extra_dirs != "none"
   with_items: "{{ deployment_extra_dirs }}"
   notify:
@@ -56,11 +56,11 @@
 
 - name: directory structure | Ensure extra files are present and ensure right permissions
   file: 
-    dest: "{{ item.item }}"
-    owner: "{{ deployment_user }}"
-    group: "{{ deployment_group }}"
-    mode: "{{ deployment_file_perm }}"
-    state: "touch"
+    dest="{{ item.item }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+    mode="{{ deployment_file_perm }}"
+    state="touch"
   when: deployment_extra_files != "none" 
   with_items: "{{ deployment_extra_files_stat_exists }}"
   notify:
