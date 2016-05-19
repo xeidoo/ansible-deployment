@@ -22,13 +22,13 @@
 
 - name: check app config
   command: "{{ item }}"
-  with_items: "{{ deployment_post_check_config }}"
+  with_items: "{{ deployment_post_check_config | default([]) }}"
   register: notify1
   when: deployment_post_check_config is defined
 
 - name: execute post deployment scripts
   shell: "{{ item }}"
-  with_items: deployment_post_scripts
+  with_items: "{{ deployment_post_scripts | default([]) }}"
   register: notify2
   when: deployment_post_scripts is defined
 
