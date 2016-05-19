@@ -18,7 +18,7 @@
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
     mode="{{ deployment_config_file_perm }}"
-  with_items: deployment_config_shell_vars
+  with_items: "{{ deployment_config_shell_vars }}"
   when: "deployment_config_shell_vars is not mapping"
   notify:
      - restart app

@@ -33,7 +33,7 @@
     mode="{{ deployment_dir_perm }}"
     state="directory"
   when: deployment_extra_dirs != "none"
-  with_items: deployment_extra_dirs
+  with_items: "{{ deployment_extra_dirs }}"
   notify:
      - restart app
 
@@ -42,7 +42,7 @@
     path="{{ item }}"
   register: deployment_extra_files_stat
   when: deployment_extra_files != "none"
-  with_items: deployment_extra_files
+  with_items: "{{ deployment_extra_files }}"
 
 - name: directory structure | Set extra files stat to []
   set_fact:
@@ -62,6 +62,6 @@
     mode="{{ deployment_file_perm }}"
     state="touch"
   when: deployment_extra_files != "none" 
-  with_items: deployment_extra_files_stat_exists
+  with_items: "{{ deployment_extra_files_stat_exists }}"
   notify:
      - restart app
