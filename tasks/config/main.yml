@@ -23,3 +23,8 @@
  - name: config | include fastcgi_parm
    include: fastcgi_parm.yml
    when: deployment_config_fastcgi_parm_vars != 'none' 
+
+ - name: config | include custom
+   include: custom.yml
+   when: deployment_config_custom != 'none' 
+

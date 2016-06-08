@@ -22,6 +22,7 @@ env:
   #- KITCHEN_TEST="shell-vars-v1"
   - KITCHEN_TEST="shell-vars-v2"
   - KITCHEN_TEST="dotenv-v2"
+  - KITCHEN_TEST="custom-config-v2"
 
 before_install:
   # Make sure everything's up to date.
