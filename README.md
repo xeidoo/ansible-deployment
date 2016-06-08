@@ -169,7 +169,5 @@ If your running ansible V1 providing a list to **deployment_config_fastcgi_parm_
 ### License
 MIT
 
-### Todo
-- Tests for configs
 
 
