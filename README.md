@@ -3,9 +3,12 @@
 
 Ansible role to deploy different type of applications from different sources with different configs. Everything is different
 
+### Warning
+Ansible v1 will be depreciated
+
 ### Components
 
-**Deployment user** Manage deployment  users
+**Deployment user** Manage deployment users
 **Directory** structure of your application by default
 ```
 /home/{{ deployment_user }}/{{ deployment_name }}/{{ deployment_version }}

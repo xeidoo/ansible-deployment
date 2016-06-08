@@ -84,6 +84,14 @@ deployment_config_fastcgi_parm_vars_dest  : "{{ deployment_dir_work }}/app_fastc
 #                      myvar1              : "True"
 #                      myvar2              : "True"
 #                     dest                 : "/tmp/parmsfile_2.txt"
+## Custom template
+deployment_config_custom                   : "none"
+# deployment_config_custom                 :
+#                   - src                  : "/path/to/template1"
+#                     dest                 : "/tmp/parmsfile_1.txt"
+#                   - src                  : "/path/to/template2"
+#                     dest                 : "/tmp/parmsfile_2.txt"
+
 
 ## Dependency managment
 # Supported dependency ['none', 'comoser']

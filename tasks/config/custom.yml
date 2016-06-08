@@ -1,0 +1,12 @@
+---
+
+- name: config | custom | write custom multi variable files
+  template: 
+    src="{{ item.src }}"
+    dest="{{ item.dest }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+    mode="{{ deployment_config_file_perm }}"
+  with_items: "{{ deployment_config_custom }}"
+  notify:
+     - restart app

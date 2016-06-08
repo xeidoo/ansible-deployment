@@ -67,6 +67,10 @@ suites:
     provisioner           :
         playbook          : "test/integration/shell_vars/shell_vars.yml"
 
+  - name                  : custom_config
+    provisioner           :
+        playbook          : "test/integration/custom_config/custom_config.yml"
+
   - name                  : dotenv
     provisioner           :
         playbook          : "test/integration/dotenv/dotenv.yml"
