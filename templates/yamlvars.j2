@@ -1,1 +1,5 @@
-{{  deployment_config_yaml_vars | to_nice_yaml }}
+{% if deployment_config_yaml_vars is mapping %}
+{{ deployment_config_yaml_vars|to_nice_yaml() }}
+{% elif deployment_config_yaml_vars is not mapping %}
+{{ item.vars|to_nice_yaml() }}
+{% endif %}
