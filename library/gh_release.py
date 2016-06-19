@@ -5,7 +5,7 @@
 # https://api.github.com/repos/concourse/autopilot/releases/tags/0.0.2
 
 
-class GithubReleases():
+class GithubReleases(object):
     def __init__(self, module):
         self.module = module
         self.token = self.module.params["token"]
@@ -50,10 +50,10 @@ class GithubReleases():
         else:
             assets = release_response.get("assets")
 
-            # Fail if we dont have any assets
+            # Fail if we dont have any assets in response
             if len(assets) == 0:
                 self.module.fail_json(msg="No downloadable assets in release '%s'. Maybe you wanted to download source tarball/zipball" % tag_name)
-            # Check of we match glob
+            # Check if we match glob
             elif self.glob:
                 match = 0
                 for asset in assets:
@@ -72,6 +72,7 @@ class GithubReleases():
                 file_names = map(lambda x: str(x.get("name")), assets)
                 self.module.fail_json(msg="To many files in release '%s' you must specfiy one using the glob options. List of files '%s' " % (tag_name, file_names))
 
+        # lets return of download asset link
         self.module.exit_json(msg="success", tag=tag_name, url=self.url_2_download, commit=target_commitish, changed=False)
 
     def main(self):
