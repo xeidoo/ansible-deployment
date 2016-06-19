@@ -74,3 +74,7 @@ suites:
   - name                  : dotenv
     provisioner           :
         playbook          : "test/integration/dotenv/dotenv.yml"
+
+  - name                  : yaml_vars
+    provisioner           :
+        playbook          : "test/integration/yaml_vars/yaml_vars.yml"
