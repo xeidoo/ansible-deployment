@@ -19,6 +19,8 @@
     - wait for port to become ready
     - HTTP request
     - set failed
+    - Slack notification
+    - Newrelic deployment notification
 
 - name: check app config
   command: "{{ item }}"
@@ -59,6 +61,38 @@
   register: page
   with_items: "{{ deployment_post_url_check | default([]) }}"
   when: deployment_post_url_check is defined and not notify_task_failed
+
+- name: Slack notification
+  slack:
+    attachments="{{ deployment_notification_slack_attachments | default(omit) }}"
+    channel="{{ deployment_notification_slack_channel | default(omit) }}"
+    color="{{ deployment_notification_slack_color | default(omit) }}"
+    icon_emoji="{{ deployment_notification_slack_icon_emoji | default(omit) }}"
+    icon_url="{{ deployment_notification_slack_icon_url | default(omit) }}"
+    link_names="{{ deployment_notification_slack_link_names | default(omit) }}"
+    msg="{{ deployment_notification_slack_msg | default(omit)}}"
+    parse="{{ deployment_notification_slack_parse | default(omit) }}"
+    token="{{ deployment_notification_slack_token }}"
+    username="{{ deployment_notification_slack_username | default(omit) }}"
+  connection: local
+  become: False
+  delegate_to: localhost
+  when: deployment_notification_slack
+
+- name: Newrelic deployment notification
+  newrelic_deployment: 
+    app_name="{{ deployment_name }}"
+    application_id="{{ deployment_notification_newrelic_application_id | default(omit) }}"
+    changelog="{{ deployment_notification_newrelic_changelog | default(omit) }}"
+    description="{{ deployment_notification_newrelic_description | default(omit) }}"
+    environment="{{ deployment_notification_newrelic_environment | default(omit) }}"
+    revision="{{ deployment_version }}"
+    token="{{ deployment_notification_newrelic_token }}"
+    user="{{ deployment_notification_newrelic_user | default(omit) }}"
+  connection: local
+  become: False
+  delegate_to: localhost
+  when: deployment_notification_newrelic and not notify_task_failed
 
 #- name: post deployment | Fail on incorrect payload
 #   fail:
