@@ -1,6 +1,7 @@
 ---
 # App name
 deployment_name                     : "testApp"
+deployment_gh_project               : "https://github.com/hellofresh/ansible-deployment/commit/{{ deployment_version }}"
 # Version depands on resolver. If your using github as a resolver version could be branch/tag/git 40 char hash
 deployment_version                  : "master"
 
@@ -139,3 +140,45 @@ deployment_guard_file               :  "/var/local/deployment_first_boot_file"
 
 # Enable if your using old version of ansible to hide AWS cred.
 deployment_s3_no_log                : False
+
+## Notification of failed or successful deployments
+## Slack Notification
+#deployment_notification_slack_token : XXXXXXXXXXX #  you should encrypt this value
+deployment_notification_slack               : False # by default no slack notification
+deployment_notification_slack_channel       : "#deployments"
+deployment_notification_slack_attachments   :
+  - text       : ""
+    title      : "Ansible deployment for '{{ deployment_name }}'"
+    title_link : "{{ deployment_gh_project }}"
+    color      : "{{ deployment_slack_status_lookup[notify_task_failed]['color'] }}"
+    fields     :
+      - title  : "Deployer"
+        value  : "{{ lookup('env','USER') }}"
+        short  : "true"
+      - title  : "Status"
+        value  : "{{ deployment_slack_status_lookup[notify_task_failed]['status'] }}"
+        short  : "true"
+      - title  : "version"
+        value  : "{{ deployment_version | truncate(10, False, '') }}"
+        short  : "true"
+      - title  : "Server"
+        value  : "{{ inventory_hostname }}"
+        short  : "true"
+    footer     : "HelloFresh"
+    footer_icon: "https://www.hellofresh.de/images/hellofresh/press/HelloFresh_Logo.png"
+
+deployment_slack_status_lookup:
+  False                       :
+          color               : "good"
+          status              : "Success"
+  True                        :
+          color               : "danger"
+          status              : "Failed"
+
+# NewRelic Notification
+deployment_notification_newrelic             : False   # by default no newrelic notification
+deployment_notification_newrelic_token       : XXXXXX  #  you should encrypt this value
+deployment_notification_newrelic_description : "{{ inventory_hostname }}"
+deployment_notification_newrelic_user        : "{{ lookup('env','USER') }}"
+
+
