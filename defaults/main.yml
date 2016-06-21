@@ -159,12 +159,12 @@ deployment_notification_slack_attachments   :
         value  : "{{ deployment_slack_status_lookup[notify_task_failed]['status'] }}"
         short  : "true"
       - title  : "version"
-        value  : "{{ deployment_version }}"
+        value  : "{{ deployment_version | truncate(10, False, '') }}"
         short  : "true"
       - title  : "Server"
         value  : "{{ inventory_hostname }}"
         short  : "true"
-    footer     : "Hellofresh"
+    footer     : "HelloFresh"
     footer_icon: "https://www.hellofresh.de/images/hellofresh/press/HelloFresh_Logo.png"
 
 deployment_slack_status_lookup:
