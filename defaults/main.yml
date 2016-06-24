@@ -178,6 +178,7 @@ deployment_slack_status_lookup:
 # NewRelic Notification
 deployment_notification_newrelic             : False   # by default no newrelic notification
 deployment_notification_newrelic_token       : XXXXXX  #  you should encrypt this value
+deployment_notification_newrelic_app_name    : "{{ deployment_name }}"
 deployment_notification_newrelic_description : "{{ inventory_hostname }}"
 deployment_notification_newrelic_user        : "{{ lookup('env','USER') }}"
 
