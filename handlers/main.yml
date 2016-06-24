@@ -81,7 +81,7 @@
 
 - name: Newrelic deployment notification
   newrelic_deployment: 
-    app_name="{{ deployment_name }}"
+    app_name="{{ deployment_notification_newrelic_app_name | default(deployment_name) }}"
     application_id="{{ deployment_notification_newrelic_application_id | default(omit) }}"
     changelog="{{ deployment_notification_newrelic_changelog | default(omit) }}"
     description="{{ deployment_notification_newrelic_description | default(omit) }}"
