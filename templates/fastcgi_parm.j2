@@ -2,10 +2,10 @@
 
 {% if deployment_config_fastcgi_parm_vars is mapping %}
 {% for key, value in deployment_config_fastcgi_parm_vars.iteritems()  %}
-fastcgi_param {{ key }} {{ value }};
+fastcgi_param {{ key }} "{{ value }}";
 {% endfor %}
 {% elif deployment_config_fastcgi_parm_vars is not mapping %}
 {% for key, value in item.vars.iteritems()  %}
-fastcgi_param {{ key }} {{ value }};
+fastcgi_param {{ key }} "{{ value }}";
 {% endfor %}
 {% endif %}
