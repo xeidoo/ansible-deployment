@@ -182,4 +182,8 @@ deployment_notification_newrelic_app_name    : "{{ deployment_name }}"
 deployment_notification_newrelic_description : "{{ inventory_hostname }}"
 deployment_notification_newrelic_user        : "{{ lookup('env','USER') }}"
 
-
+# Graphite Notification
+deployment_notification_graphite             : False   # by default no graphite notification
+deployment_notification_graphite_what        : "Deployment"
+deployment_notification_graphite_tags        : "deployment,{{ deployment_name }}"
+deployment_notification_graphite_data        : "{{ lookup('env','USER') }} deployed {{ deployment_version }}"
