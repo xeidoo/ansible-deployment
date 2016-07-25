@@ -21,6 +21,7 @@
     - set failed
     - Slack notification
     - Newrelic deployment notification
+    - Graphite deployment notification
 
 - name: check app config
   command: "{{ item }}"
@@ -93,6 +94,20 @@
   become: False
   delegate_to: localhost
   when: deployment_notification_newrelic and not notify_task_failed
+
+- name: Graphite deployment notification
+  uri:
+    url: "{{ deployment_notification_graphite_uri }}"
+    method: "POST"
+    body:
+      what: "{{ deployment_notification_graphite_what }}"
+      tags: "{{ deployment_notification_graphite_tags }}"
+      data: "{{ deployment_notification_graphite_data }}"
+    body_format: "json"
+  connection: local
+  become: False
+  delegate_to: localhost
+  when: deployment_notification_graphite and not notify_task_failed
 
 #- name: post deployment | Fail on incorrect payload
 #   fail:
