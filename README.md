@@ -49,7 +49,7 @@ deployment_s3_object_path           : "" # Optional path
 deployment_s3_art_dir               : "{{ deployment_dir_base }}/artifacts"
 deployment_s3_aws_key_id            : "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
 deployment_s3_aws_secret_key        : "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
-deployment_s3_unarchive             : "ansible"
+deployment_unarchive             : "ansible"
 
 ## Deployment user/group and directroy
 deployment_user_manage              : False
@@ -158,11 +158,11 @@ deployment_s3_no_log                : False
 ````
 
 ## TODO
-* Add tests for dependency 
-* Add tests for config 
+* Add tests for dependency
+* Add tests for config
 
 ## Caveats
-If your running ansible V1 providing a list to **deployment_config_fastcgi_parm_vars** will break 
+If your running ansible V1 providing a list to **deployment_config_fastcgi_parm_vars** will break
 
 ### Contributors
 * [Alfonso Fernandez](https://github.com/alfonsodev)

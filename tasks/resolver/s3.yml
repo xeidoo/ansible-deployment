@@ -1,20 +1,20 @@
 ---
 
-- name: resolver | s3 | Install boto 
+- name: resolver | s3 | Install boto
   pip:
    name="{{ item }}"
-  with_items: 
+  with_items:
      - boto
      - boto3
 
 - name: resolver | s3 | Ensure S3 artifact directory exists
-  file: 
+  file:
     path="{{ item }}"
     state=directory
     mode="{{ deployment_dir_perm }}"
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
-  with_items: 
+  with_items:
     - "{{ deployment_s3_art_dir }}"
 
 - name: resolver | s3 | Try to get version file from S3
@@ -33,12 +33,12 @@
   no_log: "{{ deployment_s3_no_log }}"
 
 - name: resolver | s3 | Check version file
-  stat: 
+  stat:
     path="{{ deployment_s3_art_dir }}/{{ deployment_version }}_file.txt"
   register: version_file_st
 
 - name: resolver | s3 | Get content of version file
-  shell: 
+  shell:
     cat "{{ deployment_s3_art_dir }}/{{ deployment_version }}_file.txt"
   changed_when: False
   register: version_file_data
@@ -50,7 +50,7 @@
   when: version_file_st.stat.exists and not s3_version_file | failed
 
 - name: resolver | s3 | Create link from version file to current (hack)
-  file: 
+  file:
     src="{{ deployment_dir_current }}"
     dest="{{ deployment_dir_version_file }}"
     owner="{{ deployment_user }}"
@@ -66,13 +66,13 @@
   when: version_file_st.stat.exists and not s3_version_file | failed
 
 - name: resolver | s3 | Ensure working directory exists
-  file: 
+  file:
     path="{{ item }}"
     state=directory
     mode="{{ deployment_dir_perm }}"
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
-  with_items: 
+  with_items:
     - "{{ deployment_dir_work }}"
 
 - name: resolver | s3 | Get S3 artifact object
@@ -85,19 +85,19 @@
     aws_secret_key="{{ deployment_s3_aws_secret_key | default(omit) }}"
     overwrite=False
     mode=get
-  no_log: "{{ deployment_s3_no_log }}" 
+  no_log: "{{ deployment_s3_no_log }}"
   become_user: "{{ deployment_user }}"
   register: s3_art
 
 - name: resolver | s3 | Ensure artifact perm is correct
-  file: 
+  file:
     path="{{ deployment_s3_art_dir }}/{{ deployment_s3_object_name }}"
     mode="0640"
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
 
 - name: resolver | s3 | Unarchive artifact ansible (if no guard)
-  unarchive: 
+  unarchive:
     src="{{ deployment_s3_art_dir }}/{{ deployment_s3_object_name }}"
     dest="{{ deployment_dir_work }}"
     copy="no"
@@ -105,15 +105,15 @@
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
     creates="{{ deployment_dir_work }}/.s3_unarchive"
-  when: deployment_s3_unarchive == "ansible"
+  when: deployment_unarchive == "ansible"
   notify:
      - restart app
 
 - name: resolver | s3 | Unarchive artifact custom (if no guard)
-  command: "{{ deployment_s3_unarchive }}"
+  command: "{{ deployment_unarchive }}"
   args:
       creates: "{{ deployment_dir_work }}/.s3_unarchive"
-  when: deployment_s3_unarchive != "ansible"
+  when: deployment_unarchive != "ansible"
   become_user: "{{ deployment_user }}"
   register: custom_unarchive
   notify:
@@ -130,7 +130,7 @@
   when: deployment_s3_link_artifact is defined and deployment_s3_link_artifact
 
 - name: resolver | s3 | Put unarchive guard file
-  copy: 
+  copy:
     content=""
     dest="{{ deployment_dir_work }}/.s3_unarchive"
     owner="{{ deployment_user }}"
