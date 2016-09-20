@@ -5,17 +5,17 @@ services:
   - docker
 
 env:
-  - KITCHEN_TEST="user-v2"
-  - KITCHEN_TEST="directory-v2"
-  - KITCHEN_TEST="resolver-git-v2"
-  - KITCHEN_TEST="resolver-s3-hash-v2"
-  - KITCHEN_TEST="resolver-s3-file-v2"
-  - KITCHEN_TEST="delete-old-deployment-v2"
-  - KITCHEN_TEST="fastcgi-parm-v2"
-  - KITCHEN_TEST="shell-vars-v2"
-  - KITCHEN_TEST="dotenv-v2"
-  - KITCHEN_TEST="custom-config-v2"
-  - KITCHEN_TEST="yaml-vars-v2"
+  - KITCHEN_TEST="user"
+  - KITCHEN_TEST="directory"
+  - KITCHEN_TEST="resolver-git"
+  - KITCHEN_TEST="resolver-s3-hash"
+  - KITCHEN_TEST="resolver-s3-file"
+  - KITCHEN_TEST="delete-old-deployment"
+  - KITCHEN_TEST="fastcgi-parm"
+  - KITCHEN_TEST="shell-vars"
+  - KITCHEN_TEST="dotenv"
+  - KITCHEN_TEST="custom-config"
+  - KITCHEN_TEST="yaml-vars"
 
 before_install:
   # Make sure everything's up to date.
