@@ -3,7 +3,9 @@ set -e
 echo "Running travis "
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-AVM_SETUP_VERSION="v0.0.3"
+SETUP_VERSION="v0.0.3"
+#SETUP_VERBOSITY="vv"
+
 
 ## Install Ansible 2.0
 ANSIBLE_VERSIONS[0]="2.0.2.0"
@@ -18,7 +20,5 @@ ANSIBLE_LABEL[0]="latest"
 # Whats the default version
 ANSIBLE_DEFAULT_VERSION="v2"
 
-SETUP_VERSION=feature/optional_Setup
-#SETUP_VERBOSITY="vv"
 #
 . $AVM_SETUP_PATH
