@@ -3,9 +3,6 @@
 
 Ansible role to deploy different type of applications from different sources with different configs. Everything is different
 
-### Warning
-Ansible v1 will be depreciated
-
 ### Components
 
 **Deployment user** Manage deployment users

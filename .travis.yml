@@ -5,21 +5,13 @@ services:
   - docker
 
 env:
-  - KITCHEN_TEST="user-v1"
   - KITCHEN_TEST="user-v2"
-  - KITCHEN_TEST="directory-v1"
   - KITCHEN_TEST="directory-v2"
-  - KITCHEN_TEST="resolver-git-v1"
   - KITCHEN_TEST="resolver-git-v2"
-  - KITCHEN_TEST="resolver-s3-hash-v1"
   - KITCHEN_TEST="resolver-s3-hash-v2"
-  - KITCHEN_TEST="resolver-s3-file-v1"
   - KITCHEN_TEST="resolver-s3-file-v2"
-  - KITCHEN_TEST="delete-old-deployment-v1"
   - KITCHEN_TEST="delete-old-deployment-v2"
-  #- KITCHEN_TEST="fastcgi-parm-v1"
   - KITCHEN_TEST="fastcgi-parm-v2"
-  #- KITCHEN_TEST="shell-vars-v1"
   - KITCHEN_TEST="shell-vars-v2"
   - KITCHEN_TEST="dotenv-v2"
   - KITCHEN_TEST="custom-config-v2"

@@ -1,10 +1,8 @@
 ---
 driver                    :
-    name                  : <%= if ENV['TRAVIS'] then 'localhost' else 'vagrant' end  %>
-    box                   : "ubuntu/trusty64"
-    customize             :
-         cpus             : 2
-         memory           : 2048 
+    name                  : docker
+    socket                : unix:///var/run/docker.sock
+    use_sudo              : false
 
 provisioner:
     name                  : ansible_push
@@ -17,22 +15,12 @@ provisioner:
     extra_vars            : { 'kitchen_connection': '<%= if ENV["TRAVIS"] then "local" else "smart" end %>', 'kitchen_hosts': '<%= if ENV["TRAVIS"] then "localhost" else "all" end %>' }
 
 platforms:
- - name                   : "v1"
-   provisioner            :
-     ansible_playbook_bin : "$(ansible-version path v1)ansible-playbook"
-
- - name                   : "v2"
-   provisioner            :
-     ansible_playbook_bin : "$(ansible-version path v2)ansible-playbook"
-
- - name                   : docker-u14-v2
-   provisioner            :
-     ansible_playbook_bin : "$(ansible-version path v2)ansible-playbook"
+ - name                   : ubuntu10404-v2.0
    driver_config          :
      image                : quay.io/hellofresh/kitchen-base
      platform             : ubuntu
-   driver                 :
-    name                  : docker
+   provisioner            :
+     ansible_playbook_bin : "$(ansible-version path v2)ansible-playbook"
 
 suites:
   - name                  : user
