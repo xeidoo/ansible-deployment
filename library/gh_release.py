@@ -43,15 +43,18 @@ class GithubReleases(object):
         return self.version
 
     def login(self):
-        # login to github
-        gh = github3.login(token=str(self.token))
-        try:
-            # test if we're actually logged in
-            gh.me()
-        except Exception as e:
-            self.module.fail_json(msg="Failed to connect to Github: {}".format(e))
+        if self.token:
+            # login to github
+            gh = github3.login(token=str(self.token))
+            try:
+                # test if we're actually logged in
+                gh.me()
+            except Exception as e:
+                self.module.fail_json(msg="Failed to connect to Github: {}".format(e))
 
-        self.repository = gh.repository(str(self.user), str(self.repo))
+            self.repository = gh.repository(str(self.user), str(self.repo))
+        else:
+            self.repository = github3.repository(str(self.user), str(self.repo))
 
     def find_a_release(self):
         if self.version == "latest" and self.release_type == "release":
@@ -121,7 +124,7 @@ class GithubReleases(object):
 
     def main(self):
         if self.dest and os.path.exists(self.dest):
-            self.module.exit_json(msg="dest '{}' file exists".format(self.dest), changed=False)
+            self.module.exit_json(msg="dest '{}' file exists".format(self.dest), dest=self.dest, version=self.version, changed=False)
 
         self.login()
         release = self.find_a_release()
