@@ -15,12 +15,20 @@ provisioner:
     extra_vars            : { 'kitchen_connection': '<%= if ENV["TRAVIS"] then "local" else "smart" end %>', 'kitchen_hosts': '<%= if ENV["TRAVIS"] then "localhost" else "all" end %>' }
 
 platforms:
- - name                   : ubuntu10404-v2.0
+ - name                   : ubuntu10404-v2
    driver_config          :
      image                : quay.io/hellofresh/kitchen-base
      platform             : ubuntu
    provisioner            :
-     ansible_playbook_bin : "$(ansible-version path v2)ansible-playbook"
+     ansible_playbook_bin : "$(avm path v2)ansible-playbook"
+
+# - name                   : ubuntu10404-latest
+#    driver_config          :
+#      image                : quay.io/hellofresh/kitchen-base
+#      platform             : ubuntu
+#    provisioner            :
+#      ansible_playbook_bin : "$(avm path latest)ansible-playbook"
+
 
 suites:
   - name                  : user
