@@ -24,7 +24,7 @@
     user="{{ deployment_github_release_repo.split('/')[0] }}"
     repo="{{ deployment_github_release_repo.split('/')[1] }}"
     dest="{{ deployment_github_release_dest | default(omit) }}"
-    dest_temp="{{ deployment_github_release_dest_template | default(omit) }}"
+    dest_template="{{ deployment_github_release_dest_template | default(omit) }}"
     version="{{ deployment_version }}"
     release_type="{{ deployment_github_release_type }}"
     glob="{{ deployment_github_release_glob | default('omit') }}"
@@ -36,6 +36,7 @@
   set_fact:
     deployment_version: "{{ gh_releases_output.version }}"
     gh_release_dest: "{{ gh_releases_output.dest }}"
+    deployment_github_release_dest: "{{ gh_releases_output.dest }}"
   when: gh_releases_output.dest
 
 - name: resolver | github-releases | Ensure working directory exists

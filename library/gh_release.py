@@ -22,7 +22,7 @@ class GithubReleases(object):
         self.module = module
         self.token = self.module.params["token"]
         self.dest = self.module.params["dest"]
-        self.dest_temp = None
+        self.dest_template = self.module.params["dest_template"]
         self.state = self.module.params["state"]
         self.user = self.module.params["user"]
         self.repo = self.module.params["repo"]
@@ -33,8 +33,6 @@ class GithubReleases(object):
         self.download_source = self.module.params["download_source"]
         if self.glob and self.download_source != "None":
             self.module.fail_json(msg="'glob' got '{}' and 'download_source' got '{}' params are mutually exclusive ".format(self.glob, self.download_source))
-        if self.dest and self.dest_temp:
-            self.module.fail_json(msg="'dest' got '{}' and 'dest_temp' got '{}' params are mutually exclusive ".format(self.dest, self.dest_temp))
         ####
         self.full_repo = "{}/{}".format(self.user, self.repo)
         self.repository = None
@@ -134,13 +132,11 @@ class GithubReleases(object):
         # Assign the real github version to local version "so if we use latest it should be resolved
         self.version = release.tag_name
 
-        if self.dest_temp:
-            self.dest_temp = self.dest_temp.replace("${version}", self.version)
-            # assign template destination to real
-            self.dest = self.dest_temp
+        if self.dest_template:
+            self.dest = self.dest.replace("${version}", self.version)
 
-            if os.path.exists(self.dest_temp):
-                self.module.exit_json(msg="dest_temp file exists", dest=self.dest, version=self.version, changed=False)
+            if os.path.exists(self.dest):
+                self.module.exit_json(msg="dest file exists", dest=self.dest, version=self.version, changed=False)
 
 
         download = self.download(release)
@@ -157,7 +153,7 @@ def main():
             user=dict(required=True, type="str"),
             repo=dict(required=True, type="str"),
             dest=dict(required=False, type="str"),
-            dest_temp=dict(required=False, type="str"),
+            dest_template=dict(required=False, type="bool", default=False),
             mode=dict(default="get", choices=["get", "put"]),  # For now we only support getting not releasing
             version=dict(default="latest", type="str"),
             release_type=dict(default="any", choices=["any", "release", "prerelease", "draft"]),
