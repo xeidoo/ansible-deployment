@@ -34,6 +34,8 @@ deployment_github_release_art_dir   : "{{ deployment_dir_base }}/artifacts"
 #deployment_github_release_type      : "any" # "any","release", "prerelease", "draft"
 deployment_github_release_glob      : "*.tar.gz"
 deployment_github_release_dl_file   : "{{ deployment_name }}-{{ deployment_version }}.tgz"
+deployment_github_release_dest      : "{{ deployment_github_release_art_dir }}/{{ deployment_github_release_dl_file }}"
+deployment_github_releases_link_artifact : True
 #deployment_github_release_source    : "None" # Should we get source instead of releases
 #deployment_github_release_token    : Your oauth token
 

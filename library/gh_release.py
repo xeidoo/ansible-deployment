@@ -95,7 +95,7 @@ class GithubReleases(object):
 
     def download(self, release):
         # Source download
-        if self.download_source is not None and self.download_source is not "None":
+        if self.download_source is not None and self.download_source != "None":
             return release.archive(self.download_source, self.dest)
 
         # Look at assets
@@ -104,7 +104,7 @@ class GithubReleases(object):
         asset_2_download = None
         if self.glob:
             for asset in assets:
-                if fnmatch.fnmatch(asset.get("name"), self.glob):
+                if fnmatch.fnmatch(asset.name, self.glob):
                     asset_2_download = asset
                     match += 1
 
