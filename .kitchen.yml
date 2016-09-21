@@ -6,19 +6,27 @@ driver                    :
 
 provisioner:
     name                  : ansible_push
-    verbose               : "vvvv"
+    #verbose               : "vvvv"
+    chef_bootstrap_url    : nil
     ansible_config        : "test/ansible.cfg"
     idempotency_test      : True
     diff                  : True
-    sudo                  : <%= if ENV['TRAVIS'] then 'True' else 'False' end  %>
-    raw_arguments         : <%= if ENV['TRAVIS'] then '-c local' else '' end %>
     extra_vars            : { 'kitchen_connection': '<%= if ENV["TRAVIS"] then "local" else "smart" end %>', 'kitchen_hosts': '<%= if ENV["TRAVIS"] then "localhost" else "all" end %>' }
 
+verifier:
+  name: serverspec
+  remote_exec             : false
+  default_patterns     : true
+
+
 platforms:
- - name                   : ubuntu10404-v2
+ - name                   : ubuntu10404
    driver_config          :
      image                : quay.io/hellofresh/kitchen-base
      platform             : ubuntu
+     provision_command     : echo "kitchen:$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)" | sudo chpasswd
+
+
    provisioner            :
      ansible_playbook_bin : "$(avm path v2)ansible-playbook"
 
@@ -30,7 +38,12 @@ platforms:
 #      ansible_playbook_bin : "$(avm path latest)ansible-playbook"
 
 
-suites:
+suites                    :
+
+  - name                  : ghrelease
+    provisioner           :
+        playbook          : "test/integration/ghrelease/source.yml"
+
   - name                  : user
     provisioner           :
         playbook          : "test/integration/user/user.yml"
