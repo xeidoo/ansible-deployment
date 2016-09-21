@@ -78,22 +78,19 @@
   notify:
      - restart app
 
-- fail:
-    msg="msg"
-
-- name: resolver | s3 | Link artifact in work dir
+- name: resolver | github-releases | Link artifact in work dir
   file:
-    src="{{ deployment_s3_art_dir }}/{{ deployment_s3_object_name }}"
-    dest="{{ deployment_dir_work }}/{{ deployment_s3_object_name }}"
+    src="{{ deployment_github_release_dest }}"
+    dest="{{ deployment_dir_work }}/{{ deployment_github_release_dl_file }}"
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
     state=link
   become_user: "{{ deployment_user }}"
-  when: deployment_s3_link_artifact is defined and deployment_s3_link_artifact
+  when: deployment_github_releases_link_artifact is defined and deployment_github_releases_link_artifact
 
-- name: resolver | s3 | Put unarchive guard file
+- name: resolver | github-releases | Put unarchive guard file
   copy:
     content=""
-    dest="{{ deployment_dir_work }}/.s3_unarchive"
+    dest="{{ deployment_dir_work }}/._unarchive"
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"

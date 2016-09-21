@@ -104,7 +104,7 @@ class GithubReleases(object):
         asset_2_download = None
         if self.glob:
             for asset in assets:
-                if fnmatch.fnmatch(asset.get("name"), self.glob):
+                if fnmatch.fnmatch(asset.name, self.glob):
                     asset_2_download = asset
                     match += 1
 
