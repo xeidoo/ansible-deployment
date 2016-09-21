@@ -96,7 +96,7 @@ class GithubReleases(object):
     def download(self, release):
         # Source download
         if self.download_source is not None and self.download_source is not "None":
-            return release.archive("tarball", self.dest)
+            return release.archive(self.download_source, self.dest)
 
         # Look at assets
         assets = release.assets()
