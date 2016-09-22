@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/ahelal/kitchen-verifier-serverspec.git
+  revision: d9cdb510e2ea90db65264284e82158b8416c886f
+  branch: feature/default_pattern
+  specs:
+    kitchen-verifier-serverspec (0.5.2)
+      net-ssh (~> 3)
+      test-kitchen (~> 1.4)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -7,9 +16,6 @@ GEM
       test-kitchen
     kitchen-docker (2.6.0)
       test-kitchen (>= 1.0.0)
-    kitchen-verifier-serverspec (0.5.2)
-      net-ssh (~> 3)
-      test-kitchen (~> 1.4)
     mixlib-install (1.2.2)
       artifactory
       mixlib-shellout
@@ -67,7 +73,7 @@ PLATFORMS
 DEPENDENCIES
   kitchen-ansiblepush
   kitchen-docker
-  kitchen-verifier-serverspec (~> 0.5.2)
+  kitchen-verifier-serverspec!
   net-ssh
   serverspec
   test-kitchen

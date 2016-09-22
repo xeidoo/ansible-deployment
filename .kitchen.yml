@@ -16,7 +16,7 @@ provisioner:
 verifier:
   name: serverspec
   remote_exec             : false
-  default_patterns     : true
+  default_pattern         : true
 
 
 platforms:
