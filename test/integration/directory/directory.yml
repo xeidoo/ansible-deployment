@@ -3,7 +3,6 @@
   hosts        : "all"
   gather_facts : no
   become       : True
-  connection   : "{{ kitchen_connection | default('local') }}"
   vars         :
                  deployment_dir                      : True
                  deployment_user_manage              : True

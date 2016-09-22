@@ -1,10 +1,9 @@
 ---
 
-- name         : Delete old deployments 
+- name         : Delete old deployments
   hosts        : "all"
   gather_facts : no
   become       : True
-  connection   : "{{ kitchen_connection | default('local') }}"
   vars         :
                  deployment_name                     : "test"
                  deployment_version                  : "latest-dev"
@@ -26,5 +25,5 @@
                  deployment_dir_current              : "{{ deployment_dir_base }}/current"
 
   roles        :
-                 - "example_deployment" 
+                 - "example_deployment"
                  - "ansible-deployment"

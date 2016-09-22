@@ -15,3 +15,7 @@
 - name: resolver | main | Include s3.yml
   include: s3.yml
   when: deployment_resolver == "s3"
+
+- name: resolver | main | Include github_releases.yml
+  include: github_releases.yml
+  when: deployment_resolver == "github_releases"

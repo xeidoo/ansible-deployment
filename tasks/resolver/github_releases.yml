@@ -1,0 +1,97 @@
+---
+
+- name: resolver | github-releases  | Install github stuff
+  pip:
+   name="{{ item.name }}"
+   extra_args="{{ item.extra_args | default(omit)}}"
+  with_items:
+     - name: github3.py
+       extra_args: "--pre"
+     - name: semver
+
+- name: resolver | github-releases | Ensure artifact directory exists
+  file:
+    path="{{ item }}"
+    state=directory
+    mode="{{ deployment_dir_perm }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+  with_items:
+    - "{{ deployment_s3_art_dir }}"
+
+- name: resolver | github-releases | Get github releases
+  gh_release:
+    user="{{ deployment_github_release_repo.split('/')[0] }}"
+    repo="{{ deployment_github_release_repo.split('/')[1] }}"
+    dest="{{ deployment_github_release_dest | default(omit) }}"
+    dest_template="{{ deployment_github_release_dest_template | default(omit) }}"
+    version="{{ deployment_version }}"
+    release_type="{{ deployment_github_release_type }}"
+    glob="{{ deployment_github_release_glob | default('omit') }}"
+    download_source="{{ deployment_github_release_source | default('None') }}"
+    token="{{ deployment_github_release_token | default('omit') }}"
+  register: gh_releases_output
+
+- name: resolver | github-releases | Set reoslved version gh_release_dest
+  set_fact:
+    deployment_version: "{{ gh_releases_output.version }}"
+    gh_release_dest: "{{ gh_releases_output.dest }}"
+    deployment_github_release_dest: "{{ gh_releases_output.dest }}"
+  when: gh_releases_output.dest
+
+- name: resolver | github-releases | Ensure working directory exists
+  file:
+    path="{{ item }}"
+    state=directory
+    mode="{{ deployment_dir_perm }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+  with_items:
+    - "{{ deployment_dir_work }}"
+
+- name: resolver | github-releases | Ensure artifact perm is correct
+  file:
+    path="{{ gh_release_dest }}"
+    mode="0640"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+
+- name: resolver | github-releases | Unarchive artifact ansible (if no guard)
+  unarchive:
+    src="{{ gh_release_dest }}"
+    dest="{{ deployment_dir_work }}"
+    copy="no"
+    mode="{{ deployment_dir_perm }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+    creates="{{ deployment_dir_work }}/._unarchive"
+  when: deployment_unarchive == "ansible"
+  notify:
+     - restart app
+
+- name: resolver | github-releases | Unarchive artifact custom (if no guard)
+  command: "{{ deployment_unarchive }}"
+  args:
+      creates: "{{ deployment_dir_work }}/._unarchive"
+  when: deployment_unarchive != "ansible"
+  become_user: "{{ deployment_user }}"
+  register: custom_unarchive
+  notify:
+     - restart app
+
+- name: resolver | github-releases | Link artifact in work dir
+  file:
+    src="{{ deployment_github_release_dest }}"
+    dest="{{ deployment_dir_work }}/{{ deployment_github_release_dl_file }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+    state=link
+  become_user: "{{ deployment_user }}"
+  when: deployment_github_releases_link_artifact is defined and deployment_github_releases_link_artifact
+
+- name: resolver | github-releases | Put unarchive guard file
+  copy:
+    content=""
+    dest="{{ deployment_dir_work }}/._unarchive"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"

@@ -1,8 +1,4 @@
-require 'serverspec'
-
-# Required by serverspec
-set :backend, :exec
-
+require_relative '../../helper_spec.rb'
 
 describe file('/opt/manage/theapp') do
     it { should exist }

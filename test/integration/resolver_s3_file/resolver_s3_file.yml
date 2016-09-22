@@ -6,7 +6,6 @@
   hosts        : "all"
   gather_facts : no
   become       : True
-  connection   : "{{ kitchen_connection | default('local') }}"
   vars         :
                  deployment_name                     : "test"
                  deployment_version                  : "latest-dev"
@@ -24,7 +23,7 @@
                  deployment_s3_bucket                : "a_bucket"
 #                 deployment_s3_object_path           : "{{ deployment_name }}"
                  deployment_s3_art_dir               : "{{ deployment_dir_base }}/artifacts"
-                 deployment_s3_unarchive             : "/bin/tar -C '{{ deployment_dir_work }}' --extract -zf {{ deployment_s3_art_dir }}/{{ deployment_s3_object_name }}"
+                 deployment_unarchive                : "/bin/tar -C '{{ deployment_dir_work }}' --extract -zf {{ deployment_s3_art_dir }}/{{ deployment_s3_object_name }}"
                  deployment_s3_aws_key_id            : "abc"
                  deployment_s3_aws_secret_key        : "123"
 

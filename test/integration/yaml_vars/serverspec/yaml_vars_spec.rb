@@ -1,8 +1,4 @@
-require 'serverspec'
-
-# Required by serverspec
-set :backend, :exec
-
+require_relative '../../helper_spec.rb'
 
 yaml_file_content="""myvar1: 'True'
 myvar2: 'False'

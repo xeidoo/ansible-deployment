@@ -3,7 +3,6 @@
   hosts        : "all"
   gather_facts : no
   become       : True
-  connection   : "{{ kitchen_connection | default('local') }}"
   vars         :
                  deployment_dir                      : False
                  deployment_user_manage              : True
@@ -22,7 +21,6 @@
   hosts        : "all"
   gather_facts : no
   become       : True
-  connection   : "{{ kitchen_connection | default('local') }}"
   vars         :
                  deployment_dir                      : False
                  deployment_user_manage              : True
@@ -66,3 +64,9 @@
                                                         -----END RSA PRIVATE KEY-----
   roles        :
                  - "ansible-deployment"
+  pre_tasks:
+    - name: where are we running
+      command: hostname
+      changed_when: False
+      register: xxx
+    - debug: var=xxx
