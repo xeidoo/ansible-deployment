@@ -22,6 +22,7 @@ RSpec.configure do |config|
       :keys => [ ENV['KITCHEN_SSH_KEY'] ],
       :keys_only => true,
       :paranoid => false,
+      :use_agent => false,
       :verbose => :error
     set :backend, :ssh
     set :request_pty, true
