@@ -1,7 +1,4 @@
-require 'serverspec'
-
-# Required by serverspec
-set :backend, :exec
+require_relative '../../helper_spec.rb'
 
 service_file_contnent="""status
 reload

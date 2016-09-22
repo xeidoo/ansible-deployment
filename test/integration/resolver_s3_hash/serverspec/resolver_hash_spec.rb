@@ -1,7 +1,4 @@
-require 'serverspec'
-
-# Required by serverspec
-set :backend, :exec
+require_relative '../../helper_spec.rb'
 
 git_hash = "f4c25aaf062ab8d1a9079e7b9f9b86a71daa8f2a"
 

@@ -1,8 +1,4 @@
-require 'serverspec'
-
-# Required by serverspec
-set :backend, :exec
-
+require_relative '../../helper_spec.rb'
 
 fastcgi_file_content="""# Ansible managed, Don't modify manually
 
