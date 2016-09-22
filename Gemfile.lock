@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ahelal/kitchen-verifier-serverspec.git
-  revision: d9cdb510e2ea90db65264284e82158b8416c886f
+  revision: 0ea2d882c5bdfa2403686509fbe828ff1cc1d1c5
   branch: feature/default_pattern
   specs:
     kitchen-verifier-serverspec (0.5.2)

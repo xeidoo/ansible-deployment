@@ -40,9 +40,9 @@ platforms:
 
 suites                    :
 
-  # - name                  : ghrelease
-  #   provisioner           :
-  #       playbook          : "test/integration/ghrelease/source.yml"
+  - name                  : ghrelease
+    provisioner           :
+        playbook          : "test/integration/ghrelease/source.yml"
 
   - name                  : user
     provisioner           :
