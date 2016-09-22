@@ -11,7 +11,6 @@ provisioner:
     ansible_config        : "test/ansible.cfg"
     idempotency_test      : True
     diff                  : True
-    extra_vars            : { 'kitchen_connection': '<%= if ENV["TRAVIS"] then "local" else "smart" end %>', 'kitchen_hosts': '<%= if ENV["TRAVIS"] then "localhost" else "all" end %>' }
 
 verifier:
   name: serverspec

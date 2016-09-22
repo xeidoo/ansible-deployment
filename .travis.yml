@@ -23,7 +23,7 @@ before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq python-apt python-pycurl git python-pip ruby ruby-dev build-essential autoconf
   - gem install bundler
-  #
+
 install:
   - bash test/ansible-setup.sh
   - bundle install
@@ -31,8 +31,7 @@ install:
 script:
     - ansible --version
     - bundle show
-    - export TRAVIS=True
-    - bundle exec kitchen test ${KITCHEN_TEST} -l debug
+    - bundle exec kitchen test ${KITCHEN_TEST}
 
 after_success:
     - echo "Success"
