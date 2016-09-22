@@ -3,7 +3,6 @@
   hosts        : "all"
   gather_facts : no
   become       : True
-  connection   : "{{ kitchen_connection | default('local') }}"
   vars         :
                  deployment_name                     : "test"
                  deployment_version                  : "f4c25aaf062ab8d1a9079e7b9f9b86a71daa8f2a"

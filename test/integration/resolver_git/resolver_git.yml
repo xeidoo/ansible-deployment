@@ -3,7 +3,6 @@
   hosts        : "all"
   gather_facts : no
   become       : True
-  connection   : "{{ kitchen_connection | default('local') }}"
   vars         :
                  deployment_name                     : "deployment"
                  deployment_version                  : "0.1.7"
@@ -26,7 +25,7 @@
                  deployment_extra_files              : [ '/theapp.txt' ]
 
                  deployment_post                     : True
-                 deployment_post_check_config        : 
+                 deployment_post_check_config        :
                           - "touch /tmp/deployment_post_check_config_1"
                           - "touch /tmp/deployment_post_check_config_2"
                  deployment_post_services            :
@@ -34,11 +33,11 @@
                                                           state: "reloaded"
                                                         - name: logging
 
-                 logging_service                     : | 
+                 logging_service                     : |
                                                          #!/bin/bash
                                                          echo $1 >> /tmp/logging_service
   pre_tasks    :
-                - name: Install git 
+                - name: Install git
                   apt:
                     name=git
                     update_cache=yes

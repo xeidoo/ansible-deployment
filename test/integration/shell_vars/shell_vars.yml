@@ -3,7 +3,6 @@
   hosts        : "all"
   gather_facts : no
   become       : True
-  connection   : "{{ kitchen_connection | default('local') }}"
   vars         :
                  deployment_name                     : "deployment"
                  deployment_version                  : "0.1.7"
@@ -21,7 +20,7 @@
                  deployment_dir_current              : "{{ deployment_dir_base }}/current"
 
                  deployment_config_shell_vars_export : True
-                 deployment_config_shell_vars        : 
+                 deployment_config_shell_vars        :
                                       myvar1         : "True"
                                       myvar2         : "False"
                  deployment_config_shell_vars_dest   : "/tmp/shell_vars_file.txt"
@@ -33,7 +32,6 @@
   hosts        : "all"
   gather_facts : no
   become       : True
-  connection   : "{{ kitchen_connection | default('local') }}"
   vars         :
                  deployment_name                     : "deployment"
                  deployment_version                  : "0.1.7"
