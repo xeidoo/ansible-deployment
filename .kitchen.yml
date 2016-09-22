@@ -20,7 +20,7 @@ verifier:
 
 
 platforms:
- - name                   : ubuntu10404
+ - name                   : ubuntu1404
    driver_config          :
      image                : quay.io/hellofresh/kitchen-base
      platform             : ubuntu
@@ -40,9 +40,9 @@ platforms:
 
 suites                    :
 
-  - name                  : ghrelease
-    provisioner           :
-        playbook          : "test/integration/ghrelease/source.yml"
+  # - name                  : ghrelease
+  #   provisioner           :
+  #       playbook          : "test/integration/ghrelease/source.yml"
 
   - name                  : user
     provisioner           :
