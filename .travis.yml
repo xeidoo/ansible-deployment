@@ -30,6 +30,7 @@ install:
 
 script:
     - ansible --version
+    - bundle show
     - export TRAVIS=True
     - bundle exec kitchen test $KITCHEN_TEST
 
