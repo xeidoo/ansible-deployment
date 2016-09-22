@@ -32,7 +32,7 @@ script:
     - ansible --version
     - bundle show
     - export TRAVIS=True
-    - bundle exec kitchen test $KITCHEN_TEST
+    - bundle exec kitchen test ${KITCHEN_TEST} -l debug
 
 after_success:
     - echo "Success"
