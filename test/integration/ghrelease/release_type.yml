@@ -1,0 +1,31 @@
+---
+- name         : release type
+  hosts        : "all"
+  gather_facts : no
+  become       : True
+  pre_tasks    :
+    - name: Install apt
+      apt:
+        name=python-pip
+
+    - name:  Install github stuff
+      pip:
+       name="{{ item.name }}"
+       extra_args="{{ item.extra_args | default(omit)}}"
+      with_items:
+         - name: github3.py
+           extra_args: "--pre"
+         - name: semver
+         - name: uritemplate
+
+  tasks         :
+    - name : draft download source
+      gh_release:
+        user="hellofresh"
+        repo="ansible-deployment"
+        dest="/tmp/draft.tar.gz"
+        version="latest"
+        release_type="draft"
+      register: gh_releases_output
+
+

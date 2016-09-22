@@ -1,7 +1,4 @@
-require 'serverspec'
-
-# Required by serverspec
-set :backend, :exec
+require_relative '../../helper_spec.rb'
 
 describe "deploy2 user" do
 
@@ -9,7 +6,7 @@ describe "deploy2 user" do
       it { should exist }
     end
 
-    describe user('deploy2') do  
+    describe user('deploy2') do
       it { should exist }
       it { should belong_to_group 'master2' }
       it { should have_home_directory '/opt/manage2' }

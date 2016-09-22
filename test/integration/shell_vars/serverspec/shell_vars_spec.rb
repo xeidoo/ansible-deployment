@@ -1,8 +1,4 @@
-require 'serverspec'
-
-# Required by serverspec
-set :backend, :exec
-
+require_relative '../../helper_spec.rb'
 
 shell_file_contnent="""# Ansible managed, Don't modify manually
 

@@ -1,0 +1,59 @@
+---
+- name         : Source
+  hosts        : "all"
+  gather_facts : no
+  become       : True
+  pre_tasks    :
+
+    - name: Install apt
+      apt:
+        name=python-pip
+
+    - name:  Install github stuff
+      pip:
+       name="{{ item.name }}"
+       extra_args="{{ item.extra_args | default(omit)}}"
+      with_items:
+         - name: github3.py
+           extra_args: "--pre"
+         - name: semver
+         - name: uritemplate
+      ignore_errors: true
+
+  tasks         :
+    - name : 2.2.0.tar.gz download source
+      gh_release:
+        user="concourse"
+        repo="concourse"
+        dest="/tmp/concourse-2.2.0.tar.gz"
+        version="v2.2.0"
+        download_source="tarball"
+      register: gh_releases_output
+
+    - name : 2.2.0.zip download source
+      gh_release:
+        user="concourse"
+        repo="concourse"
+        dest="/tmp/concourse-2.2.0.zip"
+        version="v2.2.0"
+        download_source="zipball"
+      register: gh_releases_output
+
+    - name : 2.1.0.tar.gz download source
+      gh_release:
+        user="concourse"
+        repo="concourse"
+        dest="/tmp/concourse-2.1.0.tar.gz"
+        version="v2.1.0"
+        download_source="tarball"
+      register: gh_releases_output
+
+    - name : 2.1.0.zip download source
+      gh_release:
+        user="concourse"
+        repo="concourse"
+        dest="/tmp/concourse-2.1.0.zip"
+        version="v2.1.0"
+        download_source="zipball"
+      register: gh_releases_output
+

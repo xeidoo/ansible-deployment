@@ -1,8 +1,4 @@
-require 'serverspec'
-
-# Required by serverspec
-set :backend, :exec
-# TODO add 
+require_relative '../../helper_spec.rb'
 
 base_dir = "/opt/manage/test"
 
