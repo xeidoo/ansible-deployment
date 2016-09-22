@@ -6,6 +6,11 @@ describe "deploy user" do
       it { should exist }
     end
 
+    describe command('hostname') do
+      its(:stdout) { should match 'WRONG' }
+    end
+
+
     describe user('deploy') do
       it { should exist }
       it { should belong_to_group 'master' }
