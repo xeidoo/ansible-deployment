@@ -5,6 +5,7 @@ services:
   - docker
 
 env:
+  - KITCHEN_TEST="ghrelease"
   - KITCHEN_TEST="user"
   - KITCHEN_TEST="directory"
   - KITCHEN_TEST="resolver-git"
