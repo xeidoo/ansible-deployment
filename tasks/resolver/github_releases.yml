@@ -17,7 +17,7 @@
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
   with_items:
-    - "{{ deployment_s3_art_dir }}"
+    - "{{ deployment_github_release_art_dir }}"
 
 - name: resolver | github-releases | Get github releases
   gh_release:
