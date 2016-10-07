@@ -29,7 +29,6 @@ deployment_s3_aws_secret_key        : "{{ lookup('env','AWS_SECRET_ACCESS_KEY') 
 
 # Github releases Resolver
 deployment_github_release_repo      : "hellofresh/ansible-deployment"
-deployment_github_release_version   : "latest"
 deployment_github_release_art_dir   : "{{ deployment_dir_base }}/artifacts"
 #deployment_github_release_type      : "any" # "any","release", "prerelease", "draft"
 deployment_github_release_glob      : "*.tar.gz"
