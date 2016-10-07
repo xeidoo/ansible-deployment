@@ -25,7 +25,7 @@
     repo="{{ deployment_github_release_repo.split('/')[1] }}"
     dest="{{ deployment_github_release_dest | default(omit) }}"
     dest_template="{{ deployment_github_release_dest_template | default(omit) }}"
-    version="{{ deployment_github_release_version }}"
+    version="{{ deployment_version }}"
     release_type="{{ deployment_github_release_type }}"
     glob="{{ deployment_github_release_glob | default('omit') }}"
     download_source="{{ deployment_github_release_source | default('None') }}"
@@ -34,7 +34,7 @@
 
 - name: resolver | github-releases | Set reoslved version gh_release_dest
   set_fact:
-    deployment_github_release_version: "{{ gh_releases_output.version }}"
+    deployment_version: "{{ gh_releases_output.version }}"
     gh_release_dest: "{{ gh_releases_output.dest }}"
     deployment_github_release_dest: "{{ gh_releases_output.dest }}"
   when: gh_releases_output.dest
