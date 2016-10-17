@@ -26,14 +26,6 @@ EXAMPLES = '''
 - delete_old_deployments: path=/deployments/app/ keep_last=3
 '''
 
-
-def is_valid_version(version):
-    parsed_version = parse_version(version)
-    if type(parsed_version) == SetuptoolsVersion:
-        return version
-    else:
-        return None
-
 def exec_command(module, command, cwd=None):
     rc, out, err = module.run_command(command, cwd=cwd, use_unsafe_shell=True)
     if rc != 0:
@@ -47,11 +39,10 @@ def get_git_hash_dir(module, deployment_dir):
     return hash_dirs
 
 def get_sem_ver_dir(module, deployment_dir):
-    command = "find . -maxdepth 1 -type d -exec printf '{}\n' \; | sed 's/.\|.\///'"
+    command = "find . -maxdepth 1 -type d | sort | grep '^\.\/[0-9+]\.[0-9+]\.[0-9+]'"
     hash_dirs = exec_command(module, command, deployment_dir)
     hash_dirs = hash_dirs.split("\n")
-
-    return map(is_valid_version, hash_dirs)
+    return hash_dirs
 
 def main():
     changed = False
@@ -124,7 +115,7 @@ import glob
 import os.path
 import subprocess
 from ansible.module_utils.basic import *
-from pkg_resources import parse_version, SetuptoolsVersion
+
 if __name__ == '__main__':
     main()
 
