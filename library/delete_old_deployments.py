@@ -11,7 +11,7 @@ description:
 options:
   deployment_path:
     description:
-      - Path of deployment dir 
+      - Path of deployment dir
     required: true
     default: null
   keep_last:
@@ -32,6 +32,18 @@ def exec_command(module, command, cwd=None):
         module.fail_json(msg="Failed to issue command '%s' because stdout='%s' stderr='%s'" % (command, out, err))
     return out
 
+def get_git_hash_dir(module, deployment_dir):
+    command = "find . -maxdepth 1 -type d -exec printf '{}\n' \; | awk 'length==42' | sed 's|./||'"
+    hash_dirs = exec_command(module, command, deployment_dir)
+    hash_dirs = hash_dirs.split("\n")
+    return hash_dirs
+
+def get_sem_ver_dir(module, deployment_dir):
+    command = "find . -maxdepth 1 -type d | sort | grep '^\.\/[0-9+]\.[0-9+]\.[0-9+]'"
+    hash_dirs = exec_command(module, command, deployment_dir)
+    hash_dirs = hash_dirs.split("\n")
+    return hash_dirs
+
 def main():
     changed = False
     files_to_delete = 0
@@ -40,21 +52,25 @@ def main():
         argument_spec = dict(
             path      = dict(required=True, type='str'),
             keep_last = dict(required=True, type='int'),
+            use_semantic_versioning = dict(default=False, required=False, type='bool'),
         ),
     )
-    deployment_dir    = module.params['path']
-    keep_last         = module.params['keep_last']
-
+    deployment_dir      = module.params['path']
+    keep_last           = module.params['keep_last']
+    semantic_versioning = module.params['use_semantic_versioning']
     # keep deployment info
     list_deployment = []
     broken_deployment_dir = []
-    command = "find . -maxdepth 1 -type d -exec printf '{}\n' \; | awk 'length==42' | sed 's|./||'"
-    hash_dirs = exec_command(module, command, deployment_dir)
-    hash_dirs = hash_dirs.split("\n")
+
+    if semantic_versioning:
+        hash_dirs = get_sem_ver_dir(module, deployment_dir)
+    else:
+        hash_dirs = get_git_hash_dir(module, deployment_dir)
+
     ## Remove empty lists
-    hash_dirs = filter(None, hash_dirs) 
+    hash_dirs = filter(None, hash_dirs)
     for hash_dir in hash_dirs:
-        # Fet earliest date of deployment 
+        # Fet earliest date of deployment
         glob_path = os.path.join(deployment_dir, hash_dir,  "*.deployment.date")
         deployment_dates = glob.glob(glob_path)
         # Sort in case we have mutli deployment. We will take the oldest 1
@@ -74,7 +90,7 @@ def main():
         # Get only items that will be deleted
         list_deployment = list_deployment[0:deployments2deleted]
         for dir_2_delete in list_deployment:
-            changed = True 
+            changed = True
             # Remove any symlinks first inside the dir
             remove_link_cmd = "find %s -maxdepth 1 -type l -exec readlink -f {} \; | xargs rm -f" % os.path.join(deployment_dir,dir_2_delete.get("hash_dir"))
             exec_command(module, remove_link_cmd, deployment_dir)
@@ -99,6 +115,7 @@ import glob
 import os.path
 import subprocess
 from ansible.module_utils.basic import *
+
 if __name__ == '__main__':
     main()
 
