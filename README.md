@@ -122,6 +122,7 @@ deployment_dependency_pip_args      :
 # Should we keep old deployment
 deployment_delete_old               : False
 deployment_keep_last                : 3
+deployment_use_semantic_versioning  : False
 
 ## Post deployment managment
 deployment_post                     : False
