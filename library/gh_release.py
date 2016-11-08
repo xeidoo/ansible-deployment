@@ -63,6 +63,11 @@ class GithubReleases(object):
         elif self.version == "latest":
             # We need to filter
             pass
+        elif self.version != "latest" and self.release_type == "draft":
+            # Specify a draft release version 
+            for release in self.repository.releases():
+                if release.tag_name == self.version:
+                    return release
         else:
             # Get a specific release not latest
             release_from_tag = self.repository.release_from_tag(self.version)
