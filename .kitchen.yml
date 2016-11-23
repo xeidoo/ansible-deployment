@@ -6,7 +6,7 @@ driver                    :
 
 provisioner:
     name                  : ansible_push
-    #verbose               : "vvvv"
+    verbose               : "vvvv"
     chef_bootstrap_url    : nil
     ansible_config        : "test/ansible.cfg"
     idempotency_test      : True
@@ -21,13 +21,13 @@ verifier:
 platforms:
  - name                   : ubuntu1404
    driver_config          :
-     image                : quay.io/hellofresh/kitchen-base
+     image                : ubuntu:trusty
      platform             : ubuntu
      provision_command     : echo "kitchen:$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)" | sudo chpasswd
 
 
    provisioner            :
-     ansible_playbook_bin : "$(avm path v2)ansible-playbook"
+     ansible_playbook_bin : "$(avm path v2.0)ansible-playbook"
 
 # - name                   : ubuntu10404-latest
 #    driver_config          :

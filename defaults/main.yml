@@ -4,12 +4,14 @@ deployment_name                     : "testApp"
 deployment_gh_project               : "https://github.com/hellofresh/ansible-deployment/commit/{{ deployment_version }}"
 # Version depands on resolver. If your using github as a resolver version could be branch/tag/git 40 char hash
 deployment_version                  : "master"
-
 # Where to get the code supported resolver ['none', git', 's3', 'github_releases']
 deployment_resolver                 : 'none'
 
 ## How we handle unarchive
 deployment_unarchive             : "ansible"
+
+#
+deployment_latest_resolver          : false
 
 ## GIT Resolver
 deployment_git_repo                 : "git@github.com:hellofresh/ansible-deployment.git"
@@ -25,7 +27,6 @@ deployment_s3_object_path           : "" # Optional path
 deployment_s3_art_dir               : "{{ deployment_dir_base }}/artifacts"
 deployment_s3_aws_key_id            : "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
 deployment_s3_aws_secret_key        : "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
-
 
 # Github releases Resolver
 deployment_github_release_repo      : "hellofresh/ansible-deployment"

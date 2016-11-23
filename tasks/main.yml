@@ -1,11 +1,5 @@
 ---
 
-  # Maintain old path behaviour for v1 
-- name: Set path for V1
-  set_fact:
-    path_for_template: "../../templates/"
-  when: ansible_version.major == 1
-
 - name: main | Check if first boot file exists
   stat:
     path="{{ deployment_guard_file }}"
@@ -37,3 +31,14 @@
     content=""
     dest="{{ deployment_guard_file }}"
   when: not deployment_guard.stat.exists or deployment_force
+
+- name: main | Resolve latest (if deployment is skipped)
+  stat:
+      path="{{ deployment_dir_current }}"
+  register: var_currnet_deployment_dir_current
+  when: (deployment_guard.stat.exists and not deployment_force) and (deployment_latest_resolver and 'latest' in deployment_version)
+
+- name: main | Set deployment_version to resolved version (if deployment is skipped)
+  set_fact:
+    deployment_version: "{{ var_currnet_deployment_dir_current.stat.lnk_source | basename }}"
+  when: (deployment_guard.stat.exists and not deployment_force) and (deployment_latest_resolver and 'latest' in deployment_version)
