@@ -12,9 +12,9 @@ INSTALL_TYPE[0]="pip"
 ANSIBLE_LABEL[0]="v2.0"
 
 ## Install Ansible 2.2
-ANSIBLE_VERSIONS[0]="2.2.0.0"
-INSTALL_TYPE[0]="pip"
-ANSIBLE_LABEL[0]="v2.2"
+ANSIBLE_VERSIONS[1]="2.2.0.0"
+INSTALL_TYPE[1]="pip"
+ANSIBLE_LABEL[1]="v2.2"
 
 # Whats the default version
 ANSIBLE_DEFAULT_VERSION="v2.0"
