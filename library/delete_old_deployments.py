@@ -39,7 +39,7 @@ def get_git_hash_dir(module, deployment_dir):
     return hash_dirs
 
 def get_sem_ver_dir(module, deployment_dir):
-    command = "find . -maxdepth 1 -type d | sort | grep '^\.\/[0-9+]\.[0-9+]\.[0-9+]' | sed 's|./||'"
+    command = "find . -maxdepth 1 -type d | sort | grep -E '^\.\/[0-9]+\.[0-9]+\.[0-9]+(-\w+\.[0-9]+)?$' | sed 's|./||'"
     hash_dirs = exec_command(module, command, deployment_dir)
     hash_dirs = hash_dirs.split("\n")
     return hash_dirs
