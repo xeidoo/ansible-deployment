@@ -112,10 +112,10 @@
 
 - name: Generic deployment notification
   uri:
-    url="{{ deployment_notification_generic_uri  }}"
+    url="{{ deployment_notification_generic_uri }}"
     method="{{ deployment_notification_generic_method | deault('POST') }}"
-    status_code="{{ deployment_notification_generic_success_code | default("200") }}"
-    body="{{ deployment_notification_generic_body | defaults(omit) }}'
+    status_code="{{ deployment_notification_generic_success_code | default('200'') }}"
+    body="{{ deployment_notification_generic_body | defaults(omit) }}"
     HEADER_Authorization="{{ deployment_notification_generic_header_authorization | defaults(omit) }}"
     HEADER_Content-Type="{{ deployment_notification_generic_header_content_type | defaults(omit) }}"
   connection: local
