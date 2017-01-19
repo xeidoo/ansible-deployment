@@ -22,6 +22,7 @@
     - Slack notification
     - Newrelic deployment notification
     - Graphite deployment notification
+    - Generic deployment notification
 
 - name: check app config
   command: "{{ item }}"
@@ -81,7 +82,7 @@
   when: deployment_notification_slack
 
 - name: Newrelic deployment notification
-  newrelic_deployment: 
+  newrelic_deployment:
     app_name="{{ deployment_notification_newrelic_app_name | default(deployment_name) }}"
     application_id="{{ deployment_notification_newrelic_application_id | default(omit) }}"
     changelog="{{ deployment_notification_newrelic_changelog | default(omit) }}"
@@ -108,6 +109,20 @@
   become: False
   delegate_to: localhost
   when: deployment_notification_graphite and not notify_task_failed
+
+- name: Generic deployment notification
+  uri:
+    url="{{ deployment_notification_generic_uri  }}"
+    method="{{ deployment_notification_generic_method | deault('POST') }}"
+    status_code="{{ deployment_notification_generic_success_code | default("200") }}"
+    body="{{ deployment_notification_generic_body | defaults(omit) }}'
+    HEADER_Authorization="{{ deployment_notification_generic_header_authorization | defaults(omit) }}"
+    HEADER_Content-Type="{{ deployment_notification_generic_header_content_type | defaults(omit) }}"
+  connection: local
+  become: False
+  ignore_errors: True
+  delegate_to: localhost
+  when: deployment_notification_generic and not notify_task_failed
 
 #- name: post deployment | Fail on incorrect payload
 #   fail:
