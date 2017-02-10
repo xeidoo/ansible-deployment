@@ -1,14 +1,9 @@
 #!/usr/bin/python
 
-from ansible.module_utils.basic import *
-from ansible.module_utils.urls import *
+from ansible.module_utils.basic import AnsibleModule
 import fnmatch
 import os
-try:
-    import github3
-    HAS_GITHUB_API = True
-except ImportError:
-    HAS_GITHUB_API = False
+from library import github
 
 try:
     import semver
@@ -35,24 +30,20 @@ class GithubReleases(object):
             self.module.fail_json(msg="'glob' got '{}' and 'download_source' got '{}' params are mutually exclusive ".format(self.glob, self.download_source))
         ####
         self.full_repo = "{}/{}".format(self.user, self.repo)
+        self.github = github.Client(self.token)
         self.repository = None
 
     def treat(self):
         return self.version
 
     def login(self):
-        if self.token:
-            # login to github
-            gh = github3.login(token=str(self.token))
-            try:
-                # test if we're actually logged in
-                gh.me()
-            except Exception as e:
-                self.module.fail_json(msg="Failed to connect to Github: {}".format(e))
+        try:
+            # test if we're actually logged in
+            self.github.me()
+        except Exception as e:
+            self.module.fail_json(msg="Failed to connect to Github: {}".format(e))
 
-            self.repository = gh.repository(str(self.user), str(self.repo))
-        else:
-            self.repository = github3.repository(str(self.user), str(self.repo))
+        self.repository = self.github.repository(self.user, self.repo).releases()
 
     def find_a_release(self):
         if self.version == "latest" and self.release_type == "release":
@@ -64,7 +55,7 @@ class GithubReleases(object):
             # We need to filter
             pass
         elif self.version != "latest" and self.release_type == "draft":
-            # Specify a draft release version 
+            # Specify a draft release version
             for release in self.repository.releases():
                 if release.tag_name == self.version:
                     return release
@@ -143,13 +134,13 @@ class GithubReleases(object):
             if os.path.exists(self.dest):
                 self.module.exit_json(msg="dest file exists", dest=self.dest, version=self.version, changed=False)
 
-
         download = self.download(release)
         if download:
             self.module.exit_json(msg="File downloaded", dest=self.dest, version=self.version, changed=True)
 
     def usecase(self, opt):
         return opt
+
 
 def main():
     module = AnsibleModule(
@@ -168,13 +159,12 @@ def main():
         ),
         supports_check_mode=False,
     )
-    if not HAS_GITHUB_API:
-        module.fail_json(msg='Missing requried github3 module (check docs or install with: pip install github3)')
 
     if not HAS_SEMVER:
         module.fail_json(msg='Missing requried semver module (check docs or install with: pip install semver)')
 
     GithubReleases(module).main()
 
+
 if __name__ == '__main__':
-  main()
+    main()
