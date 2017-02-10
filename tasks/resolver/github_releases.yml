@@ -1,13 +1,5 @@
 ---
 
-- name: resolver | github-releases  | Install github stuff
-  pip:
-   name="{{ item.name }}"
-   extra_args="--pre --upgrade"
-  with_items:
-     - name: github3.py
-     - name: semver
-
 - name: resolver | github-releases | Ensure artifact directory exists
   file:
     path="{{ item }}"
