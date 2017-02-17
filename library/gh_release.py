@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 from ansible.module_utils.basic import *
+from ansible.module_utils.urls import *
 import fnmatch
 import os
 from library import github
@@ -43,7 +44,7 @@ class GithubReleases(object):
         except Exception as e:
             self.module.fail_json(msg="Failed to connect to Github: {}".format(e))
 
-        self.repository = self.github.repository(self.user, self.repo).releases()
+        self.repository = self.github.repository(self.user, self.repo)
 
     def find_a_release(self):
         if self.version == "latest" and self.release_type == "release":

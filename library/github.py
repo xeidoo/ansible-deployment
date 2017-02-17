@@ -39,10 +39,7 @@ class Client(object):
         for key, value in headers.iteritems():
             request.add_header(key, value)
 
-        try:
-            rsp = urllib2.urlopen(request)
-        except Exception as e:
-            print e
+        rsp = urllib2.urlopen(request)
 
         f = open(dest, "w")
         while 1:
