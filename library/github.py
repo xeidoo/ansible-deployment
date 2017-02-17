@@ -33,11 +33,14 @@ class Client(object):
 
         return json.load(result)
 
-    def download(self, url, dest, headers={}):
+    def download(self, url, dest, headers={}, unredirected_header={}):
         request = urllib2.Request(url)
 
         for key, value in headers.iteritems():
             request.add_header(key, value)
+
+        for key, value in unredirected_header.iteritems():
+            request.add_unredirected_header(key, value)
 
         rsp = urllib2.urlopen(request)
 
@@ -141,9 +144,6 @@ class ReleaseModel(object):
         return assets
 
     def archive(self, source, dest):
-        if source not in ['tarball', 'zipball', 'html']:
-            raise Exception('%s is not a valid download source')
-
         self.client.download(
             url=self.data[source + "_url"],
             dest=dest,
@@ -166,7 +166,6 @@ class AssetsModel(object):
         self.client.download(
             url=self.data['url'],
             dest=dest,
-            headers={
-                'Accept': 'application/octet-stream'
-            }
+            headers={'Accept': 'application/octet-stream'},
+            unredirected_header=self.client.get_authorization_header()
         )
