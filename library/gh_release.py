@@ -17,12 +17,11 @@ except ImportError:
 METHOD_GET = 'GET'
 
 
-class GithubClient(object):
+class GithubCLient(object):
     API_URL = 'https://api.github.com'
 
     def __init__(self, access_token=None):
         self.access_token = access_token
-        self.headers = {}
 
     def get_authorization_header(self):
         return {
@@ -33,22 +32,27 @@ class GithubClient(object):
         self.access_token = access_token
 
     def request(self, method, path):
+        headers = {}
+
         if self.access_token:
-            self.headers = self.get_authorization_header()
+            headers = self.get_authorization_header()
 
         result = open_url(
             url=self.API_URL + path,
             method=method,
-            headers=self.headers
+            headers=headers
         )
 
         return json.load(result)
 
-    def download(self, url, dest, headers={}):
+    def download(self, url, dest, headers={}, unredirected_header={}):
         request = urllib2.Request(url)
 
         for key, value in headers.iteritems():
             request.add_header(key, value)
+
+        for key, value in unredirected_header.iteritems():
+            request.add_unredirected_header(key, value)
 
         rsp = urllib2.urlopen(request)
 
@@ -171,9 +175,11 @@ class AssetsModel(object):
         return self.data[attr]
 
     def download(self, dest):
-        self.client.download_asset(
+        self.client.download(
             url=self.data['url'],
             dest=dest,
+            headers={'Accept': 'application/octet-stream'},
+            unredirected_header=self.client.get_authorization_header()
         )
 
 
