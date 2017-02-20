@@ -17,7 +17,7 @@ except ImportError:
 METHOD_GET = 'GET'
 
 
-class Client(object):
+class GithubClient(object):
     API_URL = 'https://api.github.com'
 
     def __init__(self, access_token=None):
@@ -195,7 +195,7 @@ class GithubReleases(object):
             self.module.fail_json(msg="'glob' got '{}' and 'download_source' got '{}' params are mutually exclusive ".format(self.glob, self.download_source))
         ####
         self.full_repo = "{}/{}".format(self.user, self.repo)
-        self.github = github.Client(self.token)
+        self.github = GithubClient(self.token)
         self.repository = None
 
     def treat(self):
