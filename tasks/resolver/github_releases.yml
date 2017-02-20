@@ -30,6 +30,13 @@
     deployment_github_release_dest: "{{ gh_releases_output.dest }}"
   when: gh_releases_output.dest
 
+- name: resolver | github-releases  | Install github stuff
+   pip:
+    name="{{ item.name }}"
+    extra_args="{{ item.extra_args | default(omit)}}"
+   with_items:
+      - name: semver
+
 - name: resolver | github-releases | Ensure working directory exists
   file:
     path="{{ item }}"
