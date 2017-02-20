@@ -24,23 +24,21 @@ class GithubClient(object):
         self.access_token = access_token
 
     def get_authorization_header(self):
-        return {
-            'Authorization': 'token {}'.format(self.access_token)
-        }
+        if self.access_token:
+            return {
+                'Authorization': 'token {}'.format(self.access_token)
+            }
+
+        return {}
 
     def login(self, access_token):
         self.access_token = access_token
 
     def request(self, method, path):
-        headers = {}
-
-        if self.access_token:
-            headers = self.get_authorization_header()
-
         result = open_url(
             url=self.API_URL + path,
             method=method,
-            headers=headers
+            headers=self.get_authorization_header()
         )
 
         return json.load(result)
@@ -201,18 +199,20 @@ class GithubReleases(object):
             self.module.fail_json(msg="'glob' got '{}' and 'download_source' got '{}' params are mutually exclusive ".format(self.glob, self.download_source))
         ####
         self.full_repo = "{}/{}".format(self.user, self.repo)
-        self.github = GithubClient(self.token)
+        self.github = GithubClient()
         self.repository = None
 
     def treat(self):
         return self.version
 
     def login(self):
-        try:
-            # test if we're actually logged in
-            self.github.me()
-        except Exception as e:
-            self.module.fail_json(msg="Failed to connect to Github: {}".format(e))
+        if self.token:
+            self.github.login(self.token)
+            try:
+                # test if we're actually logged in
+                self.github.me()
+            except Exception as e:
+                self.module.fail_json(msg="Failed to connect to Github: {}".format(e))
 
         self.repository = self.github.repository(self.user, self.repo)
 
