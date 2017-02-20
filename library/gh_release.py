@@ -17,7 +17,7 @@ except ImportError:
 METHOD_GET = 'GET'
 
 
-class GithubCLient(object):
+class GithubClient(object):
     API_URL = 'https://api.github.com'
 
     def __init__(self, access_token=None):
