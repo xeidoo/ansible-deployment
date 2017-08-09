@@ -32,14 +32,8 @@ def exec_command(module, command, cwd=None):
         module.fail_json(msg="Failed to issue command '%s' because stdout='%s' stderr='%s'" % (command, out, err))
     return out
 
-def get_git_hash_dir(module, deployment_dir):
-    command = "find . -maxdepth 1 -type d -exec printf '{}\n' \; | awk 'length==42' | sed 's|./||'"
-    hash_dirs = exec_command(module, command, deployment_dir)
-    hash_dirs = hash_dirs.split("\n")
-    return hash_dirs
-
-def get_sem_ver_dir(module, deployment_dir):
-    command = "find . -maxdepth 1 -type d | sort | grep -E '^\.\/[0-9]+\.[0-9]+\.[0-9]+(-\w+\.[0-9]+)?$' | sed 's|./||'"
+def get_dir(module, deployment_dir):
+    command = "find . -maxdepth 2 -type f -name '*.deployment.date' | cut -d '/' -f 2"
     hash_dirs = exec_command(module, command, deployment_dir)
     hash_dirs = hash_dirs.split("\n")
     return hash_dirs
@@ -52,20 +46,15 @@ def main():
         argument_spec = dict(
             path      = dict(required=True, type='str'),
             keep_last = dict(required=True, type='int'),
-            use_semantic_versioning = dict(default=False, required=False, type='bool'),
         ),
     )
     deployment_dir      = module.params['path']
     keep_last           = module.params['keep_last']
-    semantic_versioning = module.params['use_semantic_versioning']
     # keep deployment info
     list_deployment = []
     broken_deployment_dir = []
 
-    if semantic_versioning:
-        hash_dirs = get_sem_ver_dir(module, deployment_dir)
-    else:
-        hash_dirs = get_git_hash_dir(module, deployment_dir)
+    hash_dirs = get_dir(module, deployment_dir)
 
     ## Remove empty lists
     hash_dirs = filter(None, hash_dirs)
