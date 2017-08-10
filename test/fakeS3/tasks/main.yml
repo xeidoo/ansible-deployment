@@ -14,6 +14,7 @@
   gem:
     name=fakes3
     user_install=no
+    version="0.2.3"
 
 - name: Make fakes3 dir
   file: 
