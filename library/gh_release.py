@@ -198,6 +198,7 @@ class GithubReleases(object):
         self.version = self.module.params["version"]
         self.release_type = self.module.params["release_type"]
         self.glob = self.module.params["glob"]
+        self.deployment_overwrite = self.module.params["deployment_overwrite"]
         self.download_source = self.module.params["download_source"]
         if self.glob and self.download_source != "None":
             self.module.fail_json(msg="'glob' got '{}' and 'download_source' got '{}' params are mutually exclusive ".format(self.glob, self.download_source))
@@ -292,7 +293,7 @@ class GithubReleases(object):
         return asset_2_download.download(self.dest)
         
     def main(self):
-        if self.dest and os.path.exists(self.dest):
+        if self.dest and os.path.exists(self.dest) and self.deployment_overwrite == False:
             self.module.exit_json(msg="dest '{}' file exists".format(self.dest), dest=self.dest, version=self.version, changed=False)
 
         self.login()
@@ -306,7 +307,7 @@ class GithubReleases(object):
         if self.dest_template:
             self.dest = self.dest.replace("${version}", self.version)
 
-            if os.path.exists(self.dest):
+            if os.path.exists(self.dest) and self.deployment_overwrite == False:
                 self.module.exit_json(msg="dest file exists", dest=self.dest, version=self.version, changed=False)
 
         if self.download(release):
@@ -328,6 +329,7 @@ def main():
             version=dict(default="latest", type="str"),
             release_type=dict(default="any", choices=["any", "release", "prerelease", "draft"]),
             glob=dict(default=None, type="str"),
+            deployment_overwrite=dict(required=False, type="bool", default=False),
             download_source=dict(default="None", choices=["None", "tarball", "zipball"]),
             token=dict(type="str", no_log=True),
         ),

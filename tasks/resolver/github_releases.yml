@@ -21,9 +21,10 @@
     glob="{{ deployment_github_release_glob | default('omit') }}"
     download_source="{{ deployment_github_release_source | default('None') }}"
     token="{{ deployment_github_release_token | default('omit') }}"
+    deployment_overwrite={{ deployment_overwrite }}
   register: gh_releases_output
 
-- name: resolver | github-releases | Set reoslved version gh_release_dest
+- name: resolver | github-releases | Set resolved version gh_release_dest
   set_fact:
     deployment_version: "{{ gh_releases_output.version }}"
     gh_release_dest: "{{ gh_releases_output.dest }}"
@@ -36,6 +37,25 @@
    extra_args="{{ item.extra_args | default(omit)}}"
   with_items:
      - name: semver
+
+- name: resolver | github-releases | Check already deployed version
+  stat: path={{ deployment_dir_work }}
+  register: gh_releases_temp
+  when: deployment_overwrite
+
+- name: resolver | github-releases | Move deployed version to temporary folder
+  command: mv {{ deployment_dir_work }} {{ deployment_dir_work }}_bak
+  when: deployment_overwrite and gh_releases_temp.stat.exists
+
+- name: resolver | github-releases | Create symlink from temporary folder to current
+  file:
+    src="{{ deployment_dir_work }}_bak"
+    dest="{{ deployment_dir_current }}"
+    owner="{{ deployment_user }}"
+    group="{{ deployment_group }}"
+    mode="0755"
+    state="link"
+  when: deployment_overwrite and gh_releases_temp.stat.exists
 
 - name: resolver | github-releases | Ensure working directory exists
   file:
