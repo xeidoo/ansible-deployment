@@ -145,8 +145,11 @@ deployment_post                     : False
 deployment_cron_jobs                : "none"
 
 ## By default you deploy once and to override you must pass true to force deployment
-deployment_force                    :  false
-deployment_guard_file               :  "/var/local/deployment_first_boot_file"
+deployment_force                    : False
+deployment_guard_file               : "/var/local/deployment_first_boot_file"
+
+## By default you deploy once but if you want to overwrite already deployed draft you need to force deployment
+deployment_overwrite                : False
 
 # Enable if your using old version of ansible to hide AWS cred.
 deployment_s3_no_log                : False
