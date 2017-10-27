@@ -12,13 +12,11 @@
      - restart app
 
 - name: config | fastcgi_parm | write fastcgi parm multi variable files
-  template: 
-    src="{{ path_for_template }}fastcgi_parm.j2"
-    dest="{{ item.dest }}"
+  hf_fast_cgi_vars: 
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
     mode="{{ deployment_config_file_perm }}"
-  with_items: "{{ deployment_config_fastcgi_parm_vars }}"
+    vars="{{ deployment_config_fastcgi_parm_vars }}"
   when: "deployment_config_fastcgi_parm_vars is not mapping"
   notify:
      - restart app
