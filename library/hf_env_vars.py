@@ -8,18 +8,22 @@ import tempfile
 
 from ansible.module_utils.basic import *
 
+
 def main():
     module_args = dict(
         owner=dict(type='str', required=True),
         group=dict(type='str', required=True),
         mode=dict(type='str', required=True),
         vars=dict(type='list', required=True),
+        template=dict(type='str', required=True),
     )
 
     module = AnsibleModule(
         argument_spec=module_args,
         supports_check_mode=False
     )
+
+    template = module.params['template']
 
     result = dict(
         changed=False,
@@ -42,10 +46,11 @@ def main():
                 f.write("# Ansible managed, Don't modify manually\n\n")
 
                 for var_name in vars_block['vars']:
-                    f.write('fastcgi_param {} "{}";\n'.format(
-                        var_name,
-                        str(vars_block['vars'][var_name])
-                    ))
+                    line = template.format(
+                        var_name=var_name,
+                        var_value=str(vars_block['vars'][var_name])
+                    )
+                    f.write(line)
 
             # Compare old and new file
             if os.path.isfile(old_vars_path):
