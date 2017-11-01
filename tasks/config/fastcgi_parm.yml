@@ -1,22 +1,12 @@
 ---
 
-- name: config | fastcgi_parm | write fastcgi parm single variable file
-  template: 
-    src="{{ path_for_template }}fastcgi_parm.j2"
-    dest="{{ deployment_config_fastcgi_parm_vars_dest }}"
-    owner="{{ deployment_user }}"
-    group="{{ deployment_group }}"
-    mode="{{ deployment_config_file_perm }}"
-  when: "deployment_config_fastcgi_parm_vars is mapping"
-  notify:
-     - restart app
-
 - name: config | fastcgi_parm | write fastcgi parm multi variable files
-  hf_fast_cgi_vars: 
+  hf_env_vars: 
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
     mode="{{ deployment_config_file_perm }}"
     vars="{{ deployment_config_fastcgi_parm_vars }}"
+    template="{{ deployment_config_fastcgi_parm_vars_template }}"
   when: "deployment_config_fastcgi_parm_vars is not mapping"
   notify:
      - restart app

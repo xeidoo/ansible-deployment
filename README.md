@@ -81,7 +81,6 @@ deployment_file_perm                : "0644"
 deployment_config_file_perm         : "0600"
 # Shell environment variable
 deployment_config_shell_vars        : "none" # Variables that define the config
-deployment_config_shell_vars_export : True
 deployment_config_shell_file        : "{{ deployment_dir_base }}/{{ deployment_name }}_environment.sh"
 deployment_config_shell_profile     : "{{ deployment_user_home }}/.bashrc"
 # INI variable
@@ -94,7 +93,6 @@ deployment_config_dotenv_vars_dest  : "{{ deployment_dir_work }}/.env.php"
 deployment_config_yaml_vars         : "none"
 ## FastCGI parm
 deployment_config_fastcgi_parm_vars : "none"
-deployment_config_fastcgi_parm_vars_dest: "{{ deployment_dir_work }}/app_fastcgi_parm"
 ## You can also use a list for fastcgi-parms
 # deployment_config_fastcgi_parm_vars      :
 #                   - vars:
