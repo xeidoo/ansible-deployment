@@ -29,9 +29,5 @@
                                       myvar2              : "True"
                                      dest                 : "/tmp/parmsfile_2.txt"
 
-                 deployment_post_check_config        :
-                          - "touch /tmp/deployment_post_check_config_1"
-                          - "touch /tmp/deployment_post_check_config_2"
-
   roles        :
                  - "ansible-deployment"
