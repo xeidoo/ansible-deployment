@@ -19,23 +19,15 @@ verifier:
 
 
 platforms:
- - name                   : ubuntu1404
+ - name                   : ubuntu1604
    driver_config          :
-     image                : ubuntu:trusty
+     image                : ubuntu:xenial
      platform             : ubuntu
      provision_command     : echo "kitchen:$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)" | sudo chpasswd
 
 
    provisioner            :
      ansible_playbook_bin : "$(avm path v2.0)ansible-playbook"
-
-# - name                   : ubuntu10404-latest
-#    driver_config          :
-#      image                : quay.io/hellofresh/kitchen-base
-#      platform             : ubuntu
-#    provisioner            :
-#      ansible_playbook_bin : "$(avm path latest)ansible-playbook"
-
 
 suites                    :
 
