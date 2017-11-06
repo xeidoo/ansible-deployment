@@ -2,19 +2,187 @@
 
 from ansible.module_utils.basic import *
 from ansible.module_utils.urls import *
+import urllib2
 import fnmatch
 import os
-try:
-    import github3
-    HAS_GITHUB_API = True
-except ImportError:
-    HAS_GITHUB_API = False
+import json
 
 try:
     import semver
     HAS_SEMVER = True
 except ImportError:
     HAS_SEMVER = False
+
+
+METHOD_GET = 'GET'
+
+
+class GithubClient(object):
+    API_URL = 'https://api.github.com'
+
+    def __init__(self, access_token=None):
+        self.access_token = access_token
+
+    def get_authorization_header(self):
+        if self.access_token:
+            return {
+                'Authorization': 'token {}'.format(self.access_token)
+            }
+
+        return {}
+
+    def login(self, access_token):
+        self.access_token = access_token
+
+    def request(self, method, path):
+        result = open_url(
+            url=self.API_URL + path,
+            method=method,
+            headers=self.get_authorization_header()
+        )
+
+        return json.load(result)
+
+    def download(self, url, dest, headers={}, unredirected_header={}):
+        request = urllib2.Request(url)
+
+        for key, value in headers.iteritems():
+            request.add_header(key, value)
+
+        for key, value in unredirected_header.iteritems():
+            request.add_unredirected_header(key, value)
+
+        rsp = urllib2.urlopen(request)
+
+        try:
+            with open(dest, "w") as f:
+                while 1:
+                    data = rsp.read(4096)
+                    if not data:
+                        break
+                    f.write(data)
+            return True
+        except:
+            return False
+
+    def me(self):
+        return self.request(
+            method=METHOD_GET,
+            path='/user'
+        )
+
+    def repository(self, owner, repo):
+        return Repository(
+            client=self,
+            owner=owner,
+            repo=repo
+        )
+
+
+class Repository(object):
+    def __init__(self, client, owner, repo):
+        self.client = client
+        self.owner = owner
+        self.repo = repo
+
+    def releases(self):
+        releases = self.client.request(
+            method=METHOD_GET,
+            path='/repos/{owner}/{repo}/releases'.format(
+                owner=self.owner,
+                repo=self.repo
+            )
+        )
+
+        releases_list = []
+        for release in releases:
+            releases_list.append(ReleaseModel(self.client, release))
+
+        return releases_list
+
+    def latest_release(self):
+        return ReleaseModel(
+            client=self.client,
+            data=self.client.request(
+                method=METHOD_GET,
+                path='/repos/{owner}/{repo}/releases/latest'.format(
+                    owner=self.owner,
+                    repo=self.repo
+                )
+            )
+        )
+
+    def release(self, id):
+        return ReleaseModel(
+            client=self.client,
+            data=self.client.request(
+                method=METHOD_GET,
+                path='/repos/{owner}/{repo}/releases/{id}'.format(
+                    owner=self.owner,
+                    repo=self.repo,
+                    id=id
+                )
+            )
+        )
+
+    def release_from_tag(self, tag):
+        return ReleaseModel(
+            client=self.client,
+            data=self.client.request(
+                method=METHOD_GET,
+                path='/repos/{owner}/{repo}/releases/tags/{tag}'.format(
+                    owner=self.owner,
+                    repo=self.repo,
+                    tag=tag
+                )
+            )
+        )
+
+
+class ReleaseModel(object):
+    def __init__(self, client, data):
+        self.client = client
+        self.data = data
+
+    def __getattr__(self, attr):
+        return self.data[attr]
+
+    def assets(self):
+        assets = []
+        for asset in self.data['assets']:
+            assets.append(AssetsModel(
+                client=self.client,
+                data=asset
+            ))
+
+        return assets
+
+    def archive(self, source, dest):
+        return self.client.download(
+            url=self.data[source + "_url"],
+            dest=dest,
+            headers=self.client.get_authorization_header()
+        )
+
+    def json(self):
+        return json.dumps(self.data)
+
+
+class AssetsModel(object):
+    def __init__(self, client, data):
+        self.client = client
+        self.data = data
+
+    def __getattr__(self, attr):
+        return self.data[attr]
+
+    def download(self, dest):
+        return self.client.download(
+            url=self.data['url'],
+            dest=dest,
+            headers={'Accept': 'application/octet-stream'},
+            unredirected_header=self.client.get_authorization_header()
+        )
 
 
 class GithubReleases(object):
@@ -35,6 +203,7 @@ class GithubReleases(object):
             self.module.fail_json(msg="'glob' got '{}' and 'download_source' got '{}' params are mutually exclusive ".format(self.glob, self.download_source))
         ####
         self.full_repo = "{}/{}".format(self.user, self.repo)
+        self.github = GithubClient()
         self.repository = None
 
     def treat(self):
@@ -42,17 +211,14 @@ class GithubReleases(object):
 
     def login(self):
         if self.token:
-            # login to github
-            gh = github3.login(token=str(self.token))
+            self.github.login(self.token)
             try:
                 # test if we're actually logged in
-                gh.me()
+                self.github.me()
             except Exception as e:
                 self.module.fail_json(msg="Failed to connect to Github: {}".format(e))
 
-            self.repository = gh.repository(str(self.user), str(self.repo))
-        else:
-            self.repository = github3.repository(str(self.user), str(self.repo))
+        self.repository = self.github.repository(self.user, self.repo)
 
     def find_a_release(self):
         if self.version == "latest" and self.release_type == "release":
@@ -64,7 +230,7 @@ class GithubReleases(object):
             # We need to filter
             pass
         elif self.version != "latest" and self.release_type == "draft":
-            # Specify a draft release version 
+            # Specify a draft release version
             for release in self.repository.releases():
                 if release.tag_name == self.version:
                     return release
@@ -124,7 +290,7 @@ class GithubReleases(object):
             self.module.fail_json(msg="No assets found for release '%s'" % self.version)
 
         return asset_2_download.download(self.dest)
-
+        
     def main(self):
         if self.dest and os.path.exists(self.dest):
             self.module.exit_json(msg="dest '{}' file exists".format(self.dest), dest=self.dest, version=self.version, changed=False)
@@ -143,13 +309,12 @@ class GithubReleases(object):
             if os.path.exists(self.dest):
                 self.module.exit_json(msg="dest file exists", dest=self.dest, version=self.version, changed=False)
 
-
-        download = self.download(release)
-        if download:
+        if self.download(release):
             self.module.exit_json(msg="File downloaded", dest=self.dest, version=self.version, changed=True)
 
     def usecase(self, opt):
         return opt
+
 
 def main():
     module = AnsibleModule(
@@ -168,13 +333,12 @@ def main():
         ),
         supports_check_mode=False,
     )
-    if not HAS_GITHUB_API:
-        module.fail_json(msg='Missing requried github3 module (check docs or install with: pip install github3)')
 
     if not HAS_SEMVER:
         module.fail_json(msg='Missing requried semver module (check docs or install with: pip install semver)')
 
     GithubReleases(module).main()
 
+
 if __name__ == '__main__':
-  main()
+    main()
