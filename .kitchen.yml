@@ -23,7 +23,10 @@ platforms:
    driver_config          :
      image                : ubuntu:xenial
      platform             : ubuntu
-     provision_command     : echo "kitchen:$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)" | sudo chpasswd
+     provision_command    : 
+                            - apt-get update
+                            - apt-get -qy install python-minimal 
+                            - echo "kitchen:$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)" | sudo chpasswd
 
 
    provisioner            :
