@@ -54,12 +54,16 @@ class GithubClient(object):
 
         rsp = urllib2.urlopen(request)
 
-        f = open(dest, "w")
-        while 1:
-            data = rsp.read(4096)
-            if not data:
-                break
-            f.write(data)
+        try:
+            with open(dest, "w") as f:
+                while 1:
+                    data = rsp.read(4096)
+                    if not data:
+                        break
+                    f.write(data)
+            return True
+        except:
+            return False
 
     def me(self):
         return self.request(
@@ -154,7 +158,7 @@ class ReleaseModel(object):
         return assets
 
     def archive(self, source, dest):
-        self.client.download(
+        return self.client.download(
             url=self.data[source + "_url"],
             dest=dest,
             headers=self.client.get_authorization_header()
@@ -173,7 +177,7 @@ class AssetsModel(object):
         return self.data[attr]
 
     def download(self, dest):
-        self.client.download(
+        return self.client.download(
             url=self.data['url'],
             dest=dest,
             headers={'Accept': 'application/octet-stream'},
@@ -286,7 +290,7 @@ class GithubReleases(object):
             self.module.fail_json(msg="No assets found for release '%s'" % self.version)
 
         return asset_2_download.download(self.dest)
-
+        
     def main(self):
         if self.dest and os.path.exists(self.dest):
             self.module.exit_json(msg="dest '{}' file exists".format(self.dest), dest=self.dest, version=self.version, changed=False)
@@ -305,8 +309,7 @@ class GithubReleases(object):
             if os.path.exists(self.dest):
                 self.module.exit_json(msg="dest file exists", dest=self.dest, version=self.version, changed=False)
 
-        download = self.download(release)
-        if download:
+        if self.download(release):
             self.module.exit_json(msg="File downloaded", dest=self.dest, version=self.version, changed=True)
 
     def usecase(self, opt):
