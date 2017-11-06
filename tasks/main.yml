@@ -6,37 +6,37 @@
   register: deployment_guard
 
 - include: user.yml
-  when: (not deployment_guard.stat.exists or deployment_force)
+  when: (not deployment_guard.stat.exists or deployment_force or deployment_overwrite)
 
 - include: directory-structure.yml
-  when: deployment_dir_structure and not deployment_guard.stat.exists or deployment_force
+  when: deployment_dir_structure and not deployment_guard.stat.exists or deployment_force or deployment_overwrite
 
 - include: resolver/main.yml
-  when: not deployment_guard.stat.exists or deployment_force
+  when: not deployment_guard.stat.exists or deployment_force or deployment_overwrite
 
 - include: dependency/main.yml
-  when: not deployment_guard.stat.exists or deployment_force
+  when: not deployment_guard.stat.exists or deployment_force or deployment_overwrite
 
 - include: config/main.yml
-  when: not deployment_guard.stat.exists or deployment_force
+  when: not deployment_guard.stat.exists or deployment_force or deployment_overwrite
 
 - include: cron.yml
-  when: not deployment_guard.stat.exists or deployment_force
+  when: not deployment_guard.stat.exists or deployment_force or deployment_overwrite
 
 - include: current-version.yml
-  when: (not deployment_guard.stat.exists or deployment_force) and deployment_resolver != 'none'
+  when: (not deployment_guard.stat.exists or deployment_force or deployment_overwrite) and deployment_resolver != 'none'
 
 - name: main | Touch file guard
   copy:
     content=""
     dest="{{ deployment_guard_file }}"
-  when: not deployment_guard.stat.exists or deployment_force
+  when: not deployment_guard.stat.exists or deployment_force or deployment_overwrite
 
 - name: main | Resolve latest (if deployment is skipped)
   stat:
       path="{{ deployment_dir_current }}"
   register: var_currnet_deployment_dir_current
-  when: (deployment_guard.stat.exists and not deployment_force) and (deployment_latest_resolver and 'latest' in deployment_version)
+  when: (deployment_guard.stat.exists and not deployment_force and not deployment_overwrite) and (deployment_latest_resolver and 'latest' in deployment_version)
 
 - name: main | Set deployment_version to resolved version (if deployment is skipped)
   set_fact:

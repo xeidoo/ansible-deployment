@@ -151,9 +151,12 @@ deployment_post                     : False
 ## Cron jobs TODO: Make an example of cron jobs
 deployment_cron_jobs                : "none"
 
-## By default you deploy once and to override you must pass true to force deployment
-deployment_force                    :  false
-deployment_guard_file               :  "/var/local/deployment_first_boot_file"
+## Deprecated: rewrites config files whether a deploy has happened or not
+deployment_force                    : False
+deployment_guard_file               : "/var/local/deployment_first_boot_file"
+
+## Use this if you want to redeploy already deployed draft
+deployment_overwrite                : False
 
 # Enable if your using old version of ansible to hide AWS cred.
 deployment_s3_no_log                : False

@@ -44,3 +44,14 @@
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
   when: symlink_update.changed
+
+- name: current version | Check for temporary folders
+  stat: path={{ deployment_dir_work }}_bak
+  register: gh_releases_temp
+  when: deployment_overwrite
+
+- name: current version | Remove temporary folders
+  file:
+    path="{{ deployment_dir_work }}_bak"
+    state=absent
+  when: deployment_overwrite and gh_releases_temp.stat.exists
