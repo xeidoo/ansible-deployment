@@ -15,13 +15,17 @@ except ImportError:
 
 
 METHOD_GET = 'GET'
+GITHUB_API_URL = 'https://api.github.com'
+REQUEST_TIMEOUT = 10
 
 
 class GithubClient(object):
     API_URL = 'https://api.github.com'
 
-    def __init__(self, access_token=None):
+    def __init__(self, module, access_token=None):
+        self.module = module
         self.access_token = access_token
+
 
     def get_authorization_header(self):
         if self.access_token:
@@ -43,7 +47,13 @@ class GithubClient(object):
 
         return json.load(result)
 
-    def download(self, url, dest, headers={}, unredirected_header={}):
+    def is_filesize_different(self, rsp, dest):
+        try:
+            return str(os.path.getsize(dest)) != str(rsp.headers['content-length'])
+        except Exception as e:
+            return True
+
+    def download(self, url, dest, headers={}, unredirected_header={}, retries=5):
         request = urllib2.Request(url)
 
         for key, value in headers.iteritems():
@@ -52,18 +62,27 @@ class GithubClient(object):
         for key, value in unredirected_header.iteritems():
             request.add_unredirected_header(key, value)
 
-        rsp = urllib2.urlopen(request)
 
-        try:
-            with open(dest, "w") as f:
-                while 1:
-                    data = rsp.read(4096)
-                    if not data:
-                        break
-                    f.write(data)
-            return True
-        except:
-            return False
+        for try_count in range(retries):
+            try:
+                rsp = urllib2.urlopen(request, timeout=REQUEST_TIMEOUT)
+
+                if self.is_filesize_different(rsp, dest) or self.module.deployment_overwrite:
+                    with open(dest, "w") as f:
+                        while 1:
+                            data = rsp.read(4096)
+                            if not data:
+                                break
+                            f.write(data)
+                    return True
+                else:
+                    return False
+            except urllib2.URLError:
+                time.sleep(1 * try_count)
+                continue
+
+        raise Exception('Could not download {}'.format(url))
+
 
     def me(self):
         return self.request(
@@ -204,7 +223,7 @@ class GithubReleases(object):
             self.module.fail_json(msg="'glob' got '{}' and 'download_source' got '{}' params are mutually exclusive ".format(self.glob, self.download_source))
         ####
         self.full_repo = "{}/{}".format(self.user, self.repo)
-        self.github = GithubClient()
+        self.github = GithubClient(self)
         self.repository = None
 
     def treat(self):
@@ -264,38 +283,38 @@ class GithubReleases(object):
         return latest_release
 
     def download(self, release):
-        # Source download
-        if self.download_source is not None and self.download_source != "None":
-            return release.archive(self.download_source, self.dest)
+        try:
+            # Source download
+            if self.download_source is not None and self.download_source != "None":
+                return release.archive(self.download_source, self.dest)
 
-        # Look at assets
-        assets = release.assets()
-        match = 0
-        asset_2_download = None
-        if self.glob:
-            for asset in assets:
-                if fnmatch.fnmatch(asset.name, self.glob):
+            # Look at assets
+            assets = release.assets()
+            match = 0
+            asset_2_download = None
+            if self.glob:
+                for asset in assets:
+                    if fnmatch.fnmatch(asset.name, self.glob):
+                        asset_2_download = asset
+                        match += 1
+
+                    if match > 1:
+                        self.module.fail_json(msg="Too many files in release '%s' match your glob '%s' please refine it." % (self.version, self.glob))
+            else:
+                for asset in assets:
                     asset_2_download = asset
                     match += 1
 
-                if match > 1:
-                    self.module.fail_json(msg="Too many files in release '%s' match your glob '%s' please refine it." % (self.version, self.glob))
-        else:
-            for asset in assets:
-                asset_2_download = asset
-                match += 1
+                    if match > 1:
+                        self.module.fail_json(msg="Too many files in release '%s' you must specfiy one using the glob options." % self.version)
+            if match == 0:
+                self.module.fail_json(msg="No assets found for release '%s'" % self.version)
 
-                if match > 1:
-                    self.module.fail_json(msg="Too many files in release '%s' you must specfiy one using the glob options." % self.version)
-        if match == 0:
-            self.module.fail_json(msg="No assets found for release '%s'" % self.version)
-
-        return asset_2_download.download(self.dest)
+            return asset_2_download.download(self.dest)
+        except Exception as e:
+            self.module.fail_json(msg=e.message)
         
     def main(self):
-        if self.dest and os.path.exists(self.dest) and self.deployment_overwrite == False:
-            self.module.exit_json(msg="dest '{}' file exists".format(self.dest), dest=self.dest, version=self.version, changed=False)
-
         self.login()
         release = self.find_a_release()
         if not release:
@@ -307,11 +326,10 @@ class GithubReleases(object):
         if self.dest_template:
             self.dest = self.dest.replace("${version}", self.version)
 
-            if os.path.exists(self.dest) and self.deployment_overwrite == False:
-                self.module.exit_json(msg="dest file exists", dest=self.dest, version=self.version, changed=False)
-
         if self.download(release):
             self.module.exit_json(msg="File downloaded", dest=self.dest, version=self.version, changed=True)
+        else:
+            self.module.exit_json(msg="File already existed", dest=self.dest, version=self.version, changed=False)
 
     def usecase(self, opt):
         return opt
