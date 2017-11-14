@@ -13,9 +13,6 @@ try:
 except ImportError:
     HAS_SEMVER = False
 
-
-
-GITHUB_API_URL = 'https://api.github.com'
 REQUEST_TIMEOUT = 10
 
 class GithubClient(object):
