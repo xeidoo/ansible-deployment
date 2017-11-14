@@ -14,10 +14,9 @@ except ImportError:
     HAS_SEMVER = False
 
 
-METHOD_GET = 'GET'
+
 GITHUB_API_URL = 'https://api.github.com'
 REQUEST_TIMEOUT = 10
-
 
 class GithubClient(object):
     API_URL = 'https://api.github.com'
@@ -38,14 +37,16 @@ class GithubClient(object):
     def login(self, access_token):
         self.access_token = access_token
 
-    def request(self, method, path):
-        result = open_url(
+    def request(self, path):
+        request = urllib2.Request(
             url=self.API_URL + path,
-            method=method,
             headers=self.get_authorization_header()
         )
 
-        return json.load(result)
+        try:        
+            return json.load(urllib2.urlopen(request))
+        except Exception as e:
+            return None
 
     def is_filesize_different(self, rsp, dest):
         try:
@@ -86,7 +87,6 @@ class GithubClient(object):
 
     def me(self):
         return self.request(
-            method=METHOD_GET,
             path='/user'
         )
 
@@ -99,23 +99,37 @@ class GithubClient(object):
 
 
 class Repository(object):
+    MAX_RELEASES_IN_REPO = 200
+
     def __init__(self, client, owner, repo):
         self.client = client
         self.owner = owner
         self.repo = repo
 
     def releases(self):
-        releases = self.client.request(
-            method=METHOD_GET,
-            path='/repos/{owner}/{repo}/releases'.format(
-                owner=self.owner,
-                repo=self.repo
-            )
-        )
-
+        current_page = 1
         releases_list = []
-        for release in releases:
-            releases_list.append(ReleaseModel(self.client, release))
+
+        while True:
+            releases = self.client.request(
+                path='/repos/{owner}/{repo}/releases?per_page={max_releases}&page={page}'.format(
+                    owner=self.owner,
+                    repo=self.repo,
+                    max_releases=self.MAX_RELEASES_IN_REPO,
+                    page=current_page
+                )
+            )
+
+            if releases:
+                for release in releases:
+                    releases_list.append(ReleaseModel(self.client, release))
+            else:
+                break
+
+            if len(releases_list) < self.MAX_RELEASES_IN_REPO:
+                current_page = current_page + 1
+            else:
+                break
 
         return releases_list
 
@@ -123,7 +137,6 @@ class Repository(object):
         return ReleaseModel(
             client=self.client,
             data=self.client.request(
-                method=METHOD_GET,
                 path='/repos/{owner}/{repo}/releases/latest'.format(
                     owner=self.owner,
                     repo=self.repo
@@ -135,7 +148,6 @@ class Repository(object):
         return ReleaseModel(
             client=self.client,
             data=self.client.request(
-                method=METHOD_GET,
                 path='/repos/{owner}/{repo}/releases/{id}'.format(
                     owner=self.owner,
                     repo=self.repo,
@@ -148,7 +160,6 @@ class Repository(object):
         return ReleaseModel(
             client=self.client,
             data=self.client.request(
-                method=METHOD_GET,
                 path='/repos/{owner}/{repo}/releases/tags/{tag}'.format(
                     owner=self.owner,
                     repo=self.repo,
@@ -254,6 +265,8 @@ class GithubReleases(object):
             for release in self.repository.releases():
                 if release.tag_name == self.version:
                     return release
+            self.module.fail_json(msg="failed to find draft release {} in repo {}".format(self.version, self.full_repo))
+
         else:
             # Get a specific release not latest
             release_from_tag = self.repository.release_from_tag(self.version)
