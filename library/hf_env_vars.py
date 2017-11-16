@@ -16,6 +16,7 @@ def main():
         mode=dict(type='str', required=True),
         vars=dict(type='list', required=True),
         template=dict(type='str', required=True),
+        add_ansible_header=dict(type='bool', required=False, default=True),
     )
 
     module = AnsibleModule(
@@ -43,7 +44,8 @@ def main():
 
             # Write new var file to tmp
             with open(new_vars_path, 'w') as f:
-                f.write("# Ansible managed, Don't modify manually\n\n")
+                if module.params['add_ansible_header']:
+                    f.write("# Ansible managed, Don't modify manually\n\n")
 
                 for var_name in vars_block['vars']:
                     line = template.format(
