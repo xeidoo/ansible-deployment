@@ -24,6 +24,10 @@
    include: fastcgi_parm.yml
    when: deployment_config_fastcgi_parm_vars != 'none' 
 
+ - name: config | include php_pool_parm
+   include: php_pool_parm.yml
+   when: deployment_config_php_pool_parm_vars != 'none' 
+
  - name: config | include custom
    include: custom.yml
    when: deployment_config_custom != 'none' 

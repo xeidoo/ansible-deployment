@@ -1,0 +1,33 @@
+---
+- name         : php_pool multi fie
+  hosts        : "all"
+  gather_facts : no
+  become       : True
+  vars         :
+                 deployment_name                     : "deployment"
+                 deployment_version                  : "0.1.7"
+                 deployment_dir                      : True
+                 deployment_user_manage              : True
+                 deployment_force                    : True
+
+                 deployment_user                     : "deploy"
+                 deployment_group                    : "master"
+                 deployment_user_home                : "/opt/manage"
+                 deployment_user_shell               : "/bin/sh"
+
+                 deployment_dir_base                 : "{{ deployment_user_home }}/{{ deployment_name }}"
+                 deployment_dir_work                 : "{{ deployment_dir_base }}/src/{{ deployment_version }}"
+                 deployment_dir_current              : "{{ deployment_dir_base }}/current"
+
+                 deployment_config_php_pool_parm_vars      :
+                                   - vars:
+                                      myvar1              : "False"
+                                      myvar2              : "False"
+                                     dest                 : "/tmp/parmsfile_1.txt"
+                                   - vars:
+                                      myvar1              : "True"
+                                      myvar2              : "True"
+                                     dest                 : "/tmp/parmsfile_2.txt"
+
+  roles        :
+                 - "ansible-deployment"

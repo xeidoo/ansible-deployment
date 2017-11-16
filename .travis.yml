@@ -13,6 +13,7 @@ env:
   - KITCHEN_TEST="resolver-s3-file"
   - KITCHEN_TEST="delete-old-deployment"
   - KITCHEN_TEST="fastcgi-parm"
+  - KITCHEN_TEST="php-pool-parm"
   - KITCHEN_TEST="shell-vars"
   - KITCHEN_TEST="dotenv"
   - KITCHEN_TEST="custom-config"

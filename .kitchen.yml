@@ -66,6 +66,10 @@ suites                    :
     provisioner           :
         playbook          : "test/integration/fastcgi_parm/fastcgi_parm.yml"
 
+  - name                  : php_pool_parm
+    provisioner           :
+        playbook          : "test/integration/php_pool_parm/php_pool_parm.yml"
+
   - name                  : shell_vars
     provisioner           :
         playbook          : "test/integration/shell_vars/shell_vars.yml"

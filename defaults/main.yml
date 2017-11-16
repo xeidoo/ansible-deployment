@@ -92,6 +92,10 @@ deployment_config_yaml_vars               : "none"
 deployment_config_fastcgi_parm_vars            : "none"
 deployment_config_fastcgi_parm_vars_template   : "fastcgi_param {var_name} \"{var_value}\";\n"
 deployment_config_fastcgi_parm_vars_dest       : "{{ deployment_dir_work }}/app_fastcgi_parm"
+
+deployment_config_php_pool_parm_vars           : "none"
+deployment_config_php_pool_parm_vars_template  : "env[{var_name}] = '{var_value}'\n"
+deployment_config_php_pool_parm_vars_dest      : "{{ deployment_dir_work }}/app_php_pool_parm"
 ## You can also use a list for fastcgi-parms
 # deployment_config_fastcgi_parm_vars      :
 #                   - vars:

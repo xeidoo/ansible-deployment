@@ -104,6 +104,19 @@ deployment_config_fastcgi_parm_vars : "none"
 #                      myvar2              : "True"
 #                     dest                 : "/tmp/parmsfile_2.txt"
 
+## PHP pool parm
+deployment_config_php_pool_parm_vars : "none"
+## You can also use a list for php_pool-parms
+# deployment_config_php_pool_parm_vars      :
+#                   - vars:
+#                      myvar1              : "False"
+#                      myvar2              : "False"
+#                     dest                 : "/tmp/parmsfile_1.txt"
+#                   - vars:
+#                      myvar1              : "True"
+#                      myvar2              : "True"
+#                     dest                 : "/tmp/parmsfile_2.txt"
+
 ## Dependency managment
 # Supported dependency ['none', 'comoser']
 deployment_dependency               : "none"
