@@ -7,6 +7,7 @@
     mode="{{ deployment_config_file_perm }}"
     vars="{{ deployment_config_php_pool_parm_vars }}"
     template="{{ deployment_config_php_pool_parm_vars_template }}"
+    add_ansible_header=False
   when: "deployment_config_php_pool_parm_vars is not mapping"
   notify:
      - restart app

@@ -1,10 +1,6 @@
 require_relative '../../helper_spec.rb'
 
-php_pool_file_content_1="""# Ansible managed, Don't modify manually
-
-env[myvar1] = 'False'
-env[myvar2] = 'False'
-"""
+php_pool_file_content_1="env[myvar1] = 'False'\nenv[myvar2] = 'False'\n"
 
 describe file('/tmp/parmsfile_1.txt') do
     it { should exist }
@@ -15,11 +11,7 @@ describe file('/tmp/parmsfile_1.txt') do
     its(:content) { should match php_pool_file_content_1 }
 end
 
-php_pool_file_content_2="""# Ansible managed, Don't modify manually
-
-env[myvar1] = 'True'
-env[myvar2] = 'True'
-"""
+php_pool_file_content_2="env[myvar1] = 'True'\nenv[myvar2] = 'True'\n"
 
 describe file('/tmp/parmsfile_2.txt') do
     it { should exist }
