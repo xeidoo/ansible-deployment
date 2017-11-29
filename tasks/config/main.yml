@@ -1,34 +1,33 @@
 ---
 
- - name: config | include shell environment
-   include: shell_environment.yml
-   when: deployment_config_shell_vars != 'none'
+- name: config | include shell environment
+  include: shell_environment.yml
+  when: deployment_config_shell_vars != 'none'
 
- - name: config | include ini
-   include: ini.yml
-   when: deployment_config_ini_vars != 'none'
+- name: config | include ini
+  include: ini.yml
+  when: deployment_config_ini_vars != 'none'
 
- - name: config | include dotenvphp
-   include: dotenvphp.yml
-   when: deployment_config_dotenvphp_vars != 'none'
+- name: config | include dotenvphp
+  include: dotenvphp.yml
+  when: deployment_config_dotenvphp_vars != 'none'
 
- - name: config | include dotenv
-   include: dotenv.yml
-   when: deployment_config_dotenv_vars != 'none'
+- name: config | include dotenv
+  include: dotenv.yml
+  when: deployment_config_dotenv_vars != 'none'
 
- - name: config | include yaml
-   include: yaml.yml
-   when: deployment_config_yaml_vars != 'none' 
+- name: config | include yaml
+  include: yaml.yml
+  when: deployment_config_yaml_vars != 'none'
 
- - name: config | include fastcgi_parm
-   include: fastcgi_parm.yml
-   when: deployment_config_fastcgi_parm_vars != 'none' 
+- name: config | include fastcgi_parm
+  include: fastcgi_parm.yml
+  when: deployment_config_fastcgi_parm_vars != 'none'
 
- - name: config | include php_pool_parm
-   include: php_pool_parm.yml
-   when: deployment_config_php_pool_parm_vars != 'none' 
+- name: config | include php_pool_parm
+  include: php_pool_parm.yml
+  when: deployment_config_php_pool_parm_vars != 'none'
 
- - name: config | include custom
-   include: custom.yml
-   when: deployment_config_custom != 'none' 
-
+- name: config | include custom
+  include: custom.yml
+  when: deployment_config_custom != 'none'
