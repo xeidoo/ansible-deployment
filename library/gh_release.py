@@ -259,12 +259,10 @@ class GithubReleases(object):
             pass
         elif self.version != "latest" and self.release_type == "draft":
             # Specify a draft release version
-            release_from_tag = self.repository.release_from_tag(self.version)
-            if release_from_tag:
-                return release_from_tag
-            else:
-                # Failed to find tag
-                self.module.fail_json(msg="failed to find draft release {} in repo {}".format(self.version, self.full_repo))
+            for release in self.repository.releases():
+                if release.tag_name == self.version:
+                    return release
+            self.module.fail_json(msg="failed to find draft release {} in repo {}".format(self.version, self.full_repo))
 
         else:
             # Get a specific release not latest
