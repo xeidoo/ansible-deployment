@@ -74,6 +74,12 @@
     owner="{{ deployment_user }}"
     group="{{ deployment_group }}"
 
+- name: resolver | github-releases | Make binary in executable
+  file:
+    dest="{{ deployment_github_release_dest }}"
+    mode=a+x
+  when: deployment_unarchive == "ignore" and gh_release_dest
+
 - name: resolver | github-releases | Unarchive artifact ansible (if no guard)
   unarchive:
     src="{{ gh_release_dest }}"
@@ -91,7 +97,7 @@
   command: "{{ deployment_unarchive }}"
   args:
       creates: "{{ deployment_dir_work }}/._unarchive"
-  when: deployment_unarchive != "ansible"
+  when: deployment_unarchive != "ignore" and deployment_unarchive != "ansible"
   become_user: "{{ deployment_user }}"
   register: custom_unarchive
   notify:
