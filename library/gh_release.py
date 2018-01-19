@@ -154,16 +154,12 @@ class Repository(object):
         )
 
     def release_from_tag(self, tag):
-        return ReleaseModel(
-            client=self.client,
-            data=self.client.request(
-                path='/repos/{owner}/{repo}/releases/tags/{tag}'.format(
-                    owner=self.owner,
-                    repo=self.repo,
-                    tag=tag
-                )
-            )
-        )
+        release_data = self.client.request('/repos/{owner}/{repo}/releases/tags/{tag}'.format(owner=self.owner, repo=self.repo, tag=tag))
+
+        if release_data is not None:
+            return ReleaseModel(client=self.client, data=release_data)
+        else:
+            return None
 
 
 class ReleaseModel(object):
@@ -271,7 +267,7 @@ class GithubReleases(object):
                 return release_from_tag
             else:
                 # Failed to find tag
-                self.module.fail_json(msg="failed to find version {} in repo {}".format(self.version, self.full_repo))
+                self.module.fail_json(msg="failed to find version {} in repo {}. Are you trying to get release draft?".format(self.version, self.full_repo))
 
         latest_release = type('obj', (object,), {'tag_name': '0.0.0'})
 
